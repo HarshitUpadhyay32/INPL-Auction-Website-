@@ -1,0 +1,1 @@
+import { createClient } from '@supabase/supabase-js'; import type { Database } from './src/lib/types/database'; const supabase = createClient<Database>('http://localhost', 'key'); supabase.from('teams').select('*');
