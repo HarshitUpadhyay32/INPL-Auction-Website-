@@ -327,7 +327,7 @@ export default function AuctionControlPage() {
                 <Badge variant="default">{currentBids.length} bids</Badge>
               </CardHeader>
               <div className="space-y-1.5 max-h-60 overflow-y-auto">
-                {currentBids.map((bid, i) => (
+                {[...currentBids].sort((a, b) => Number(b.amount) - Number(a.amount)).map((bid, i) => (
                   <div key={bid.id} className={`flex items-center justify-between p-2.5 rounded-xl ${i === 0 ? 'bg-inpl-neon/5 border border-inpl-neon/20' : 'hover:bg-surface-hover'} transition-colors`}>
                     <div className="flex items-center gap-3">
                       <span className="text-xs text-text-muted font-mono w-16">{formatTime(bid.created_at)}</span>

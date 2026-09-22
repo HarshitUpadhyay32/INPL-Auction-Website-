@@ -152,19 +152,19 @@ export default function TeamAuctionPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-2xl font-bold font-display text-text-primary flex items-center gap-3">
           <Gavel className="text-inpl-neon" />
           Live Auction
         </h1>
         <div className="flex items-center gap-3">
-          <div className="text-right">
-            <p className="text-xs text-text-muted">Purse</p>
-            <p className="text-sm font-display font-bold text-inpl-emerald">{formatCurrency(Number(team?.remaining_purse || 0))}</p>
+          <div className="text-right bg-inpl-emerald/10 border border-inpl-emerald/30 px-4 py-2 rounded-xl">
+            <p className="text-[10px] text-inpl-emerald uppercase font-bold tracking-wider mb-0.5">Purse Remaining</p>
+            <p className="text-xl font-display font-extrabold text-inpl-emerald">{formatCurrency(Number(team?.remaining_purse || 0))}</p>
           </div>
-          <div className="text-right">
-            <p className="text-xs text-text-muted">Squad</p>
-            <p className="text-sm font-display font-bold text-text-primary">{team?.players_count || 0}/{team?.max_players || 12}</p>
+          <div className="text-right bg-surface-elevated border border-border-default px-4 py-2 rounded-xl">
+            <p className="text-[10px] text-text-muted uppercase font-bold tracking-wider mb-0.5">Squad</p>
+            <p className="text-xl font-display font-bold text-text-primary">{team?.players_count || 0}/{team?.max_players || 12}</p>
           </div>
         </div>
       </div>
@@ -243,12 +243,12 @@ export default function TeamAuctionPage() {
               {bids.length === 0 ? (
                 <p className="text-sm text-text-muted text-center py-4">No bids yet. Be the first!</p>
               ) : (
-                bids.map((bid, i) => {
+                [...bids].sort((a, b) => Number(b.amount) - Number(a.amount)).map((bid, i) => {
                   const isMyBid = bid.team_id === teamId
                   return (
                     <div key={bid.id} className={`flex items-center justify-between p-2.5 rounded-xl transition-colors ${
-                      i === 0 ? 'bg-inpl-neon/5 border border-inpl-neon/20' :
-                      isMyBid ? 'bg-inpl-electric/5' : 'hover:bg-surface-hover'
+                      i === 0 ? 'bg-inpl-neon/10 border border-inpl-neon/30 shadow-[0_0_10px_rgba(204,255,0,0.1)]' :
+                      isMyBid ? 'bg-inpl-electric/5 border border-inpl-electric/10' : 'bg-surface-elevated/50 border border-border-default'
                     }`}>
                       <div className="flex items-center gap-2">
                         <span className="text-xs text-text-muted font-mono">{formatTime(bid.created_at)}</span>
