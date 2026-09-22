@@ -76,8 +76,8 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-inpl-neon to-inpl-neon-dark flex items-center justify-center">
-              <span className="text-surface-primary font-bold text-sm font-display">IN</span>
+            <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-black/50 border border-inpl-neon/20">
+              <img src="/inpl-logo.png" alt="INPL Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=INPL&background=000&color=ccff00' }} />
             </div>
             <div className="flex flex-col">
               <span className="text-sm font-bold text-text-primary font-display leading-tight group-hover:text-inpl-neon transition-colors">

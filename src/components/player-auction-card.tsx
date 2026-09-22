@@ -19,7 +19,12 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
   const statIconSize = size === 'lg' ? 'text-base' : 'text-sm'
 
   return (
-    <div className={`flex items-center gap-5 ${className}`}>
+    <div className={`relative flex items-center gap-5 ${className}`}>
+      {/* Watermark Logo */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none">
+        <img src="/inpl-logo.png" alt="" className="w-48 h-48 object-contain grayscale" />
+      </div>
+
       {/* Player Photo */}
       {player.photo_url ? (
         <motion.div

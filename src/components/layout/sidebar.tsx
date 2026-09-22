@@ -60,20 +60,24 @@ export function Sidebar({ type, teamName, teamColor }: SidebarProps) {
       {/* Header */}
       <div className="p-5 border-b border-border-default">
         <Link href={type === 'admin' ? '/admin' : '/team'} className="flex items-center gap-3">
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{
-              background: type === 'admin'
-                ? 'linear-gradient(135deg, #f5a623 0%, #c7850c 100%)'
-                : teamColor
+          {type === 'admin' ? (
+            <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-black border border-inpl-neon/20">
+              <img src="/inpl-logo.png" alt="INPL Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=A&background=f5a623&color=fff' }} />
+            </div>
+          ) : (
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{
+                background: teamColor
                   ? `linear-gradient(135deg, ${teamColor} 0%, ${teamColor}88 100%)`
                   : 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-            }}
-          >
-            <span className="text-white font-bold text-sm font-display">
-              {type === 'admin' ? 'A' : teamName?.[0] || 'T'}
-            </span>
-          </div>
+              }}
+            >
+              <span className="text-white font-bold text-sm font-display">
+                {teamName?.[0] || 'T'}
+              </span>
+            </div>
+          )}
           <div className="flex flex-col">
             <span className="text-sm font-bold text-text-primary font-display leading-tight">
               {type === 'admin' ? 'Admin Panel' : teamName || 'Team'}

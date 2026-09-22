@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState, useCallback } from 'react'
-import { Gavel, Play, Pause, SkipForward, Check, X, RotateCcw, Users, IndianRupee, Timer, AlertTriangle, ChevronDown, ChevronRight } from 'lucide-react'
+import { Gavel, Play, Pause, SkipForward, Check, X, RotateCcw, Users, IndianRupee, Timer, AlertTriangle, ChevronDown, ChevronRight, Ban } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
@@ -24,6 +24,7 @@ export default function AuctionControlPage() {
   const [loading, setLoading] = useState(true)
   const [soldDialog, setSoldDialog] = useState(false)
   const [unsoldDialog, setUnsoldDialog] = useState(false)
+  const [cancelDialog, setCancelDialog] = useState(false)
   const [undoDialog, setUndoDialog] = useState(false)
   const [actionLoading, setActionLoading] = useState(false)
   const [selectedSetId, setSelectedSetId] = useState<string>('all')
@@ -175,6 +176,24 @@ export default function AuctionControlPage() {
     loadData()
   }
 
+  // Cancel Auction (Return to queue)
+  async function handleCancelAuction() {
+    if (!currentAuction) return
+    setActionLoading(true)
+    const supabase = createClient()
+
+    await supabase.from('auctions').update({ status: 'CANCELLED', ended_at: new Date().toISOString() }).eq('id', currentAuction.id)
+    await supabase.from('players').update({ status: 'AVAILABLE' }).eq('id', currentAuction.player_id)
+
+    toast.success(`${currentPlayer?.name} returned to queue`)
+    setCurrentPlayer(null)
+    setCurrentAuction(null)
+    setCurrentBids([])
+    setCancelDialog(false)
+    setActionLoading(false)
+    loadData()
+  }
+
   // Undo SOLD
   async function handleUndo() {
     if (!currentAuction) return
@@ -300,15 +319,27 @@ export default function AuctionControlPage() {
                 >
                   SOLD
                 </Button>
-                <Button
-                  variant="danger"
-                  size="lg"
-                  className="w-full"
-                  onClick={() => setUnsoldDialog(true)}
-                  icon={<X size={20} />}
-                >
-                  UNSOLD
                 </Button>
+                <div className="grid grid-cols-2 gap-3">
+                  <Button
+                    variant="danger"
+                    size="lg"
+                    className="w-full"
+                    onClick={() => setUnsoldDialog(true)}
+                    icon={<X size={20} />}
+                  >
+                    UNSOLD
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    className="w-full"
+                    onClick={() => setCancelDialog(true)}
+                    icon={<Ban size={20} />}
+                  >
+                    STOP
+                  </Button>
+                </div>
               </div>
             </Card>
           ) : (
@@ -468,6 +499,16 @@ export default function AuctionControlPage() {
         title="Mark UNSOLD"
         description={`Mark ${currentPlayer?.name} as UNSOLD? No purchase will be made.`}
         confirmText="UNSOLD"
+        variant="danger"
+        loading={actionLoading}
+      />
+      <ConfirmDialog
+        open={cancelDialog}
+        onClose={() => setCancelDialog(false)}
+        onConfirm={handleCancelAuction}
+        title="Stop Live Auction"
+        description={`Stop the auction for ${currentPlayer?.name} and return them to the available queue?`}
+        confirmText="Stop Auction"
         variant="danger"
         loading={actionLoading}
       />
