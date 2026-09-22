@@ -46,7 +46,7 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
 
         {/* Player Image */}
         {player.photo_url ? (
-          <img src={player.photo_url} alt={player.name} className="relative z-10 w-full h-[85%] object-cover object-bottom drop-shadow-2xl" />
+          <img src={player.photo_url} alt={player.name} className="relative z-10 w-full h-full object-cover object-center drop-shadow-2xl" />
         ) : (
           <div className="relative z-10 w-full h-full flex items-center justify-center opacity-50">
             <span className="text-8xl">{getRoleEmoji(player.role)}</span>
