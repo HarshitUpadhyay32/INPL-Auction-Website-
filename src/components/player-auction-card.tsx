@@ -15,119 +15,95 @@ interface PlayerAuctionCardProps {
 
 export function PlayerAuctionCard({ player, size = 'md', showStats = true, className = '' }: PlayerAuctionCardProps) {
   return (
-    <div className={`relative w-full rounded-sm overflow-hidden bg-white shadow-2xl border border-gray-200 ${className}`}>
+    <div className={`relative w-full rounded-2xl overflow-hidden bg-white shadow-2xl border border-gray-200 p-4 sm:p-6 flex flex-col sm:flex-row gap-6 ${className}`}>
       {/* Background Graphic Pattern */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] opacity-80" />
+        <div className="absolute inset-0 bg-[#f8fafc] opacity-90" />
         <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="diagonal-lines" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-              <line x1="0" y1="0" x2="0" y2="40" stroke="#cbd5e1" strokeWidth="1" opacity="0.3" />
+              <line x1="0" y1="0" x2="0" y2="40" stroke="#cbd5e1" strokeWidth="1" opacity="0.4" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#diagonal-lines)" />
         </svg>
-        <div className="absolute top-0 right-0 bottom-0 w-1/3 bg-gradient-to-l from-white/40 to-transparent z-0" />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center">
-        {/* Top Section */}
-        <div className="w-full flex p-4 pb-2 gap-4">
-          
-          {/* Photo Box */}
-          <div className="relative w-48 h-56 bg-[#a0aec0] border border-gray-300 shadow-md flex-shrink-0 z-20">
-            {player.photo_url ? (
-              <img src={player.photo_url} alt={player.name} className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-[#0b1b3d] opacity-50">
-                <span className="text-6xl">{getRoleEmoji(player.role)}</span>
-              </div>
-            )}
+      {/* Left: Photo Box */}
+      <div className="relative w-full sm:w-72 h-80 sm:h-[28rem] rounded-xl border-[3px] border-[#d4af37] overflow-hidden flex-shrink-0 bg-gradient-to-br from-[#0b1b3d] to-[#1a2f5c] shadow-xl z-10">
+        {/* Golden stripes top-left */}
+        <div className="absolute top-0 left-0 w-32 h-32 overflow-hidden pointer-events-none z-20">
+          <div className="absolute top-[-10px] left-[-40px] w-48 h-10 bg-gradient-to-r from-[#d4af37] via-[#f5df80] to-[#d4af37] transform -rotate-45 shadow-md" />
+          <div className="absolute top-[35px] left-[-40px] w-48 h-4 bg-gradient-to-r from-[#d4af37] via-[#f5df80] to-[#d4af37] transform -rotate-45 shadow-md" />
+        </div>
+        
+        {/* Golden stripes bottom-right */}
+        <div className="absolute bottom-0 right-0 w-32 h-32 overflow-hidden pointer-events-none z-20">
+          <div className="absolute bottom-[-10px] right-[-40px] w-48 h-10 bg-gradient-to-r from-[#f5df80] via-[#d4af37] to-[#f5df80] transform -rotate-45 shadow-md" />
+          <div className="absolute bottom-[35px] right-[-40px] w-48 h-4 bg-gradient-to-r from-[#f5df80] via-[#d4af37] to-[#f5df80] transform -rotate-45 shadow-md" />
+        </div>
+
+        {/* Image */}
+        {player.photo_url ? (
+          <img src={player.photo_url} alt={player.name} className="w-full h-full object-cover relative z-10" />
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center relative z-10 opacity-60">
+            <User size={140} className="text-[#d4af37]" />
           </div>
+        )}
+      </div>
 
-          {/* Name & Country */}
-          <div className="flex-1 flex flex-col justify-center gap-3">
-            {/* Banner */}
-            <div className="relative bg-[#0b1b3d] border-y-[3px] border-[#d4af37] py-2 px-8 shadow-md">
-              <h1 className="text-4xl font-black text-[#d4af37] uppercase tracking-widest font-display truncate">
-                {player.name}
-              </h1>
-            </div>
-
-            {/* Sub-banner details */}
-            <div className="flex items-center gap-3 pl-4">
-              <div className="w-12 h-8 border-[2px] border-[#d4af37] bg-white flex items-center justify-center font-bold text-[#0b1b3d] text-xs">
+      {/* Right: Info & Stats */}
+      <div className="flex-1 flex flex-col justify-center gap-8 relative z-10 min-w-0 pr-0 sm:pr-4">
+        
+        {/* Name Banner & Base Price */}
+        <div className="relative w-full">
+          {/* Banner */}
+          <div className="bg-[#0b1b3d] border-2 border-[#d4af37] rounded-xl p-5 sm:p-8 pr-32 sm:pr-48 w-full shadow-2xl relative z-10">
+            <h1 className="text-3xl sm:text-5xl font-black text-[#d4af37] uppercase tracking-wider truncate mb-3 drop-shadow-md">
+              {player.name}
+            </h1>
+            <div className="w-full h-[3px] bg-gradient-to-r from-[#d4af37] to-transparent mb-4" />
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="px-3 py-1 bg-white rounded border border-[#d4af37] text-[#0b1b3d] font-bold text-xs sm:text-sm shadow-sm">
                 {player.player_code || 'INPL'}
-              </div>
-              <h2 className="text-xl font-bold text-[#0b1b3d] uppercase tracking-wider">
+              </span>
+              <h2 className="text-lg sm:text-xl font-bold text-white uppercase tracking-wider">
                 {player.department || 'CRICKET'} {player.year && `• ${player.year}`}
               </h2>
             </div>
           </div>
-        </div>
 
-        {/* Bottom Stats Bar */}
-        {showStats && (
-          <div className="w-full px-4 pb-4 mt-2">
-            <div className="w-full bg-white border-2 border-[#0b1b3d] flex items-stretch shadow-md rounded-[2px] relative z-20">
-              
-              {/* Stat Block: Runs */}
-              <div className="flex-1 flex flex-col items-center p-2 border-r border-[#0b1b3d]/30">
-                <span className="text-[10px] font-bold text-[#0b1b3d] uppercase tracking-widest mb-1">Runs</span>
-                <Activity size={18} className="text-[#d4af37] mb-1.5" />
-                <div className="w-full border border-[#d4af37] rounded-sm py-1 flex justify-center bg-white shadow-inner">
-                  <span className="text-sm font-bold text-[#0b1b3d]">{player.runs}</span>
-                </div>
-              </div>
-
-              {/* Stat Block: Matches */}
-              <div className="flex-1 flex flex-col items-center p-2 border-r border-[#0b1b3d]/30">
-                <span className="text-[10px] font-bold text-[#0b1b3d] uppercase tracking-widest mb-1">Matches</span>
-                <Calendar size={18} className="text-[#d4af37] mb-1.5" />
-                <div className="w-full border border-[#d4af37] rounded-sm py-1 flex justify-center bg-white shadow-inner">
-                  <span className="text-sm font-bold text-[#0b1b3d]">{player.matches}</span>
-                </div>
-              </div>
-
-              {/* Stat Block: Wickets */}
-              <div className="flex-1 flex flex-col items-center p-2 border-r border-[#0b1b3d]/30">
-                <span className="text-[10px] font-bold text-[#0b1b3d] uppercase tracking-widest mb-1">Wickets</span>
-                <Target size={18} className="text-[#d4af37] mb-1.5" />
-                <div className="w-full border border-[#d4af37] rounded-sm py-1 flex justify-center bg-white shadow-inner">
-                  <span className="text-sm font-bold text-[#0b1b3d]">{player.wickets}</span>
-                </div>
-              </div>
-
-              {/* Stat Block: Type */}
-              <div className="flex-1 flex flex-col items-center p-2 border-r border-[#0b1b3d]/30">
-                <span className="text-[10px] font-bold text-[#0b1b3d] uppercase tracking-widest mb-1">Type</span>
-                <User size={18} className="text-[#d4af37] mb-1.5" />
-                <div className="w-full border border-[#d4af37] rounded-sm py-1 flex justify-center bg-white shadow-inner px-1 truncate">
-                  <span className="text-xs font-bold text-[#0b1b3d] uppercase truncate">{player.role}</span>
-                </div>
-              </div>
-
-
-
-              {/* Base Price Block */}
-              <div className="flex-[2] sm:flex-[2.5] bg-gradient-to-b from-[#f5df80] via-[#e2c140] to-[#c79a22] p-2 flex flex-col items-center shadow-[inset_0_0_10px_rgba(255,255,255,0.4)] relative">
-                <div className="absolute -top-[1px] -left-[1px] w-2 h-2 border-t-2 border-l-2 border-[#0b1b3d]" />
-                <div className="absolute -top-[1px] -right-[1px] w-2 h-2 border-t-2 border-r-2 border-[#0b1b3d]" />
-                <div className="absolute -bottom-[1px] -left-[1px] w-2 h-2 border-b-2 border-l-2 border-[#0b1b3d]" />
-                <div className="absolute -bottom-[1px] -right-[1px] w-2 h-2 border-b-2 border-r-2 border-[#0b1b3d]" />
-                
-                <span className="text-sm font-black text-[#0b1b3d] uppercase tracking-widest mb-1">Base Price</span>
-                <div className="flex flex-col items-center justify-center flex-1 w-full">
-                  <IndianRupee size={24} className="text-[#0b1b3d] mb-1" />
-                  <div className="w-full border border-white rounded-sm py-1.5 flex justify-center bg-white shadow-md">
-                    <span className="text-lg font-black text-[#0b1b3d]">{formatCurrency(player.base_price)}</span>
-                  </div>
-                </div>
-              </div>
-
+          {/* Base Price Overlap */}
+          <div className="absolute right-0 sm:-right-4 -top-6 -bottom-6 w-32 sm:w-56 bg-gradient-to-b from-[#f5df80] via-[#e2c140] to-[#c79a22] rounded-2xl shadow-[0_15px_35px_rgba(0,0,0,0.5)] border-2 border-white/40 z-20 flex flex-col items-center justify-center p-3 sm:p-6 transform hover:scale-[1.02] transition-transform duration-300">
+            <span className="text-sm sm:text-base font-black text-[#0b1b3d] uppercase tracking-widest mb-1 sm:mb-2 text-center">Base Price</span>
+            <IndianRupee size={36} className="text-[#0b1b3d] mb-2 sm:mb-4 drop-shadow-sm" />
+            <div className="w-full bg-white rounded-xl py-2 sm:py-3 flex justify-center shadow-inner border border-gray-200">
+              <span className="text-2xl sm:text-3xl font-black text-[#0b1b3d]">{formatCurrency(player.base_price)}</span>
             </div>
           </div>
+        </div>
+
+        {/* Stats Box */}
+        {showStats && (
+          <div className="w-full bg-white border-[3px] border-[#d4af37] rounded-xl p-3 sm:p-6 flex justify-between shadow-xl relative z-10 gap-2 sm:gap-4">
+            {[
+              { label: 'MATCHES', icon: <Calendar size={32} className="text-[#d4af37] mb-2 sm:mb-4" />, value: player.matches },
+              { label: 'RUNS', icon: <Activity size={32} className="text-[#d4af37] mb-2 sm:mb-4" />, value: player.runs },
+              { label: 'WICKETS', icon: <Target size={32} className="text-[#d4af37] mb-2 sm:mb-4" />, value: player.wickets },
+              { label: 'TYPE', icon: <User size={32} className="text-[#d4af37] mb-2 sm:mb-4" />, value: player.role }
+            ].map((stat, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center justify-between">
+                <span className="text-[10px] sm:text-xs font-black text-[#0b1b3d] uppercase tracking-widest mb-2 sm:mb-3 text-center h-8 sm:h-auto flex items-center">{stat.label}</span>
+                {stat.icon}
+                <div className="w-full border-[3px] border-[#d4af37] rounded-lg py-1.5 sm:py-2.5 flex justify-center bg-white shadow-sm mt-2">
+                  <span className="text-xs sm:text-base font-black text-[#0b1b3d] uppercase truncate px-1">{stat.value}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
+
       </div>
     </div>
   )
