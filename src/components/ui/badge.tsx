@@ -1,6 +1,6 @@
 import React from 'react'
 
-type BadgeVariant = 'available' | 'live' | 'sold' | 'unsold' | 'default' | 'gold' | 'blue' | 'red' | 'emerald' | 'purple'
+type BadgeVariant = 'available' | 'live' | 'sold' | 'unsold' | 'default' | 'gold' | 'blue' | 'red' | 'emerald' | 'purple' | 'warning'
 
 interface BadgeProps {
   variant?: BadgeVariant
@@ -21,6 +21,7 @@ const variantClasses: Record<BadgeVariant, string> = {
   red: 'bg-inpl-red/15 text-inpl-red-light border-inpl-red/30',
   emerald: 'bg-inpl-emerald/15 text-inpl-emerald-light border-inpl-emerald/30',
   purple: 'bg-inpl-purple/15 text-inpl-purple border-inpl-purple/30',
+  warning: 'bg-orange-500/15 text-orange-400 border-orange-500/30',
 }
 
 const sizeClasses = {
