@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type PlayerRole = 'Batter' | 'Bowler' | 'All-Rounder' | 'Wicketkeeper'
 export type PlayerStatus = 'AVAILABLE' | 'LIVE' | 'SOLD' | 'UNSOLD'
-export type AuctionStatus = 'ACTIVE' | 'SOLD' | 'UNSOLD' | 'CANCELLED'
+export type AuctionStatus = 'ACTIVE' | 'SOLD' | 'UNSOLD' | 'CANCELLED' | 'PAUSED'
 export type GlobalAuctionStatus = 'DRAFT' | 'UPCOMING' | 'LIVE' | 'PAUSED' | 'COMPLETED'
 export type TransactionType = 'PURCHASE' | 'ADJUSTMENT' | 'REFUND'
 export type UserRole = 'ADMIN' | 'TEAM' | 'PUBLIC'

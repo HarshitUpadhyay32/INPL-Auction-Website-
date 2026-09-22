@@ -18,7 +18,7 @@ export default function DisplayModePage() {
     const { data: teamsData } = await supabase.from('teams').select('*').order('name')
     if (teamsData) setTeams(teamsData)
 
-    const { data: activeAuction } = await supabase.from('auctions').select('*').eq('status', 'ACTIVE').limit(1).single()
+    const { data: activeAuction } = await supabase.from('auctions').select('*').in('status', ['ACTIVE', 'PAUSED']).limit(1).single()
     if (activeAuction) {
       setCurrentAuction(activeAuction)
       const { data: player } = await supabase.from('players').select('*').eq('id', activeAuction.player_id).single()

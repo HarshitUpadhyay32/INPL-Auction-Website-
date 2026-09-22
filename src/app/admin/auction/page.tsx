@@ -47,7 +47,7 @@ export default function AuctionControlPage() {
     if (playersData) setPlayers(playersData)
 
     // Check for active auction
-    const { data: activeAuction } = await supabase.from('auctions').select('*').eq('status', 'ACTIVE').limit(1).single()
+    const { data: activeAuction } = await supabase.from('auctions').select('*').in('status', ['ACTIVE', 'PAUSED']).limit(1).single()
     if (activeAuction) {
       setCurrentAuction(activeAuction)
       const { data: player } = await supabase.from('players').select('*').eq('id', activeAuction.player_id).single()
@@ -176,19 +176,16 @@ export default function AuctionControlPage() {
     loadData()
   }
 
-  // Cancel Auction (Return to queue)
-  async function handleCancelAuction() {
+  // Pause/Resume Auction
+  async function handleTogglePause() {
     if (!currentAuction) return
     setActionLoading(true)
     const supabase = createClient()
+    const newStatus = currentAuction.status === 'PAUSED' ? 'ACTIVE' : 'PAUSED'
 
-    await supabase.from('auctions').update({ status: 'CANCELLED', ended_at: new Date().toISOString() }).eq('id', currentAuction.id)
-    await supabase.from('players').update({ status: 'AVAILABLE' }).eq('id', currentAuction.player_id)
+    await supabase.from('auctions').update({ status: newStatus }).eq('id', currentAuction.id)
 
-    toast.success(`${currentPlayer?.name} returned to queue`)
-    setCurrentPlayer(null)
-    setCurrentAuction(null)
-    setCurrentBids([])
+    toast.success(`${currentPlayer?.name} auction ${newStatus === 'PAUSED' ? 'PAUSED' : 'RESUMED'}`)
     setCancelDialog(false)
     setActionLoading(false)
     loadData()
@@ -330,13 +327,14 @@ export default function AuctionControlPage() {
                     UNSOLD
                   </Button>
                   <Button
-                    variant="secondary"
+                    variant={currentAuction.status === 'PAUSED' ? 'success' : 'secondary'}
                     size="lg"
                     className="w-full"
-                    onClick={() => setCancelDialog(true)}
-                    icon={<Ban size={20} />}
+                    onClick={() => handleTogglePause()}
+                    loading={actionLoading}
+                    icon={currentAuction.status === 'PAUSED' ? <Play size={20} /> : <Pause size={20} />}
                   >
-                    STOP
+                    {currentAuction.status === 'PAUSED' ? 'RESUME' : 'PAUSE'}
                   </Button>
                 </div>
               </div>
@@ -498,16 +496,6 @@ export default function AuctionControlPage() {
         title="Mark UNSOLD"
         description={`Mark ${currentPlayer?.name} as UNSOLD? No purchase will be made.`}
         confirmText="UNSOLD"
-        variant="danger"
-        loading={actionLoading}
-      />
-      <ConfirmDialog
-        open={cancelDialog}
-        onClose={() => setCancelDialog(false)}
-        onConfirm={handleCancelAuction}
-        title="Stop Live Auction"
-        description={`Stop the auction for ${currentPlayer?.name} and return them to the available queue?`}
-        confirmText="Stop Auction"
         variant="danger"
         loading={actionLoading}
       />

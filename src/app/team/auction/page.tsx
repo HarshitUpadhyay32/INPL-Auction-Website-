@@ -41,7 +41,7 @@ export default function TeamAuctionPage() {
     if (teamsData) setAllTeams(teamsData)
 
     // Get active auction
-    const { data: activeAuction } = await supabase.from('auctions').select('*').eq('status', 'ACTIVE').limit(1).single()
+    const { data: activeAuction } = await supabase.from('auctions').select('*').in('status', ['ACTIVE', 'PAUSED']).limit(1).single()
     if (activeAuction) {
       setCurrentAuction(activeAuction)
       const { data: player } = await supabase.from('players').select('*').eq('id', activeAuction.player_id).single()
@@ -179,7 +179,11 @@ export default function TeamAuctionPage() {
               )}
 
               <div className="flex items-center justify-between mb-4">
-                <Badge variant="live" pulse size="lg">LIVE</Badge>
+                {currentAuction.status === 'PAUSED' ? (
+                  <Badge variant="warning" size="lg">PAUSED</Badge>
+                ) : (
+                  <Badge variant="live" pulse size="lg">LIVE</Badge>
+                )}
                 {isLeading && <Badge variant="emerald" size="lg">🏆 YOU ARE LEADING</Badge>}
               </div>
 
