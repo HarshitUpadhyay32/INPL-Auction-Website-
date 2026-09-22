@@ -319,7 +319,6 @@ export default function AuctionControlPage() {
                 >
                   SOLD
                 </Button>
-                </Button>
                 <div className="grid grid-cols-2 gap-3">
                   <Button
                     variant="danger"
