@@ -305,18 +305,18 @@ export default function AuctionControlPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-3">
-                <Button
-                  variant="success"
-                  size="lg"
-                  className="w-full"
-                  onClick={() => setSoldDialog(true)}
-                  disabled={!currentAuction.highest_bid_team_id}
-                  icon={<Check size={20} />}
-                >
-                  SOLD
-                </Button>
+              <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-3">
+                  <Button
+                    variant="success"
+                    size="lg"
+                    className="w-full"
+                    onClick={() => setSoldDialog(true)}
+                    disabled={!currentAuction.highest_bid_team_id}
+                    icon={<Check size={20} />}
+                  >
+                    SOLD
+                  </Button>
                   <Button
                     variant="danger"
                     size="lg"
@@ -326,17 +326,17 @@ export default function AuctionControlPage() {
                   >
                     UNSOLD
                   </Button>
-                  <Button
-                    variant={currentAuction.status === 'PAUSED' ? 'success' : 'secondary'}
-                    size="lg"
-                    className="w-full"
-                    onClick={() => handleTogglePause()}
-                    loading={actionLoading}
-                    icon={currentAuction.status === 'PAUSED' ? <Play size={20} /> : <Pause size={20} />}
-                  >
-                    {currentAuction.status === 'PAUSED' ? 'RESUME' : 'PAUSE'}
-                  </Button>
                 </div>
+                <Button
+                  variant={currentAuction.status === 'PAUSED' ? 'success' : 'secondary'}
+                  size="lg"
+                  className="w-full"
+                  onClick={() => handleTogglePause()}
+                  loading={actionLoading}
+                  icon={currentAuction.status === 'PAUSED' ? <Play size={20} /> : <Pause size={20} />}
+                >
+                  {currentAuction.status === 'PAUSED' ? 'RESUME AUCTION' : 'PAUSE AUCTION'}
+                </Button>
               </div>
             </Card>
           ) : (
