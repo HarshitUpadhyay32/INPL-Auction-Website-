@@ -4,7 +4,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { getRoleEmoji, formatCurrency } from '@/lib/utils'
 import type { Player } from '@/lib/types/database'
-import { Activity, Target, User, Calendar, CloudSun, IndianRupee } from 'lucide-react'
+import { Activity, Target, User, Calendar, IndianRupee } from 'lucide-react'
 
 interface PlayerAuctionCardProps {
   player: Player
@@ -118,14 +118,7 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
                 </div>
               </div>
 
-              {/* Stat Block: Weather/Matches (Placeholder from image) */}
-              <div className="flex-1 flex flex-col items-center p-2 border-r border-[#0b1b3d]/30 hidden sm:flex">
-                <span className="text-[10px] font-bold text-[#0b1b3d] uppercase tracking-widest mb-1">Weather</span>
-                <CloudSun size={18} className="text-[#d4af37] mb-1.5" />
-                <div className="w-full border border-[#d4af37] rounded-sm py-1 flex justify-center bg-white shadow-inner">
-                  <span className="text-sm font-bold text-[#0b1b3d]">☀/🌧</span>
-                </div>
-              </div>
+
 
               {/* Base Price Block */}
               <div className="flex-[1.2] sm:flex-[1.5] bg-gradient-to-b from-[#f5df80] via-[#e2c140] to-[#c79a22] p-2 flex flex-col items-center shadow-[inset_0_0_10px_rgba(255,255,255,0.4)] relative">
