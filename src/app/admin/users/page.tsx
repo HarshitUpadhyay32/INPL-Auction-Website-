@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from 'sonner'
 import type { Team } from '@/lib/types/database'
 
@@ -75,7 +75,7 @@ export default function UsersPage() {
         <CardHeader>
           <CardTitle>Registered Users</CardTitle>
         </CardHeader>
-        <CardContent>
+        <div className="p-6 pt-0">
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
               <thead className="text-xs uppercase text-text-muted bg-surface-hover/50">
@@ -141,7 +141,7 @@ export default function UsersPage() {
               </tbody>
             </table>
           </div>
-        </CardContent>
+        </div>
       </Card>
     </div>
   )
