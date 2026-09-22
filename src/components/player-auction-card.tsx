@@ -35,7 +35,7 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
         <div className="w-full flex p-4 pb-2 gap-4">
           
           {/* Photo Box */}
-          <div className="relative w-40 h-48 bg-[#a0aec0] border-[3px] border-[#d4af37] shadow-lg flex-shrink-0 z-20">
+          <div className="relative w-48 h-56 bg-[#a0aec0] border border-gray-300 shadow-md flex-shrink-0 z-20">
             {player.photo_url ? (
               <img src={player.photo_url} alt={player.name} className="w-full h-full object-cover" />
             ) : (
@@ -43,12 +43,6 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
                 <span className="text-6xl">{getRoleEmoji(player.role)}</span>
               </div>
             )}
-            
-            {/* Golden corner accents */}
-            <div className="absolute -top-1 -left-1 w-3 h-3 border-t-2 border-l-2 border-[#fff]" />
-            <div className="absolute -top-1 -right-1 w-3 h-3 border-t-2 border-r-2 border-[#fff]" />
-            <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b-2 border-l-2 border-[#fff]" />
-            <div className="absolute -bottom-1 -right-1 w-3 h-3 border-b-2 border-r-2 border-[#fff]" />
           </div>
 
           {/* Name & Country */}
@@ -116,17 +110,17 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
 
 
               {/* Base Price Block */}
-              <div className="flex-[1.2] sm:flex-[1.5] bg-gradient-to-b from-[#f5df80] via-[#e2c140] to-[#c79a22] p-2 flex flex-col items-center shadow-[inset_0_0_10px_rgba(255,255,255,0.4)] relative">
+              <div className="flex-[2] sm:flex-[2.5] bg-gradient-to-b from-[#f5df80] via-[#e2c140] to-[#c79a22] p-2 flex flex-col items-center shadow-[inset_0_0_10px_rgba(255,255,255,0.4)] relative">
                 <div className="absolute -top-[1px] -left-[1px] w-2 h-2 border-t-2 border-l-2 border-[#0b1b3d]" />
                 <div className="absolute -top-[1px] -right-[1px] w-2 h-2 border-t-2 border-r-2 border-[#0b1b3d]" />
                 <div className="absolute -bottom-[1px] -left-[1px] w-2 h-2 border-b-2 border-l-2 border-[#0b1b3d]" />
                 <div className="absolute -bottom-[1px] -right-[1px] w-2 h-2 border-b-2 border-r-2 border-[#0b1b3d]" />
                 
-                <span className="text-xs font-black text-[#0b1b3d] uppercase tracking-widest mb-1">Base Price</span>
+                <span className="text-sm font-black text-[#0b1b3d] uppercase tracking-widest mb-1">Base Price</span>
                 <div className="flex flex-col items-center justify-center flex-1 w-full">
-                  <IndianRupee size={20} className="text-[#0b1b3d] mb-1" />
+                  <IndianRupee size={24} className="text-[#0b1b3d] mb-1" />
                   <div className="w-full border border-white rounded-sm py-1.5 flex justify-center bg-white shadow-md">
-                    <span className="text-sm font-black text-[#0b1b3d]">{formatCurrency(player.base_price)}</span>
+                    <span className="text-lg font-black text-[#0b1b3d]">{formatCurrency(player.base_price)}</span>
                   </div>
                 </div>
               </div>
