@@ -2,9 +2,9 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Badge } from '@/components/ui/badge'
-import { getRoleEmoji } from '@/lib/utils'
+import { getRoleEmoji, formatCurrency } from '@/lib/utils'
 import type { Player } from '@/lib/types/database'
+import { Activity, Target, User, Calendar, CloudSun, IndianRupee } from 'lucide-react'
 
 interface PlayerAuctionCardProps {
   player: Player
@@ -14,100 +14,155 @@ interface PlayerAuctionCardProps {
 }
 
 export function PlayerAuctionCard({ player, size = 'md', showStats = true, className = '' }: PlayerAuctionCardProps) {
-  const photoSize = size === 'lg' ? 'w-32 h-32' : size === 'md' ? 'w-20 h-20' : 'w-14 h-14'
-  const nameSize = size === 'lg' ? 'text-3xl' : size === 'md' ? 'text-2xl' : 'text-lg'
-  const statIconSize = size === 'lg' ? 'text-base' : 'text-sm'
+  // If it's not large, we fallback to a simpler layout for now
+  if (size !== 'lg') {
+    return (
+      <div className={`relative flex items-center gap-4 bg-[#0b1b3d] border border-inpl-neon/20 p-3 rounded-xl ${className}`}>
+        {player.photo_url ? (
+          <img src={player.photo_url} alt={player.name} className="w-12 h-12 rounded-lg object-cover border border-[#d4af37]" />
+        ) : (
+          <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center border border-[#d4af37]">
+            <span className="text-2xl">{getRoleEmoji(player.role)}</span>
+          </div>
+        )}
+        <div>
+          <h4 className="font-bold text-[#d4af37]">{player.name}</h4>
+          <p className="text-xs text-white/70">{player.role} • {formatCurrency(player.base_price)}</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className={`relative flex items-center gap-5 ${className}`}>
-      {/* Watermark Logo */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none">
-        <img src="/inpl-logo.png" alt="" className="w-48 h-48 object-contain grayscale" />
+    <div className={`relative w-full rounded-sm overflow-hidden bg-white shadow-2xl border border-gray-200 ${className}`}>
+      {/* Background Graphic Pattern */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] opacity-80" />
+        <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="diagonal-lines" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="40" stroke="#cbd5e1" strokeWidth="1" opacity="0.3" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#diagonal-lines)" />
+        </svg>
+        <div className="absolute top-0 right-0 bottom-0 w-1/3 bg-gradient-to-l from-white/40 to-transparent z-0" />
       </div>
 
-      {/* Player Photo */}
-      {player.photo_url ? (
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', duration: 0.5 }}
-          className={`${photoSize} rounded-2xl overflow-hidden border-2 border-inpl-neon/30 shadow-lg shadow-inpl-neon/10 flex-shrink-0`}
-        >
-          <img
-            src={player.photo_url}
-            alt={player.name}
-            className="w-full h-full object-cover"
-          />
-        </motion.div>
-      ) : (
-        <div className={`${photoSize} rounded-2xl bg-surface-elevated flex items-center justify-center flex-shrink-0 border border-border-default`}>
-          <span className={size === 'lg' ? 'text-5xl' : size === 'md' ? 'text-4xl' : 'text-2xl'}>
-            {getRoleEmoji(player.role)}
-          </span>
-        </div>
-      )}
-
-      {/* Player Details */}
-      <div className="flex-1 min-w-0">
-        <h2 className={`${nameSize} font-bold font-display text-text-primary truncate`}>
-          {player.name}
-        </h2>
-        <div className="flex items-center gap-3 mt-1 flex-wrap">
-          <Badge variant={
-            player.role === 'Batter' ? 'blue' :
-            player.role === 'Bowler' ? 'red' :
-            player.role === 'All-Rounder' ? 'gold' : 'purple'
-          }>{player.role}</Badge>
-          {player.department && (
-            <span className="text-sm text-text-secondary">{player.department}</span>
-          )}
-          {player.year && (
-            <span className="text-sm text-text-muted">• {player.year}</span>
-          )}
-        </div>
-
-        {/* Stats Bar */}
-        {showStats && (player.matches > 0 || player.runs > 0 || player.wickets > 0) && (
-          <div className="flex items-center gap-4 mt-3">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-elevated/80 border border-border-default">
-              <span className={statIconSize}>🏏</span>
-              <div>
-                <p className="text-[10px] text-text-muted uppercase tracking-wider leading-tight">Matches</p>
-                <p className="text-sm font-bold font-display text-text-primary leading-tight">{player.matches}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-elevated/80 border border-border-default">
-              <span className={statIconSize}>🔥</span>
-              <div>
-                <p className="text-[10px] text-text-muted uppercase tracking-wider leading-tight">Runs</p>
-                <p className="text-sm font-bold font-display text-text-primary leading-tight">{player.runs}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-elevated/80 border border-border-default">
-              <span className={statIconSize}>🎯</span>
-              <div>
-                <p className="text-[10px] text-text-muted uppercase tracking-wider leading-tight">Wickets</p>
-                <p className="text-sm font-bold font-display text-text-primary leading-tight">{player.wickets}</p>
-              </div>
-            </div>
-            {player.batting_style && (
-              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-elevated/80 border border-border-default">
-                <span className={statIconSize}>🏑</span>
-                <div>
-                  <p className="text-[10px] text-text-muted uppercase tracking-wider leading-tight">Bat Style</p>
-                  <p className="text-xs font-medium text-text-primary leading-tight truncate max-w-[80px]">{player.batting_style}</p>
-                </div>
+      <div className="relative z-10 flex flex-col items-center">
+        {/* Top Section */}
+        <div className="w-full flex p-4 pb-2 gap-4">
+          
+          {/* Photo Box */}
+          <div className="relative w-40 h-48 bg-[#a0aec0] border-[3px] border-[#d4af37] shadow-lg flex-shrink-0 z-20">
+            {player.photo_url ? (
+              <img src={player.photo_url} alt={player.name} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-[#0b1b3d] opacity-50">
+                <span className="text-6xl">{getRoleEmoji(player.role)}</span>
               </div>
             )}
-            {player.bowling_style && (
-              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-elevated/80 border border-border-default">
-                <span className={statIconSize}>🎳</span>
-                <div>
-                  <p className="text-[10px] text-text-muted uppercase tracking-wider leading-tight">Bowl Style</p>
-                  <p className="text-xs font-medium text-text-primary leading-tight truncate max-w-[80px]">{player.bowling_style}</p>
+            
+            {/* Golden corner accents */}
+            <div className="absolute -top-1 -left-1 w-3 h-3 border-t-2 border-l-2 border-[#fff]" />
+            <div className="absolute -top-1 -right-1 w-3 h-3 border-t-2 border-r-2 border-[#fff]" />
+            <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b-2 border-l-2 border-[#fff]" />
+            <div className="absolute -bottom-1 -right-1 w-3 h-3 border-b-2 border-r-2 border-[#fff]" />
+          </div>
+
+          {/* Name & Country */}
+          <div className="flex-1 flex flex-col justify-center gap-3">
+            {/* Banner */}
+            <div className="relative bg-[#0b1b3d] border-y-[3px] border-[#d4af37] py-2 px-8 shadow-md">
+              <h1 className="text-4xl font-black text-[#d4af37] uppercase tracking-widest font-display truncate">
+                {player.name}
+              </h1>
+              {/* Corner accents for banner */}
+              <div className="absolute top-0 left-0 w-3 h-3 border-r-2 border-b-2 border-[#d4af37] transform -rotate-45 -translate-x-1 -translate-y-1" />
+              <div className="absolute bottom-0 left-0 w-3 h-3 border-r-2 border-t-2 border-[#d4af37] transform -rotate-45 -translate-x-1 translate-y-1" />
+              <div className="absolute top-0 right-0 w-3 h-3 border-l-2 border-b-2 border-[#d4af37] transform rotate-45 translate-x-1 -translate-y-1" />
+              <div className="absolute bottom-0 right-0 w-3 h-3 border-l-2 border-t-2 border-[#d4af37] transform rotate-45 translate-x-1 translate-y-1" />
+            </div>
+
+            {/* Sub-banner details */}
+            <div className="flex items-center gap-3 pl-4">
+              <div className="w-12 h-8 border-[2px] border-[#d4af37] bg-white flex items-center justify-center font-bold text-[#0b1b3d] text-xs">
+                {player.player_code || 'INPL'}
+              </div>
+              <h2 className="text-xl font-bold text-[#0b1b3d] uppercase tracking-wider">
+                {player.department || 'CRICKET'} {player.year && `• ${player.year}`}
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Stats Bar */}
+        {showStats && (
+          <div className="w-full px-4 pb-4 mt-2">
+            <div className="w-full bg-white border-2 border-[#0b1b3d] flex items-stretch shadow-md rounded-[2px] relative z-20">
+              
+              {/* Stat Block: Runs */}
+              <div className="flex-1 flex flex-col items-center p-2 border-r border-[#0b1b3d]/30">
+                <span className="text-[10px] font-bold text-[#0b1b3d] uppercase tracking-widest mb-1">Runs</span>
+                <Activity size={18} className="text-[#d4af37] mb-1.5" />
+                <div className="w-full border border-[#d4af37] rounded-sm py-1 flex justify-center bg-white shadow-inner">
+                  <span className="text-sm font-bold text-[#0b1b3d]">{player.runs}</span>
                 </div>
               </div>
-            )}
+
+              {/* Stat Block: Matches */}
+              <div className="flex-1 flex flex-col items-center p-2 border-r border-[#0b1b3d]/30">
+                <span className="text-[10px] font-bold text-[#0b1b3d] uppercase tracking-widest mb-1">Matches</span>
+                <Calendar size={18} className="text-[#d4af37] mb-1.5" />
+                <div className="w-full border border-[#d4af37] rounded-sm py-1 flex justify-center bg-white shadow-inner">
+                  <span className="text-sm font-bold text-[#0b1b3d]">{player.matches}</span>
+                </div>
+              </div>
+
+              {/* Stat Block: Wickets */}
+              <div className="flex-1 flex flex-col items-center p-2 border-r border-[#0b1b3d]/30">
+                <span className="text-[10px] font-bold text-[#0b1b3d] uppercase tracking-widest mb-1">Wickets</span>
+                <Target size={18} className="text-[#d4af37] mb-1.5" />
+                <div className="w-full border border-[#d4af37] rounded-sm py-1 flex justify-center bg-white shadow-inner">
+                  <span className="text-sm font-bold text-[#0b1b3d]">{player.wickets}</span>
+                </div>
+              </div>
+
+              {/* Stat Block: Type */}
+              <div className="flex-1 flex flex-col items-center p-2 border-r border-[#0b1b3d]/30">
+                <span className="text-[10px] font-bold text-[#0b1b3d] uppercase tracking-widest mb-1">Type</span>
+                <User size={18} className="text-[#d4af37] mb-1.5" />
+                <div className="w-full border border-[#d4af37] rounded-sm py-1 flex justify-center bg-white shadow-inner px-1 truncate">
+                  <span className="text-xs font-bold text-[#0b1b3d] uppercase truncate">{player.role}</span>
+                </div>
+              </div>
+
+              {/* Stat Block: Weather/Matches (Placeholder from image) */}
+              <div className="flex-1 flex flex-col items-center p-2 border-r border-[#0b1b3d]/30 hidden sm:flex">
+                <span className="text-[10px] font-bold text-[#0b1b3d] uppercase tracking-widest mb-1">Weather</span>
+                <CloudSun size={18} className="text-[#d4af37] mb-1.5" />
+                <div className="w-full border border-[#d4af37] rounded-sm py-1 flex justify-center bg-white shadow-inner">
+                  <span className="text-sm font-bold text-[#0b1b3d]">☀/🌧</span>
+                </div>
+              </div>
+
+              {/* Base Price Block */}
+              <div className="flex-[1.2] sm:flex-[1.5] bg-gradient-to-b from-[#f5df80] via-[#e2c140] to-[#c79a22] p-2 flex flex-col items-center shadow-[inset_0_0_10px_rgba(255,255,255,0.4)] relative">
+                <div className="absolute -top-[1px] -left-[1px] w-2 h-2 border-t-2 border-l-2 border-[#0b1b3d]" />
+                <div className="absolute -top-[1px] -right-[1px] w-2 h-2 border-t-2 border-r-2 border-[#0b1b3d]" />
+                <div className="absolute -bottom-[1px] -left-[1px] w-2 h-2 border-b-2 border-l-2 border-[#0b1b3d]" />
+                <div className="absolute -bottom-[1px] -right-[1px] w-2 h-2 border-b-2 border-r-2 border-[#0b1b3d]" />
+                
+                <span className="text-xs font-black text-[#0b1b3d] uppercase tracking-widest mb-1">Base Price</span>
+                <div className="flex flex-col items-center justify-center flex-1 w-full">
+                  <IndianRupee size={20} className="text-[#0b1b3d] mb-1" />
+                  <div className="w-full border border-white rounded-sm py-1.5 flex justify-center bg-white shadow-md">
+                    <span className="text-sm font-black text-[#0b1b3d]">{formatCurrency(player.base_price)}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
         )}
       </div>
