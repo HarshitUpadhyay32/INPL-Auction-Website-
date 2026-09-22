@@ -29,6 +29,7 @@ interface SidebarLink {
 const adminLinks: SidebarLink[] = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/auction', label: 'Auction Control', icon: Gavel, badge: 'LIVE' },
+  { href: '/admin/users', label: 'Users', icon: Users },
   { href: '/admin/teams', label: 'Teams', icon: Users },
   { href: '/admin/players', label: 'Players', icon: UserCircle },
   { href: '/admin/auction-sets', label: 'Auction Sets', icon: Layers },
