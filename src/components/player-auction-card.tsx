@@ -14,25 +14,6 @@ interface PlayerAuctionCardProps {
 }
 
 export function PlayerAuctionCard({ player, size = 'md', showStats = true, className = '' }: PlayerAuctionCardProps) {
-  // If it's not large, we fallback to a simpler layout for now
-  if (size !== 'lg') {
-    return (
-      <div className={`relative flex items-center gap-4 bg-[#0b1b3d] border border-inpl-neon/20 p-3 rounded-xl ${className}`}>
-        {player.photo_url ? (
-          <img src={player.photo_url} alt={player.name} className="w-12 h-12 rounded-lg object-cover border border-[#d4af37]" />
-        ) : (
-          <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center border border-[#d4af37]">
-            <span className="text-2xl">{getRoleEmoji(player.role)}</span>
-          </div>
-        )}
-        <div>
-          <h4 className="font-bold text-[#d4af37]">{player.name}</h4>
-          <p className="text-xs text-white/70">{player.role} • {formatCurrency(player.base_price)}</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className={`relative w-full rounded-sm overflow-hidden bg-white shadow-2xl border border-gray-200 ${className}`}>
       {/* Background Graphic Pattern */}
