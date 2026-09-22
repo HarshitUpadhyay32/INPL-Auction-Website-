@@ -14,10 +14,11 @@ interface PlayerAuctionCardProps {
 
 export function PlayerAuctionCard({ player, size = 'md', showStats = true, className = '' }: PlayerAuctionCardProps) {
   return (
-    <div className={`@container relative w-full rounded-2xl overflow-hidden bg-white shadow-2xl border border-gray-200 p-[3cqi] flex flex-row gap-[3cqi] ${className}`} style={{ containerType: 'inline-size' }}>
+    <div className={`relative w-full bg-white shadow-2xl rounded-2xl border-2 border-gray-200 p-4 flex flex-col sm:flex-row gap-6 ${className}`}>
+      
       {/* Background Graphic Pattern */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[#f8fafc] opacity-90" />
+      <div className="absolute inset-0 z-0 rounded-2xl overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] opacity-80" />
         <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="diagonal-lines" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -28,85 +29,100 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
         </svg>
       </div>
 
-      {/* Left: Photo Box */}
-      <div className="relative w-full w-[35cqi] h-[60cqi] h-[45cqi] rounded-xl border-[3px] border-[#d4af37] overflow-hidden flex-shrink-0 bg-gradient-to-br from-[#0b1b3d] to-[#1a2f5c] shadow-xl z-10 mx-auto">
-        {/* Golden stripes top-left */}
-        <div className="absolute top-0 left-0 w-32 h-32 overflow-hidden pointer-events-none z-20">
-          <div className="absolute top-[-10px] left-[-40px] w-48 h-10 bg-gradient-to-r from-[#d4af37] via-[#f5df80] to-[#d4af37] transform -rotate-45 shadow-md" />
-          <div className="absolute top-[35px] left-[-40px] w-48 h-4 bg-gradient-to-r from-[#d4af37] via-[#f5df80] to-[#d4af37] transform -rotate-45 shadow-md" />
-        </div>
+      {/* Left: Player Photo Section */}
+      <div className="relative w-full sm:w-[240px] h-[320px] rounded-xl bg-gradient-to-br from-[#0b1b3d] to-[#1e293b] border-2 border-[#d4af37] shadow-lg flex-shrink-0 z-20 overflow-hidden flex flex-col justify-end mx-auto sm:mx-0">
         
-        {/* Golden stripes bottom-right */}
-        <div className="absolute bottom-0 right-0 w-32 h-32 overflow-hidden pointer-events-none z-20">
-          <div className="absolute bottom-[-10px] right-[-40px] w-48 h-10 bg-gradient-to-r from-[#f5df80] via-[#d4af37] to-[#f5df80] transform -rotate-45 shadow-md" />
-          <div className="absolute bottom-[35px] right-[-40px] w-48 h-4 bg-gradient-to-r from-[#f5df80] via-[#d4af37] to-[#f5df80] transform -rotate-45 shadow-md" />
+        {/* Abstract Gold Slashes (Top Left) */}
+        <div className="absolute top-0 left-0 w-24 h-24 overflow-hidden pointer-events-none">
+          <div className="absolute -top-4 -left-4 w-32 h-6 bg-gradient-to-r from-[#d4af37] to-[#f5df80] transform -rotate-45 shadow-sm" />
+          <div className="absolute top-3 -left-4 w-32 h-2 bg-gradient-to-r from-[#d4af37] to-[#f5df80] transform -rotate-45 shadow-sm" />
         </div>
 
-        {/* Image */}
+        {/* Abstract Gold Slashes (Bottom Right) */}
+        <div className="absolute bottom-0 right-0 w-24 h-24 overflow-hidden pointer-events-none">
+          <div className="absolute -bottom-4 -right-4 w-32 h-6 bg-gradient-to-r from-[#d4af37] to-[#f5df80] transform -rotate-45 shadow-sm" />
+          <div className="absolute bottom-3 -right-4 w-32 h-2 bg-gradient-to-r from-[#d4af37] to-[#f5df80] transform -rotate-45 shadow-sm" />
+        </div>
+
+        {/* Player Image */}
         {player.photo_url ? (
-          <img src={player.photo_url} alt={player.name} className="w-full h-full object-cover relative z-10" />
+          <img src={player.photo_url} alt={player.name} className="relative z-10 w-full h-[85%] object-cover object-bottom drop-shadow-2xl" />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center relative z-10 opacity-60">
-            <User size={140} className="text-[#d4af37]" />
+          <div className="relative z-10 w-full h-full flex items-center justify-center opacity-50">
+            <span className="text-8xl">{getRoleEmoji(player.role)}</span>
           </div>
         )}
       </div>
 
       {/* Right: Info & Stats */}
-      <div className="flex-1 flex flex-col justify-center gap-[4cqi] relative z-10 min-w-0 pr-0 pr-[3cqi]">
+      <div className="flex-1 flex flex-col justify-center z-20 gap-8 sm:pr-8 relative">
         
-        {/* Name Banner & Base Price */}
-        <div className="relative w-full">
-          {/* Banner */}
-          <div className="bg-[#0b1b3d] border-[3px] border-[#d4af37] rounded-xl p-[4cqi] pr-[15cqi] pr-[25cqi] w-full shadow-2xl relative z-10">
-            <h1 className="text-[clamp(1.5rem,6cqi,3.5rem)] font-black text-[#d4af37] uppercase tracking-wider truncate mb-[1cqi] drop-shadow-md leading-tight">
+        {/* Top Banner Row */}
+        <div className="relative flex items-center justify-between w-full">
+          
+          {/* Main Blue Banner */}
+          <div className="relative flex-1 bg-[#0b1b3d] border-[3px] border-[#d4af37] rounded-xl pt-6 pb-4 px-8 shadow-md mr-12 sm:mr-32">
+            <h1 className="text-3xl sm:text-5xl font-black text-[#d4af37] uppercase tracking-widest font-display truncate">
               {player.name}
             </h1>
-            <div className="w-full h-[3px] bg-gradient-to-r from-[#d4af37] to-transparent mb-[2cqi]" />
-            <div className="flex flex-wrap items-center gap-[1.5cqi]">
-              <span className="px-[2cqi] py-[0.5cqi] bg-white rounded border border-[#d4af37] text-[#0b1b3d] font-bold text-[clamp(0.6rem,2cqi,1rem)] shadow-sm">
-                {player.player_code || 'INPL'}
-              </span>
-              <h2 className="text-[clamp(0.8rem,2.5cqi,1.5rem)] font-bold text-white uppercase tracking-wider truncate">
-                {player.department || 'CRICKET'} {player.year && `• ${player.year}`}
-              </h2>
-            </div>
+            <div className="w-[85%] h-1 bg-[#d4af37] mt-4 rounded-full" />
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-white/5 to-transparent pointer-events-none rounded-xl" />
           </div>
 
-          {/* Base Price Overlap */}
-          <div className="absolute right-0 -right-[3cqi] -top-[3cqi] -bottom-[3cqi] w-[25cqi] w-[28cqi] bg-gradient-to-b from-[#f5df80] via-[#e2c140] to-[#c79a22] rounded-2xl shadow-[0_15px_35px_rgba(0,0,0,0.5)] border-[2px] border-white/40 z-20 flex flex-col items-center justify-center p-[2cqi] p-[3cqi] transform hover:scale-[1.02] transition-transform duration-300">
-            <span className="text-[clamp(0.6rem,1.8cqi,1.2rem)] font-black text-[#0b1b3d] uppercase tracking-widest mb-[1cqi] text-center">Base Price</span>
-            <IndianRupee size={36} className="text-[#0b1b3d] mb-[1.5cqi] drop-shadow-sm w-[clamp(1rem,4cqi,2.5rem)] h-[clamp(1rem,4cqi,2.5rem)]" />
-            <div className="w-full bg-white rounded-xl py-[1.5cqi] flex justify-center shadow-inner border border-gray-200">
-              <span className="text-[clamp(1rem,3.5cqi,2rem)] font-black text-[#0b1b3d] leading-none">{formatCurrency(player.base_price)}</span>
+          {/* Overlapping Base Price Box */}
+          <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-32 sm:w-48 bg-gradient-to-b from-[#f5df80] via-[#e2c140] to-[#c79a22] p-3 sm:p-5 rounded-xl shadow-xl flex flex-col items-center border-[3px] border-[#0b1b3d] z-30">
+            <span className="text-xs sm:text-sm font-black text-[#0b1b3d] uppercase tracking-widest mb-1">Base Price</span>
+            <IndianRupee size={24} className="text-[#0b1b3d] mb-2 sm:mb-3" />
+            <div className="w-full bg-white rounded-lg py-2 flex justify-center shadow-inner border border-[#d4af37]/30">
+              <span className="text-base sm:text-xl font-black text-[#0b1b3d]">{formatCurrency(player.base_price)}</span>
             </div>
           </div>
         </div>
 
-        {/* Stats Box */}
+        {/* Bottom Stats Row */}
         {showStats && (
-          <div className="w-full bg-white border-[3px] border-[#d4af37] rounded-xl p-[2cqi] p-[3cqi] flex justify-between shadow-xl relative z-10 gap-[1.5cqi]">
-            {[
-              { label: 'MATCHES', icon: <Calendar size={32} className="text-[#d4af37] mb-[1.5cqi] w-[clamp(1rem,4cqi,2rem)] h-[clamp(1rem,4cqi,2rem)]" />, value: player.matches },
-              { label: 'RUNS', icon: <Activity size={32} className="text-[#d4af37] mb-[1.5cqi] w-[clamp(1rem,4cqi,2rem)] h-[clamp(1rem,4cqi,2rem)]" />, value: player.runs },
-              { label: 'WICKETS', icon: <Target size={32} className="text-[#d4af37] mb-[1.5cqi] w-[clamp(1rem,4cqi,2rem)] h-[clamp(1rem,4cqi,2rem)]" />, value: player.wickets },
-              { label: 'TYPE', icon: <User size={32} className="text-[#d4af37] mb-[1.5cqi] w-[clamp(1rem,4cqi,2rem)] h-[clamp(1rem,4cqi,2rem)]" />, value: player.role }
-            ].map((stat, i) => (
-              <div key={i} className="flex-1 flex flex-col items-center justify-between">
-                <span className="text-[clamp(0.5rem,1.5cqi,0.85rem)] font-black text-[#0b1b3d] uppercase tracking-widest mb-[1.5cqi] text-center h-[3cqi] h-auto flex items-center">{stat.label}</span>
-                {stat.icon}
-                <div className="w-full border-[2px] border-[3px] border-[#d4af37] rounded-lg py-[1cqi] flex justify-center bg-white shadow-sm mt-[1cqi]">
-                  <span className="text-[clamp(0.7rem,2cqi,1.2rem)] font-black text-[#0b1b3d] uppercase truncate px-1 leading-none">{stat.value}</span>
-                </div>
+          <div className="w-full bg-white border-[3px] border-[#d4af37] rounded-xl flex items-stretch p-4 shadow-md sm:mr-16 relative z-10">
+            
+            {/* Stat: Matches */}
+            <div className="flex-1 flex flex-col items-center border-r border-gray-300 px-1 sm:px-3">
+              <span className="text-[10px] sm:text-xs font-black text-[#0b1b3d] uppercase tracking-widest mb-2">Matches</span>
+              <Calendar size={28} className="text-[#d4af37] mb-3 stroke-[1.5]" />
+              <div className="w-full border-2 border-[#d4af37] rounded-lg py-1.5 flex justify-center bg-white shadow-sm">
+                <span className="text-sm sm:text-lg font-bold text-[#0b1b3d]">{player.matches}</span>
               </div>
-            ))}
+            </div>
+
+            {/* Stat: Runs */}
+            <div className="flex-1 flex flex-col items-center border-r border-gray-300 px-1 sm:px-3">
+              <span className="text-[10px] sm:text-xs font-black text-[#0b1b3d] uppercase tracking-widest mb-2">Runs</span>
+              <Activity size={28} className="text-[#d4af37] mb-3 stroke-[1.5]" />
+              <div className="w-full border-2 border-[#d4af37] rounded-lg py-1.5 flex justify-center bg-white shadow-sm">
+                <span className="text-sm sm:text-lg font-bold text-[#0b1b3d]">{player.runs}</span>
+              </div>
+            </div>
+
+            {/* Stat: Wickets */}
+            <div className="flex-1 flex flex-col items-center border-r border-gray-300 px-1 sm:px-3">
+              <span className="text-[10px] sm:text-xs font-black text-[#0b1b3d] uppercase tracking-widest mb-2">Wickets</span>
+              <Target size={28} className="text-[#d4af37] mb-3 stroke-[1.5]" />
+              <div className="w-full border-2 border-[#d4af37] rounded-lg py-1.5 flex justify-center bg-white shadow-sm">
+                <span className="text-sm sm:text-lg font-bold text-[#0b1b3d]">{player.wickets}</span>
+              </div>
+            </div>
+
+            {/* Stat: Type */}
+            <div className="flex-1 flex flex-col items-center px-1 sm:px-3">
+              <span className="text-[10px] sm:text-xs font-black text-[#0b1b3d] uppercase tracking-widest mb-2">Type</span>
+              <User size={28} className="text-[#d4af37] mb-3 stroke-[1.5]" />
+              <div className="w-full border-2 border-[#d4af37] rounded-lg py-1.5 px-1 flex justify-center bg-white shadow-sm truncate">
+                <span className="text-xs sm:text-sm font-bold text-[#0b1b3d] uppercase truncate">{player.role}</span>
+              </div>
+            </div>
+
           </div>
         )}
 
       </div>
-      
-      {/* Resizer Handle (if they literally meant draggable) */}
-      <div className="absolute bottom-0 right-0 w-6 h-6 cursor-se-resize z-50 opacity-0" style={{ resize: 'both', overflow: 'hidden' }} />
     </div>
   )
 }
