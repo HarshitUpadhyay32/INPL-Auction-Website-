@@ -62,7 +62,7 @@ export function Sidebar({ type, teamName, teamColor }: SidebarProps) {
         <Link href={type === 'admin' ? '/admin' : '/team'} className="flex items-center gap-3">
           {type === 'admin' ? (
             <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-black border border-inpl-neon/20">
-              <img src="/inpl-logo.png" alt="INPL Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=A&background=f5a623&color=fff' }} />
+              <span className="text-inpl-neon font-black text-sm font-display tracking-wider">INPL</span>
             </div>
           ) : (
             <div
