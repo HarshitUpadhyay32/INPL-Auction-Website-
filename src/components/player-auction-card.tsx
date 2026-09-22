@@ -30,7 +30,7 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
       </div>
 
       {/* Left: Player Photo Section */}
-      <div className="relative w-full sm:w-[240px] h-[320px] rounded-xl bg-gradient-to-br from-[#0b1b3d] to-[#1e293b] border-2 border-[#d4af37] shadow-lg flex-shrink-0 z-20 overflow-hidden flex flex-col justify-end mx-auto sm:mx-0">
+      <div className="relative w-full sm:w-[240px] h-[320px] rounded-xl bg-gradient-to-br from-[#0b1b3d] to-[#1e293b] shadow-lg flex-shrink-0 z-20 overflow-hidden flex flex-col justify-end mx-auto sm:mx-0">
         
         {/* Abstract Gold Slashes (Top Left) */}
         <div className="absolute top-0 left-0 w-24 h-24 overflow-hidden pointer-events-none">
