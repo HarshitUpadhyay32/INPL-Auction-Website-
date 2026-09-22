@@ -61,11 +61,19 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
         <div className="relative flex items-center justify-between w-full">
           
           {/* Main Blue Banner */}
-          <div className="relative flex-1 bg-[#0b1b3d] border-[3px] border-[#d4af37] rounded-xl pt-6 pb-4 px-8 shadow-md mr-12 sm:mr-32">
-            <h1 className="text-3xl sm:text-5xl font-black text-[#d4af37] uppercase tracking-widest font-display truncate">
+          <div className="relative flex-1 bg-[#0b1b3d] border-[3px] border-[#d4af37] rounded-xl pt-4 pb-4 px-6 sm:px-8 shadow-md mr-16 sm:mr-32 flex flex-col justify-center">
+            <h1 className="text-2xl sm:text-4xl font-black text-[#d4af37] uppercase tracking-widest font-display leading-tight line-clamp-2">
               {player.name}
             </h1>
-            <div className="w-[85%] h-1 bg-[#d4af37] mt-4 rounded-full" />
+            <div className="w-[85%] h-1 bg-[#d4af37] my-3 rounded-full" />
+            <div className="flex items-center gap-3">
+              <span className="text-[#0b1b3d] bg-[#d4af37] px-2 py-0.5 text-xs sm:text-sm font-bold uppercase rounded">
+                {player.player_code}
+              </span>
+              <span className="text-gray-300 text-xs sm:text-sm font-bold tracking-wider uppercase">
+                {player.department} • {player.year}
+              </span>
+            </div>
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-white/5 to-transparent pointer-events-none rounded-xl" />
           </div>
 
