@@ -58,11 +58,6 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
               <h1 className="text-4xl font-black text-[#d4af37] uppercase tracking-widest font-display truncate">
                 {player.name}
               </h1>
-              {/* Corner accents for banner */}
-              <div className="absolute top-0 left-0 w-3 h-3 border-r-2 border-b-2 border-[#d4af37] transform -rotate-45 -translate-x-1 -translate-y-1" />
-              <div className="absolute bottom-0 left-0 w-3 h-3 border-r-2 border-t-2 border-[#d4af37] transform -rotate-45 -translate-x-1 translate-y-1" />
-              <div className="absolute top-0 right-0 w-3 h-3 border-l-2 border-b-2 border-[#d4af37] transform rotate-45 translate-x-1 -translate-y-1" />
-              <div className="absolute bottom-0 right-0 w-3 h-3 border-l-2 border-t-2 border-[#d4af37] transform rotate-45 translate-x-1 translate-y-1" />
             </div>
 
             {/* Sub-banner details */}
