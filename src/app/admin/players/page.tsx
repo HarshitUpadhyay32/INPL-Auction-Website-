@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState, useCallback, useRef } from 'react'
-import { Plus, Upload, Search, Trash2, Pencil, Filter, UserCircle, Camera, X as XIcon, BarChart3 } from 'lucide-react'
+import { Plus, Upload, Search, Trash2, Pencil, Filter, UserCircle, Camera, X as XIcon, BarChart3, RotateCcw } from 'lucide-react'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
@@ -216,6 +216,18 @@ export default function PlayersPage() {
     loadPlayers()
   }
 
+  async function handleReturnToAuction(id: string) {
+    const supabase = createClient()
+    const { error } = await supabase.from('players').update({ status: 'AVAILABLE' }).eq('id', id)
+    if (error) {
+      console.error(error)
+      toast.error('Failed to return player to auction')
+    } else {
+      toast.success('Player returned to auction queue!')
+      loadPlayers()
+    }
+  }
+
   const filtered = players.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase()) ||
     p.player_code.toLowerCase().includes(search.toLowerCase()) ||
@@ -347,6 +359,11 @@ export default function PlayersPage() {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-1">
+                      {player.status === 'UNSOLD' && (
+                        <button onClick={() => handleReturnToAuction(player.id)} title="Return to Auction queue" className="p-1.5 rounded-lg hover:bg-inpl-emerald/10 text-text-muted hover:text-inpl-emerald transition-colors">
+                          <RotateCcw size={14} />
+                        </button>
+                      )}
                       <button onClick={() => openEditDialog(player)} className="p-1.5 rounded-lg hover:bg-surface-hover text-text-muted hover:text-text-primary transition-colors">
                         <Pencil size={14} />
                       </button>
