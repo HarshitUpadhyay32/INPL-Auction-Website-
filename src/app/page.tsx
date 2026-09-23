@@ -48,7 +48,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative pt-16 overflow-hidden">
+      <section className="relative pt-28 overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-inpl-neon/5 rounded-full blur-3xl" />

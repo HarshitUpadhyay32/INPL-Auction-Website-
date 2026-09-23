@@ -101,7 +101,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-4 pt-16">
+    <main className="min-h-screen flex items-center justify-center px-4 pt-28">
       {/* Background effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-inpl-neon/5 rounded-full blur-3xl" />

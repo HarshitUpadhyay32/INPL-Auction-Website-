@@ -1,12 +1,28 @@
 'use client'
 
 import React, { useEffect, useState, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, Variants } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
 import { formatCurrency, formatTime, getRoleEmoji } from '@/lib/utils'
 import { PlayerAuctionCard } from '@/components/player-auction-card'
 import type { Player, Team, Auction, Bid } from '@/lib/types/database'
 import { Gavel } from 'lucide-react'
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+}
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 120, damping: 20 } }
+}
 
 export default function LiveAuctionPage() {
   const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null)
@@ -79,22 +95,28 @@ export default function LiveAuctionPage() {
   const highestBidder = currentAuction?.highest_bid_team_id ? teams.find(t => t.id === currentAuction.highest_bid_team_id) : null
 
   return (
-    <main className="min-h-screen pt-20 pb-10 px-4">
+    <main className="min-h-screen pt-28 pb-10 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-8"
+        >
           <h1 className="text-3xl font-bold font-display gradient-text mb-1">INPL SEASON 3</h1>
           <p className="text-text-secondary">LIVE AUCTION</p>
-        </div>
+        </motion.div>
 
         {currentPlayer && currentAuction ? (
-          <div className="grid lg:grid-cols-3 gap-6">
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+            className="grid lg:grid-cols-3 gap-6"
+          >
             {/* Main Player Card */}
-            <div className="lg:col-span-2">
-              <motion.div
-                key={currentPlayer.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
+            <motion.div variants={itemVariants} className="lg:col-span-2">
+              <div
                 className="glass rounded-3xl p-8 glow-gold relative overflow-hidden"
               >
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-inpl-neon via-inpl-neon-light to-inpl-neon" />
@@ -153,13 +175,13 @@ export default function LiveAuctionPage() {
                     </div>
                   </motion.div>
                 )}
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
 
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Bid Feed */}
-              <div className="glass rounded-2xl p-5">
+              <motion.div variants={itemVariants} className="glass rounded-2xl p-5">
                 <h3 className="text-sm font-semibold text-text-primary mb-3">Recent Bids</h3>
                 <div className="space-y-1.5 max-h-60 overflow-y-auto">
                   {bids.map((bid, i) => (
@@ -179,10 +201,10 @@ export default function LiveAuctionPage() {
                     </motion.div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
               {/* Stats */}
-              <div className="glass rounded-2xl p-5">
+              <motion.div variants={itemVariants} className="glass rounded-2xl p-5">
                 <h3 className="text-sm font-semibold text-text-primary mb-3">Auction Progress</h3>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="text-center">
@@ -194,10 +216,10 @@ export default function LiveAuctionPage() {
                     <p className="text-xs text-text-muted">Unsold</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Team Purses */}
-              <div className="glass rounded-2xl p-5">
+              <motion.div variants={itemVariants} className="glass rounded-2xl p-5">
                 <h3 className="text-sm font-semibold text-text-primary mb-3">Teams</h3>
                 <div className="space-y-1.5 max-h-52 overflow-y-auto">
                   {teams.map(t => (
@@ -211,9 +233,9 @@ export default function LiveAuctionPage() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         ) : (
           <div className="text-center py-32">
             <motion.div
