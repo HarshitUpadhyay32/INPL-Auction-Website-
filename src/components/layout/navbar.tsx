@@ -77,7 +77,7 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
             <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-black/50 border border-inpl-neon/20">
-              <img src="/inpl-logo.png" alt="INPL Logo" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=INPL&background=000&color=ccff00' }} />
+              <span className="text-inpl-neon font-black text-sm font-display tracking-wider">INPL</span>
             </div>
             <div className="flex flex-col">
               <span className="text-sm font-bold text-text-primary font-display leading-tight group-hover:text-inpl-neon transition-colors">

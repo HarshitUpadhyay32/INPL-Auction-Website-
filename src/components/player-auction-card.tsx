@@ -55,13 +55,13 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
       </div>
 
       {/* Right: Info & Stats */}
-      <div className="flex-1 flex flex-col justify-center z-20 gap-8 sm:pr-8 relative">
+      <div className="flex-1 min-w-0 flex flex-col justify-center z-20 gap-6 sm:gap-8 relative">
         
         {/* Top Banner Row */}
         <div className="relative flex items-center justify-between w-full">
           
           {/* Main Blue Banner */}
-          <div className="relative flex-1 bg-[#0b1b3d] border-[3px] border-[#d4af37] rounded-xl pt-4 pb-4 px-6 sm:px-8 shadow-md mr-16 sm:mr-32 flex flex-col justify-center">
+          <div className="relative flex-1 bg-[#0b1b3d] border-[3px] border-[#d4af37] rounded-xl pt-4 pb-4 px-4 sm:px-6 shadow-md mr-14 sm:mr-24 flex flex-col justify-center">
             <h1 className="text-2xl sm:text-4xl font-black text-[#d4af37] uppercase tracking-widest font-display leading-tight line-clamp-2">
               {player.name}
             </h1>
@@ -78,18 +78,18 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
           </div>
 
           {/* Overlapping Base Price Box */}
-          <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-32 sm:w-48 bg-gradient-to-b from-[#f5df80] via-[#e2c140] to-[#c79a22] p-3 sm:p-5 rounded-xl shadow-xl flex flex-col items-center border-[3px] border-[#0b1b3d] z-30">
-            <span className="text-xs sm:text-sm font-black text-[#0b1b3d] uppercase tracking-widest mb-1">Base Price</span>
-            <IndianRupee size={24} className="text-[#0b1b3d] mb-2 sm:mb-3" />
-            <div className="w-full bg-white rounded-lg py-2 flex justify-center shadow-inner border border-[#d4af37]/30">
-              <span className="text-base sm:text-xl font-black text-[#0b1b3d]">{formatCurrency(player.base_price)}</span>
+          <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-28 sm:w-40 bg-gradient-to-b from-[#f5df80] via-[#e2c140] to-[#c79a22] p-2.5 sm:p-4 rounded-xl shadow-xl flex flex-col items-center border-[3px] border-[#0b1b3d] z-30">
+            <span className="text-[10px] sm:text-xs font-black text-[#0b1b3d] uppercase tracking-widest mb-1">Base Price</span>
+            <IndianRupee size={20} className="text-[#0b1b3d] mb-1.5 sm:mb-2" />
+            <div className="w-full bg-white rounded-lg py-1.5 flex justify-center shadow-inner border border-[#d4af37]/30">
+              <span className="text-sm sm:text-lg font-black text-[#0b1b3d]">{formatCurrency(player.base_price)}</span>
             </div>
           </div>
         </div>
 
         {/* Bottom Stats Row */}
         {showStats && (
-          <div className="w-full bg-white border-[3px] border-[#d4af37] rounded-xl flex items-stretch p-4 shadow-md sm:mr-16 relative z-10">
+          <div className="w-full bg-white border-[3px] border-[#d4af37] rounded-xl flex items-stretch p-3 shadow-md relative z-10">
             
             {/* Stat: Matches */}
             <div className="flex-1 flex flex-col items-center border-r border-gray-300 px-1 sm:px-3">
@@ -119,11 +119,11 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
             </div>
 
             {/* Stat: Type */}
-            <div className="flex-1 flex flex-col items-center px-1 sm:px-3">
-              <span className="text-[10px] sm:text-xs font-black text-[#0b1b3d] uppercase tracking-widest mb-2">Type</span>
-              <User size={28} className="text-[#d4af37] mb-3 stroke-[1.5]" />
-              <div className="w-full border-2 border-[#d4af37] rounded-lg py-1.5 px-1 flex justify-center bg-white shadow-sm truncate">
-                <span className="text-xs sm:text-sm font-bold text-[#0b1b3d] uppercase truncate">{player.role}</span>
+            <div className="flex-1 flex flex-col items-center px-1 sm:px-2 min-w-0">
+              <span className="text-[10px] sm:text-[11px] font-black text-[#0b1b3d] uppercase tracking-widest mb-2 truncate max-w-full">Type</span>
+              <User size={24} className="text-[#d4af37] mb-3 stroke-[1.5]" />
+              <div className="w-full border-2 border-[#d4af37] rounded-lg py-1.5 px-1 flex justify-center items-center bg-white shadow-sm overflow-hidden">
+                <span className="text-[10px] sm:text-xs font-bold text-[#0b1b3d] uppercase truncate">{player.role}</span>
               </div>
             </div>
 
