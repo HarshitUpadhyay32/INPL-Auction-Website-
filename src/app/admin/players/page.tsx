@@ -216,16 +216,36 @@ export default function PlayersPage() {
     loadPlayers()
   }
 
-  async function handleReturnToAuction(id: string) {
+  async function handleReturnToAuction(player: Player) {
     const supabase = createClient()
-    const { error } = await supabase.from('players').update({ status: 'AVAILABLE' }).eq('id', id)
-    if (error) {
-      console.error(error)
-      toast.error('Failed to return player to auction')
+    
+    if (player.status === 'SOLD') {
+      const { data: auction } = await supabase.from('auctions')
+        .select('id').eq('player_id', player.id).eq('status', 'SOLD')
+        .order('created_at', { ascending: false }).limit(1).single()
+        
+      if (!auction) {
+        toast.error('Could not find sale record for this player')
+        return
+      }
+
+      const { data, error } = await supabase.rpc('undo_player_sold', { p_auction_id: auction.id })
+      if (error || !data?.success) {
+        console.error(error || data?.error)
+        toast.error(error?.message || data?.error || 'Failed to undo sale')
+        return
+      }
+      toast.success('Player sale reversed! Player is now available.')
     } else {
+      const { error } = await supabase.from('players').update({ status: 'AVAILABLE' }).eq('id', player.id)
+      if (error) {
+        console.error(error)
+        toast.error('Failed to return player to auction')
+        return
+      }
       toast.success('Player returned to auction queue!')
-      loadPlayers()
     }
+    loadPlayers()
   }
 
   const filtered = players.filter(p =>
@@ -359,8 +379,8 @@ export default function PlayersPage() {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-1">
-                      {player.status === 'UNSOLD' && (
-                        <button onClick={() => handleReturnToAuction(player.id)} title="Return to Auction queue" className="p-1.5 rounded-lg hover:bg-inpl-emerald/10 text-text-muted hover:text-inpl-emerald transition-colors">
+                      {(player.status === 'UNSOLD' || player.status === 'SOLD') && (
+                        <button onClick={() => handleReturnToAuction(player)} title="Undo & Return to Auction queue" className="p-1.5 rounded-lg hover:bg-inpl-emerald/10 text-text-muted hover:text-inpl-emerald transition-colors">
                           <RotateCcw size={14} />
                         </button>
                       )}
