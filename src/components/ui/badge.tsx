@@ -11,17 +11,17 @@ interface BadgeProps {
 }
 
 const variantClasses: Record<BadgeVariant, string> = {
-  available: 'bg-inpl-electric/15 text-inpl-electric-light border-inpl-electric/30',
-  live: 'bg-inpl-red/15 text-inpl-red-light border-inpl-red/30',
-  sold: 'bg-inpl-emerald/15 text-inpl-emerald-light border-inpl-emerald/30',
+  available: 'bg-inpl-electric text-white border-transparent dark:bg-inpl-electric/15 dark:text-inpl-electric-light dark:border-inpl-electric/30',
+  live: 'bg-inpl-red text-white border-transparent dark:bg-inpl-red/15 dark:text-inpl-red-light dark:border-inpl-red/30',
+  sold: 'bg-inpl-emerald text-white border-transparent dark:bg-inpl-emerald/15 dark:text-inpl-emerald-light dark:border-inpl-emerald/30',
   unsold: 'bg-surface-elevated text-text-muted border-border-default',
   default: 'bg-surface-elevated text-text-secondary border-border-default',
-  gold: 'bg-inpl-neon/15 text-inpl-neon border-inpl-neon/30',
-  blue: 'bg-inpl-electric/15 text-inpl-electric-light border-inpl-electric/30',
-  red: 'bg-inpl-red/15 text-inpl-red-light border-inpl-red/30',
-  emerald: 'bg-inpl-emerald/15 text-inpl-emerald-light border-inpl-emerald/30',
-  purple: 'bg-inpl-purple/15 text-inpl-purple border-inpl-purple/30',
-  warning: 'bg-orange-500/15 text-orange-400 border-orange-500/30',
+  gold: 'bg-inpl-neon text-black border-transparent dark:bg-inpl-neon/15 dark:text-inpl-neon dark:border-inpl-neon/30',
+  blue: 'bg-inpl-electric text-white border-transparent dark:bg-inpl-electric/15 dark:text-inpl-electric-light dark:border-inpl-electric/30',
+  red: 'bg-inpl-red text-white border-transparent dark:bg-inpl-red/15 dark:text-inpl-red-light dark:border-inpl-red/30',
+  emerald: 'bg-inpl-emerald text-white border-transparent dark:bg-inpl-emerald/15 dark:text-inpl-emerald-light dark:border-inpl-emerald/30',
+  purple: 'bg-inpl-purple text-white border-transparent dark:bg-inpl-purple/15 dark:text-inpl-purple dark:border-inpl-purple/30',
+  warning: 'bg-orange-500 text-white border-transparent dark:bg-orange-500/15 dark:text-orange-400 dark:border-orange-500/30',
 }
 
 const sizeClasses = {

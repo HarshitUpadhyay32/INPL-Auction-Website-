@@ -102,7 +102,7 @@ export function Sidebar({ type, teamName, teamColor }: SidebarProps) {
               className={`
                 flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
                 ${isActive
-                  ? 'bg-inpl-neon/10 text-inpl-neon'
+                  ? 'bg-emerald-100 text-emerald-800 dark:bg-inpl-neon/10 dark:text-inpl-neon'
                   : 'text-text-secondary hover:text-text-primary hover:bg-surface-hover'
                 }
               `}

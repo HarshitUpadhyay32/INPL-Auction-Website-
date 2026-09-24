@@ -21,8 +21,8 @@ const colorClasses = {
 }
 
 const iconColorClasses = {
-  gold: 'text-inpl-neon bg-inpl-neon/10',
-  blue: 'text-inpl-electric bg-inpl-electric/10',
+  gold: 'text-emerald-700 dark:text-inpl-neon bg-emerald-100 dark:bg-inpl-neon/10',
+  blue: 'text-blue-700 dark:text-inpl-electric bg-blue-100 dark:bg-inpl-electric/10',
   emerald: 'text-inpl-emerald bg-inpl-emerald/10',
   red: 'text-inpl-red bg-inpl-red/10',
   purple: 'text-inpl-purple bg-inpl-purple/10',

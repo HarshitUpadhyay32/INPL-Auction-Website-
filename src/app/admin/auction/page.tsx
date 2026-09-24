@@ -257,7 +257,7 @@ export default function AuctionControlPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold font-display text-text-primary flex items-center gap-3">
-            <Gavel className="text-inpl-neon" size={24} />
+            <Gavel className="text-emerald-600 dark:text-inpl-neon" size={24} />
             Auction Control Room
           </h1>
           <p className="text-sm text-text-secondary mt-1">Manage the live auction</p>
@@ -362,14 +362,14 @@ export default function AuctionControlPage() {
             <Card glass className="p-4 bg-gradient-to-br from-inpl-neon/10 to-transparent border-inpl-neon/20">
               <div className="flex items-center gap-3">
                 <div className="bg-inpl-neon/20 p-2.5 rounded-xl">
-                  <Zap className="text-inpl-neon" size={24} />
+                  <Zap className="text-emerald-700 dark:text-inpl-neon" size={24} />
                 </div>
                 <div>
                   <p className="text-[10px] text-text-muted uppercase tracking-wider font-bold mb-0.5">Highest Sold Player</p>
                   <p className="font-display font-bold text-text-primary text-base leading-tight truncate max-w-[200px]" title={highestSoldPlayer.name}>
                     {highestSoldPlayer.name}
                   </p>
-                  <p className="text-inpl-neon font-display font-semibold text-sm">
+                  <p className="text-emerald-700 dark:text-inpl-neon font-display font-semibold text-sm">
                     {formatCurrency(Number(highestSoldPlayer.sold_price))}
                   </p>
                 </div>
@@ -394,7 +394,7 @@ export default function AuctionControlPage() {
                       </div>
                       <span className="text-sm font-medium text-text-primary">{getTeamName(bid.team_id)}</span>
                     </div>
-                    <span className={`font-display font-semibold ${i === 0 ? 'text-inpl-neon' : 'text-text-secondary'}`}>
+                    <span className={`font-display font-semibold ${i === 0 ? 'text-emerald-700 dark:text-inpl-neon' : 'text-text-secondary'}`}>
                       {formatCurrency(Number(bid.amount))}
                     </span>
                   </div>

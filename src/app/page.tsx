@@ -9,10 +9,10 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
 const stats = [
-  { label: 'Teams', value: '15', icon: Users, color: 'text-inpl-electric' },
-  { label: 'Players', value: '400', icon: UserCircle, color: 'text-inpl-emerald' },
-  { label: 'Purse/Team', value: '₹25 Cr', icon: IndianRupee, color: 'text-inpl-neon' },
-  { label: 'Max Squad', value: '12', icon: Shield, color: 'text-inpl-purple' },
+  { label: 'Teams', value: '15', icon: Users, color: 'text-blue-700 dark:text-inpl-electric' },
+  { label: 'Players', value: '400', icon: UserCircle, color: 'text-emerald-700 dark:text-inpl-emerald' },
+  { label: 'Purse/Team', value: '₹25 Cr', icon: IndianRupee, color: 'text-emerald-700 dark:text-inpl-neon' },
+  { label: 'Max Squad', value: '12', icon: Shield, color: 'text-purple-700 dark:text-inpl-purple' },
 ]
 
 const teams = [
@@ -254,7 +254,7 @@ export default function HomePage() {
             <Card glass glow="gold" className="text-center !p-10 sm:!p-14 relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-inpl-neon/5 via-transparent to-inpl-electric/5" />
               <div className="relative space-y-5">
-                <Trophy className="w-12 h-12 text-inpl-neon mx-auto" />
+                <Trophy className="w-12 h-12 text-emerald-600 dark:text-inpl-neon mx-auto" />
                 <h2 className="text-3xl sm:text-4xl font-bold font-display text-text-primary">
                   Ready for the Auction?
                 </h2>
