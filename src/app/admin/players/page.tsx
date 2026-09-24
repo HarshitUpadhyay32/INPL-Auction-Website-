@@ -501,9 +501,9 @@ export default function PlayersPage() {
                 { value: 'Wicketkeeper', label: '🧤 Wicketkeeper' },
               ]} />
               <Select label="Category (Base Price)" value={formData.base_price} onChange={e => setFormData(f => ({ ...f, base_price: e.target.value }))} options={[
-                { value: '0.20', label: 'Advanced (₹20L)' },
+                { value: '1.00', label: 'Advanced (₹1Cr)' },
                 { value: '0.50', label: 'Standard (₹50L)' },
-                { value: '1.00', label: 'Emerging (₹1Cr)' },
+                { value: '0.20', label: 'Emerging (₹20L)' },
               ]} />
             </div>
             <div className="grid grid-cols-2 gap-3">
