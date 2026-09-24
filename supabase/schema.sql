@@ -336,16 +336,11 @@ BEGIN
   END IF;
 
   -- Calculate valid bid increment
-  v_bid_increments := v_config.bid_increments;
-  v_increment := 0.10; -- default
-  
-  FOR v_inc IN SELECT * FROM jsonb_array_elements(v_bid_increments)
-  LOOP
-    IF v_auction.current_bid >= (v_inc.value->>'min')::NUMERIC 
-       AND v_auction.current_bid < (v_inc.value->>'max')::NUMERIC THEN
-      v_increment := (v_inc.value->>'increment')::NUMERIC;
-    END IF;
-  END LOOP;
+  IF v_auction.current_bid < 3.00 THEN
+    v_increment := 0.20;
+  ELSE
+    v_increment := 0.50;
+  END IF;
 
   -- Calculate minimum valid bid
   IF v_auction.bid_count = 0 THEN
@@ -355,9 +350,14 @@ BEGIN
   END IF;
 
   -- Validate bid amount
-  IF p_amount < v_min_bid THEN
+  IF p_amount < v_min_bid AND v_auction.current_bid < 25.00 THEN
     RETURN jsonb_build_object('success', false, 'error', 
       'Bid must be at least ₹' || v_min_bid || ' Cr. Current bid: ₹' || v_auction.current_bid || ' Cr, Increment: ₹' || v_increment || ' Cr');
+  END IF;
+
+  -- Enforce Maximum Bid
+  IF p_amount > 25.00 THEN
+    RETURN jsonb_build_object('success', false, 'error', 'Maximum bid allowed is ₹25 Cr.');
   END IF;
 
   -- Check purse

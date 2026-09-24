@@ -487,7 +487,11 @@ export default function PlayersPage() {
                 { value: 'All-Rounder', label: '⭐ All-Rounder' },
                 { value: 'Wicketkeeper', label: '🧤 Wicketkeeper' },
               ]} />
-              <Input label="Base Price (Cr)" type="number" step="0.01" value={formData.base_price} onChange={e => setFormData(f => ({ ...f, base_price: e.target.value }))} />
+              <Select label="Category (Base Price)" value={formData.base_price} onChange={e => setFormData(f => ({ ...f, base_price: e.target.value }))} options={[
+                { value: '0.20', label: 'Advanced (₹20L)' },
+                { value: '0.50', label: 'Standard (₹50L)' },
+                { value: '1.00', label: 'Emerging (₹1Cr)' },
+              ]} />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <Input label="Department" value={formData.department} onChange={e => setFormData(f => ({ ...f, department: e.target.value }))} placeholder="CSE" />

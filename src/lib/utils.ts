@@ -20,29 +20,27 @@ export function formatCurrencyNumber(amountInCr: number): string {
   return amountInCr.toFixed(2)
 }
 
-/**
- * Calculate the next valid bid increment based on current bid
- */
-export function getNextBidIncrement(currentBid: number, increments: BidIncrement[]): number {
-  for (const tier of increments) {
-    if (currentBid >= tier.min && currentBid < tier.max) {
-      return tier.increment
-    }
+export function getNextBidIncrement(currentBid: number): number {
+  if (currentBid < 3.0) {
+    return 0.20
   }
-  // Default to last tier's increment
-  return increments.length > 0 ? increments[increments.length - 1].increment : 0.10
+  return 0.50
 }
 
 /**
  * Calculate the next valid bid amount
  */
-export function getNextBidAmount(currentBid: number, bidCount: number, increments: BidIncrement[]): number {
+export function getNextBidAmount(currentBid: number, bidCount: number): number {
   if (bidCount === 0) {
     // First bid can be at base price
     return currentBid
   }
-  const increment = getNextBidIncrement(currentBid, increments)
-  return Math.round((currentBid + increment) * 100) / 100
+  const increment = getNextBidIncrement(currentBid)
+  const nextBid = Math.round((currentBid + increment) * 100) / 100
+  if (nextBid > 25.0) {
+    return 25.0
+  }
+  return nextBid
 }
 
 /**
@@ -52,7 +50,6 @@ export function validateBidAmount(
   bidAmount: number,
   currentBid: number,
   bidCount: number,
-  increments: BidIncrement[],
   teamPurse: number,
   teamPlayerCount: number,
   maxSquadSize: number,
@@ -64,9 +61,14 @@ export function validateBidAmount(
     return { valid: false, error: `Squad is full. Maximum ${maxSquadSize} players.` }
   }
 
+  // Maximum bid
+  if (bidAmount > 25.0) {
+    return { valid: false, error: `Maximum bid allowed is ₹25 Cr.` }
+  }
+
   // Minimum bid
-  const minBid = getNextBidAmount(currentBid, bidCount, increments)
-  if (bidAmount < minBid) {
+  const minBid = getNextBidAmount(currentBid, bidCount)
+  if (bidAmount < minBid && currentBid !== 25.0) {
     return { valid: false, error: `Bid must be at least ${formatCurrency(minBid)}` }
   }
 

@@ -92,8 +92,7 @@ export default function TeamAuctionPage() {
 
     const nextBid = getNextBidAmount(
       Number(currentAuction.current_bid),
-      currentAuction.bid_count,
-      config.bid_increments
+      currentAuction.bid_count
     )
 
     const supabase = createClient()
@@ -125,7 +124,7 @@ export default function TeamAuctionPage() {
   }
 
   const nextBid = currentAuction && config
-    ? getNextBidAmount(Number(currentAuction.current_bid), currentAuction.bid_count, config.bid_increments)
+    ? getNextBidAmount(Number(currentAuction.current_bid), currentAuction.bid_count)
     : 0
 
   const canBid = team && currentAuction &&
