@@ -21,6 +21,7 @@ export default function TeamAuctionPage() {
   const [bidding, setBidding] = useState(false)
   const [loading, setLoading] = useState(true)
   const [teamId, setTeamId] = useState<string | null>(null)
+  const [highestSoldPlayer, setHighestSoldPlayer] = useState<Player | null>(null)
 
   const loadData = useCallback(async () => {
     const supabase = createClient()
@@ -53,6 +54,15 @@ export default function TeamAuctionPage() {
       setCurrentAuction(null)
       setBids([])
     }
+
+    // Get highest sold player
+    const { data: highestPlayer } = await supabase.from('players')
+      .select('*')
+      .eq('status', 'SOLD')
+      .order('sold_price', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    if (highestPlayer) setHighestSoldPlayer(highestPlayer)
 
     setLoading(false)
   }, [])
@@ -236,41 +246,64 @@ export default function TeamAuctionPage() {
             </Card>
           </div>
 
-          {/* Bid History */}
-          <Card glass>
-            <CardHeader>
-              <CardTitle>Bid History</CardTitle>
-              <Badge variant="default">{bids.length}</Badge>
-            </CardHeader>
-            <div className="space-y-1.5 max-h-96 overflow-y-auto">
-              {bids.length === 0 ? (
-                <p className="text-sm text-text-muted text-center py-4">No bids yet. Be the first!</p>
-              ) : (
-                [...bids].sort((a, b) => Number(b.amount) - Number(a.amount)).map((bid, i) => {
-                  const isMyBid = bid.team_id === teamId
-                  return (
-                    <div key={bid.id} className={`flex items-center justify-between p-2.5 rounded-xl transition-colors ${
-                      i === 0 ? 'bg-inpl-neon/10 border border-inpl-neon/30 shadow-[0_0_10px_rgba(204,255,0,0.1)]' :
-                      isMyBid ? 'bg-inpl-electric/5 border border-inpl-electric/10' : 'bg-surface-elevated/50 border border-border-default'
-                    }`}>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-text-muted font-mono">{formatTime(bid.created_at)}</span>
-                        <div className="w-5 h-5 rounded flex items-center justify-center text-white text-[10px] font-bold" style={{ background: getTeamColor(bid.team_id) }}>
-                          {getTeamName(bid.team_id)[0]}
+          {/* Right Column */}
+          <div className="space-y-6">
+            {/* Highest Sold Player */}
+            {highestSoldPlayer && (
+              <Card glass className="p-4 bg-gradient-to-br from-inpl-neon/10 to-transparent border-inpl-neon/20">
+                <div className="flex items-center gap-3">
+                  <div className="bg-inpl-neon/20 p-2.5 rounded-xl">
+                    <Zap className="text-inpl-neon" size={24} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-text-muted uppercase tracking-wider font-bold mb-0.5">Highest Sold Player</p>
+                    <p className="font-display font-bold text-text-primary text-base leading-tight truncate max-w-[200px]" title={highestSoldPlayer.name}>
+                      {highestSoldPlayer.name}
+                    </p>
+                    <p className="text-inpl-neon font-display font-semibold text-sm">
+                      {formatCurrency(Number(highestSoldPlayer.sold_price))}
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            )}
+
+            {/* Bid History */}
+            <Card glass>
+              <CardHeader>
+                <CardTitle>Bid History</CardTitle>
+                <Badge variant="default">{bids.length}</Badge>
+              </CardHeader>
+              <div className="space-y-1.5 max-h-96 overflow-y-auto">
+                {bids.length === 0 ? (
+                  <p className="text-sm text-text-muted text-center py-4">No bids yet. Be the first!</p>
+                ) : (
+                  [...bids].sort((a, b) => Number(b.amount) - Number(a.amount)).map((bid, i) => {
+                    const isMyBid = bid.team_id === teamId
+                    return (
+                      <div key={bid.id} className={`flex items-center justify-between p-2.5 rounded-xl transition-colors ${
+                        i === 0 ? 'bg-inpl-neon/10 border border-inpl-neon/30 shadow-[0_0_10px_rgba(204,255,0,0.1)]' :
+                        isMyBid ? 'bg-inpl-electric/5 border border-inpl-electric/10' : 'bg-surface-elevated/50 border border-border-default'
+                      }`}>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-text-muted font-mono">{formatTime(bid.created_at)}</span>
+                          <div className="w-5 h-5 rounded flex items-center justify-center text-white text-[10px] font-bold" style={{ background: getTeamColor(bid.team_id) }}>
+                            {getTeamName(bid.team_id)[0]}
+                          </div>
+                          <span className="text-xs font-medium text-text-primary">
+                            {isMyBid ? 'You' : getTeamName(bid.team_id)}
+                          </span>
                         </div>
-                        <span className="text-xs font-medium text-text-primary">
-                          {isMyBid ? 'You' : getTeamName(bid.team_id)}
+                        <span className={`text-sm font-display font-semibold ${i === 0 ? 'text-inpl-neon' : 'text-text-secondary'}`}>
+                          {formatCurrency(Number(bid.amount))}
                         </span>
                       </div>
-                      <span className={`text-sm font-display font-semibold ${i === 0 ? 'text-inpl-neon' : 'text-text-secondary'}`}>
-                        {formatCurrency(Number(bid.amount))}
-                      </span>
-                    </div>
-                  )
-                })
-              )}
-            </div>
-          </Card>
+                    )
+                  })
+                )}
+              </div>
+            </Card>
+          </div>
         </div>
       ) : (
         <Card glass className="text-center !p-16">
