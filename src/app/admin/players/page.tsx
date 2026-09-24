@@ -21,6 +21,7 @@ export default function PlayersPage() {
   const [loading, setLoading] = useState(true)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [deleteDialog, setDeleteDialog] = useState<string | null>(null)
+  const [deleteAllDialog, setDeleteAllDialog] = useState(false)
   const [editingPlayer, setEditingPlayer] = useState<Player | null>(null)
   const [search, setSearch] = useState('')
   const [filterRole, setFilterRole] = useState('')
@@ -181,6 +182,15 @@ export default function PlayersPage() {
     loadPlayers()
   }
 
+  async function handleDeleteAll() {
+    const supabase = createClient()
+    const { error } = await supabase.from('players').delete().not('id', 'is', null)
+    if (error) { toast.error(error.message); return }
+    toast.success('All players deleted')
+    setDeleteAllDialog(false)
+    loadPlayers()
+  }
+
   async function generateSamplePlayers() {
     const count = parseInt(bulkCount)
     const supabase = createClient()
@@ -262,6 +272,9 @@ export default function PlayersPage() {
           <p className="text-sm text-text-secondary mt-1">{players.length} players registered</p>
         </div>
         <div className="flex gap-2">
+          <Button variant="danger" onClick={() => setDeleteAllDialog(true)} icon={<Trash2 size={16} />} disabled={players.length === 0}>
+            Delete All
+          </Button>
           <Button variant="secondary" onClick={() => setBulkDialogOpen(true)} icon={<Upload size={16} />}>
             Generate Sample
           </Button>
@@ -537,6 +550,16 @@ export default function PlayersPage() {
         title="Delete Player"
         description="Are you sure you want to delete this player? This cannot be undone."
         confirmText="Delete"
+        variant="danger"
+      />
+
+      <ConfirmDialog
+        open={deleteAllDialog}
+        onClose={() => setDeleteAllDialog(false)}
+        onConfirm={handleDeleteAll}
+        title="Delete All Players"
+        description="Are you absolutely sure you want to delete ALL players? This action cannot be undone."
+        confirmText="Delete All"
         variant="danger"
       />
     </div>
