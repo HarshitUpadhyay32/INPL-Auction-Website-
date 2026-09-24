@@ -65,9 +65,9 @@ export default function HomePage() {
           >
             {/* Badge */}
             <motion.div variants={fadeIn}>
-              <span className="inline-flex items-center gap-1.5 font-semibold rounded-full border border-transparent px-3 py-1.5 text-sm uppercase tracking-wider mb-2 bg-[#A8CC00] text-black dark:bg-[#A8CC00] dark:text-black shadow-sm">
+              <div className="inline-flex items-center gap-1.5 font-semibold rounded-full border uppercase tracking-wider px-3 py-1.5 text-sm mb-2 bg-[#A8CC00] text-black border-transparent dark:bg-inpl-neon/15 dark:text-inpl-neon dark:border-inpl-neon/30">
                 🏏 Season 3 • 2024
-              </span>
+              </div>
             </motion.div>
 
             {/* Title */}
