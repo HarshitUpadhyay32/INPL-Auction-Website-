@@ -79,20 +79,20 @@ export function Navbar() {
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
       className="fixed top-4 left-1/2 -translate-x-1/2 w-[96%] max-w-7xl z-50"
     >
-      <div className="bg-[#0b1b3d]/70 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-2xl px-4 sm:px-6 lg:px-8">
+      <div className="bg-white/80 dark:bg-[#0b1b3d]/70 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 shadow-xl dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-2xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-[72px] relative">
           
           {/* Logo - Left */}
           <div className="flex-1 flex justify-start">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-black/60 border border-inpl-neon/20 shadow-inner">
-                <span className="text-inpl-neon font-black text-sm font-display tracking-wider">INPL</span>
+              <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-gray-50 dark:bg-black/60 border border-gray-200 dark:border-inpl-neon/20 shadow-inner">
+                <span className="text-inpl-neon-dark dark:text-inpl-neon font-black text-sm font-display tracking-wider">INPL</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-bold text-white font-display leading-tight group-hover:text-inpl-neon transition-colors">
+                <span className="text-sm font-bold text-gray-900 dark:text-white font-display leading-tight group-hover:text-inpl-neon-dark dark:group-hover:text-inpl-neon transition-colors">
                   INPL
                 </span>
-                <span className="text-[10px] text-gray-400 leading-tight tracking-wider font-medium">
+                <span className="text-[10px] text-gray-500 dark:text-gray-400 leading-tight tracking-wider font-medium">
                   SEASON 3
                 </span>
               </div>
@@ -111,13 +111,13 @@ export function Navbar() {
                   onMouseEnter={() => setHoveredTab(link.href)}
                   className={`
                     relative px-3 py-2 rounded-xl text-sm font-medium transition-colors z-10
-                    ${isActive ? 'text-inpl-neon' : 'text-gray-300 hover:text-white'}
+                    ${isActive ? 'text-emerald-700 dark:text-inpl-neon' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}
                   `}
                 >
                   {hoveredTab === link.href && (
                     <motion.div
                       layoutId="nav-hover-pill"
-                      className="absolute inset-0 bg-white/10 rounded-xl -z-10"
+                      className="absolute inset-0 bg-gray-100 dark:bg-white/10 rounded-xl -z-10"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
@@ -155,8 +155,8 @@ export function Navbar() {
               </motion.div>
             ) : (
               <>
-                <div className="flex items-center gap-2 mr-1 border-r border-white/10 pr-4 py-1">
-                  <span className="text-xs text-gray-400 font-medium">Role:</span>
+                <div className="flex items-center gap-2 mr-1 border-r border-gray-200 dark:border-white/10 pr-4 py-1">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">Role:</span>
                   <Badge variant={role === 'ADMIN' ? 'gold' : 'default'} size="sm" className="px-2 py-0.5 text-[10px] shadow-sm">
                     {role || 'USER'}
                   </Badge>
@@ -174,7 +174,7 @@ export function Navbar() {
                 )}
                 <button
                   onClick={handleLogout}
-                  className="flex items-center justify-center w-10 h-10 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all border border-transparent hover:border-red-500/20"
+                  className="flex items-center justify-center w-10 h-10 rounded-xl text-red-500 hover:text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-500/10 transition-all border border-transparent hover:border-red-100 dark:hover:border-red-500/20"
                   title="Logout"
                 >
                   <LogOut size={18} />
@@ -186,7 +186,7 @@ export function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="xl:hidden p-2 rounded-xl text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+            className="xl:hidden p-2 rounded-xl text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -201,7 +201,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
-            className="xl:hidden mt-2 bg-[#0b1b3d]/95 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl origin-top"
+            className="xl:hidden mt-2 bg-white/95 dark:bg-[#0b1b3d]/95 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 rounded-2xl overflow-hidden shadow-2xl origin-top"
           >
             <div className="px-4 py-3 space-y-1">
               {navLinks.map(link => {
@@ -214,8 +214,8 @@ export function Navbar() {
                     className={`
                       flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all
                       ${isActive
-                        ? 'bg-inpl-neon/10 text-inpl-neon'
-                        : 'text-gray-300 hover:text-white hover:bg-white/5'
+                        ? 'bg-emerald-50 dark:bg-inpl-neon/10 text-emerald-700 dark:text-inpl-neon'
+                        : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5'
                       }
                     `}
                   >
@@ -235,13 +235,13 @@ export function Navbar() {
                   Login
                 </Link>
               ) : (
-                <div className="mt-4 pt-4 border-t border-white/10">
+                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-white/10">
                   <div className="flex items-center justify-between px-3 py-2.5 mb-2">
-                    <span className="text-sm text-gray-400 font-medium">Theme</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">Theme</span>
                     <ThemeToggle />
                   </div>
-                  <div className="flex items-center justify-between px-3 py-2.5 mb-2 bg-black/30 rounded-xl">
-                    <span className="text-sm text-gray-400 font-medium">Current Role</span>
+                  <div className="flex items-center justify-between px-3 py-2.5 mb-2 bg-gray-50 dark:bg-black/30 rounded-xl">
+                    <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">Current Role</span>
                     <Badge variant={role === 'ADMIN' ? 'gold' : 'default'} size="sm">
                       {role || 'USER'}
                     </Badge>
@@ -258,7 +258,7 @@ export function Navbar() {
                   )}
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-red-400 hover:bg-red-500/10 text-left transition-colors border border-transparent hover:border-red-500/20"
+                    className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-red-500 hover:text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10 text-left transition-colors border border-transparent hover:border-red-100 dark:hover:border-red-500/20"
                   >
                     <LogOut size={18} />
                     Logout
