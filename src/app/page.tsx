@@ -286,7 +286,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-inpl-neon to-inpl-neon-dark flex items-center justify-center">
-                <span className="text-surface-primary font-bold text-xs font-display">IN</span>
+                <span className="text-black font-bold text-xs font-display">IN</span>
               </div>
               <span className="text-sm font-semibold text-text-primary font-display">INPL Season 3</span>
             </div>

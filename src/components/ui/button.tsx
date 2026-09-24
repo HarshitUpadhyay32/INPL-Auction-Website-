@@ -16,7 +16,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   secondary: 'bg-surface-elevated hover:bg-surface-hover text-text-primary border border-border-default',
   danger: 'bg-inpl-red hover:bg-inpl-red-light text-white shadow-lg shadow-inpl-red/20',
   ghost: 'bg-transparent hover:bg-surface-hover text-text-secondary hover:text-text-primary',
-  gold: 'bg-inpl-neon hover:bg-inpl-neon-light text-surface-primary font-semibold shadow-lg shadow-inpl-neon/20',
+  gold: 'bg-inpl-neon hover:bg-inpl-neon-light text-black font-semibold shadow-lg shadow-inpl-neon/20',
   success: 'bg-inpl-emerald hover:bg-inpl-emerald-light text-white shadow-lg shadow-inpl-emerald/20',
 }
 

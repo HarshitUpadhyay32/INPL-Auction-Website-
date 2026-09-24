@@ -117,7 +117,7 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-3 group">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-inpl-neon to-inpl-neon-dark flex items-center justify-center">
-              <span className="text-surface-primary font-bold text-lg font-display">IN</span>
+              <span className="text-black font-bold text-lg font-display">IN</span>
             </div>
             <div className="text-left">
               <h1 className="text-2xl font-bold font-display text-text-primary">INPL</h1>
