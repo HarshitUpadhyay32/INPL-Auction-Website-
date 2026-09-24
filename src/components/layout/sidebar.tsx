@@ -18,6 +18,7 @@ import {
   History,
   Trophy,
 } from 'lucide-react'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 interface SidebarLink {
   href: string
@@ -156,6 +157,7 @@ export function Sidebar({ type, teamName, teamColor }: SidebarProps) {
             <BarChart3 size={16} />
             Public Site
           </Link>
+          <ThemeToggle />
           <form action="/api/auth/signout" method="post">
             <button
               type="submit"

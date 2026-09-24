@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { createClient } from '@/lib/supabase/client'
 import { Session } from '@supabase/supabase-js'
 import { motion, AnimatePresence } from 'framer-motion'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 const navLinks = [
   { href: '/', label: 'Home', icon: Zap },
@@ -140,6 +141,7 @@ export function Navbar() {
 
           {/* Login / Auth Buttons - Right */}
           <div className="hidden md:flex flex-1 justify-end items-center gap-3">
+            <ThemeToggle />
             {!session ? (
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
@@ -234,6 +236,10 @@ export function Navbar() {
                 </Link>
               ) : (
                 <div className="mt-4 pt-4 border-t border-white/10">
+                  <div className="flex items-center justify-between px-3 py-2.5 mb-2">
+                    <span className="text-sm text-gray-400 font-medium">Theme</span>
+                    <ThemeToggle />
+                  </div>
                   <div className="flex items-center justify-between px-3 py-2.5 mb-2 bg-black/30 rounded-xl">
                     <span className="text-sm text-gray-400 font-medium">Current Role</span>
                     <Badge variant={role === 'ADMIN' ? 'gold' : 'default'} size="sm">
