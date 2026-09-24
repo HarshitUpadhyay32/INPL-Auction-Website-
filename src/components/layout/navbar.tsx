@@ -100,7 +100,7 @@ export function Navbar() {
           </div>
 
           {/* Desktop Nav - Center */}
-          <div className="hidden lg:flex items-center gap-1 absolute left-1/2 transform -translate-x-1/2" onMouseLeave={() => setHoveredTab(null)}>
+          <div className="hidden xl:flex items-center gap-1" onMouseLeave={() => setHoveredTab(null)}>
             {navLinks.map(link => {
               const isActive = pathname === link.href
               return (
@@ -186,7 +186,7 @@ export function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2 rounded-xl text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+            className="xl:hidden p-2 rounded-xl text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -201,7 +201,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
-            className="lg:hidden mt-2 bg-[#0b1b3d]/95 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl origin-top"
+            className="xl:hidden mt-2 bg-[#0b1b3d]/95 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl origin-top"
           >
             <div className="px-4 py-3 space-y-1">
               {navLinks.map(link => {
