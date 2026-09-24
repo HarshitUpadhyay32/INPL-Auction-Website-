@@ -16,7 +16,7 @@ const variantClasses: Record<BadgeVariant, string> = {
   sold: 'bg-inpl-emerald text-white border-transparent dark:bg-inpl-emerald/15 dark:text-inpl-emerald-light dark:border-inpl-emerald/30',
   unsold: 'bg-surface-elevated text-text-muted border-border-default',
   default: 'bg-surface-elevated text-text-secondary border-border-default',
-  gold: 'bg-inpl-neon-dark text-black border-transparent dark:bg-inpl-neon/15 dark:text-inpl-neon dark:border-inpl-neon/30',
+  gold: 'bg-[#A8CC00] text-black border-transparent dark:bg-inpl-neon/15 dark:text-inpl-neon dark:border-inpl-neon/30',
   blue: 'bg-inpl-electric text-white border-transparent dark:bg-inpl-electric/15 dark:text-inpl-electric-light dark:border-inpl-electric/30',
   red: 'bg-inpl-red text-white border-transparent dark:bg-inpl-red/15 dark:text-inpl-red-light dark:border-inpl-red/30',
   emerald: 'bg-inpl-emerald text-white border-transparent dark:bg-inpl-emerald/15 dark:text-inpl-emerald-light dark:border-inpl-emerald/30',
