@@ -101,6 +101,7 @@ export function Navbar() {
 
           {/* Desktop Nav - Center */}
           <div className="hidden xl:flex items-center gap-1" onMouseLeave={() => setHoveredTab(null)}>
+            <ThemeToggle className="mr-2" />
             {navLinks.map(link => {
               const isActive = pathname === link.href
               return (
@@ -141,7 +142,6 @@ export function Navbar() {
 
           {/* Login / Auth Buttons - Right */}
           <div className="hidden md:flex flex-1 justify-end items-center gap-3">
-            <ThemeToggle />
             {!session ? (
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
