@@ -65,9 +65,9 @@ export default function HomePage() {
           >
             {/* Badge */}
             <motion.div variants={fadeIn}>
-              <Badge variant="gold" size="lg" className="mb-2">
+              <span className="inline-flex items-center gap-1.5 font-semibold rounded-full border border-transparent px-3 py-1.5 text-sm uppercase tracking-wider mb-2 bg-[#A8CC00] text-black dark:bg-[#A8CC00] dark:text-black shadow-sm">
                 🏏 Season 3 • 2024
-              </Badge>
+              </span>
             </motion.div>
 
             {/* Title */}
