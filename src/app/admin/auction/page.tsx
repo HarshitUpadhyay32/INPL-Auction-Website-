@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState, useCallback } from 'react'
-import { Gavel, Play, Pause, SkipForward, Check, X, RotateCcw, Users, IndianRupee, Timer, AlertTriangle, ChevronDown, ChevronRight, Ban } from 'lucide-react'
+import { Gavel, Play, Pause, SkipForward, Check, X, RotateCcw, Users, IndianRupee, Timer, AlertTriangle, ChevronDown, ChevronRight, Ban, Zap } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
@@ -29,6 +29,7 @@ export default function AuctionControlPage() {
   const [actionLoading, setActionLoading] = useState(false)
   const [selectedSetId, setSelectedSetId] = useState<string>('all')
   const [playerStats, setPlayerStats] = useState({ total: 0, sold: 0, unsold: 0, available: 0 })
+  const [highestSoldPlayer, setHighestSoldPlayer] = useState<Player | null>(null)
 
   const loadData = useCallback(async () => {
     const supabase = createClient()
@@ -64,6 +65,15 @@ export default function AuctionControlPage() {
       total: total || 0, sold: sold || 0, unsold: unsold || 0,
       available: (total || 0) - (sold || 0) - (unsold || 0),
     })
+
+    // Get highest sold player
+    const { data: highestPlayer } = await supabase.from('players')
+      .select('*')
+      .eq('status', 'SOLD')
+      .order('sold_price', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    if (highestPlayer) setHighestSoldPlayer(highestPlayer)
 
     setLoading(false)
   }, [])
@@ -344,6 +354,26 @@ export default function AuctionControlPage() {
               <Gavel className="w-16 h-16 text-text-muted/30 mx-auto mb-4" />
               <h3 className="text-xl font-semibold font-display text-text-primary mb-2">No Active Auction</h3>
               <p className="text-sm text-text-secondary mb-1">Select a player from the queue to start bidding</p>
+            </Card>
+          )}
+
+          {/* Highest Sold Player */}
+          {highestSoldPlayer && (
+            <Card glass className="p-4 bg-gradient-to-br from-inpl-neon/10 to-transparent border-inpl-neon/20">
+              <div className="flex items-center gap-3">
+                <div className="bg-inpl-neon/20 p-2.5 rounded-xl">
+                  <Zap className="text-inpl-neon" size={24} />
+                </div>
+                <div>
+                  <p className="text-[10px] text-text-muted uppercase tracking-wider font-bold mb-0.5">Highest Sold Player</p>
+                  <p className="font-display font-bold text-text-primary text-base leading-tight truncate max-w-[200px]" title={highestSoldPlayer.name}>
+                    {highestSoldPlayer.name}
+                  </p>
+                  <p className="text-inpl-neon font-display font-semibold text-sm">
+                    {formatCurrency(Number(highestSoldPlayer.sold_price))}
+                  </p>
+                </div>
+              </div>
             </Card>
           )}
 
