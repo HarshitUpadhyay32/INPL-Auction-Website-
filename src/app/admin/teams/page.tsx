@@ -182,7 +182,15 @@ export default function TeamsPage() {
                     <TeamAvatar team={team} size="lg" />
                     <div>
                       <h3 className="font-semibold text-text-primary">{team.name}</h3>
-                      {team.short_name && <p className="text-xs text-text-muted">{team.short_name}</p>}
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        {team.short_name && <span className="text-xs text-text-muted">{team.short_name}</span>}
+                        {team.owner_name && (
+                          <>
+                            {team.short_name && <span className="text-xs text-text-muted/50">•</span>}
+                            <span className="text-xs text-text-secondary bg-surface-elevated px-1.5 py-0.5 rounded text-[10px]">{team.owner_name}</span>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <Badge variant={team.status === 'ACTIVE' ? 'emerald' : 'default'} size="sm">
