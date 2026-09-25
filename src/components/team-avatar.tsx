@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { cn } from '@/lib/utils'
 import { Team } from '@/lib/types/database'
 
 interface TeamAvatarProps {
@@ -20,11 +19,7 @@ export function TeamAvatar({ team, className, size = 'md' }: TeamAvatarProps) {
   if (team.logo_url) {
     return (
       <div 
-        className={cn(
-          "relative rounded-xl overflow-hidden shadow-lg border border-white/10 shrink-0 bg-white flex items-center justify-center p-0.5",
-          sizeClasses[size],
-          className
-        )}
+        className={`relative rounded-xl overflow-hidden shadow-lg border border-white/10 shrink-0 bg-white flex items-center justify-center p-0.5 ${sizeClasses[size]} ${className || ''}`}
       >
         <Image
           src={team.logo_url}
@@ -39,11 +34,7 @@ export function TeamAvatar({ team, className, size = 'md' }: TeamAvatarProps) {
 
   return (
     <div
-      className={cn(
-        "rounded-xl flex items-center justify-center text-white font-bold font-display shadow-lg shrink-0 border border-white/10",
-        sizeClasses[size],
-        className
-      )}
+      className={`rounded-xl flex items-center justify-center text-white font-bold font-display shadow-lg shrink-0 border border-white/10 ${sizeClasses[size]} ${className || ''}`}
       style={{ background: `linear-gradient(135deg, ${team.color}, ${team.color}88)` }}
     >
       {team.short_name?.[0] || team.name[0]}
