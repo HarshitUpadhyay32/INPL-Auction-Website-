@@ -20,10 +20,6 @@ export default function UsersPage() {
   const [teams, setTeams] = useState<Team[]>([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    loadData()
-  }, [])
-
   async function loadData() {
     const supabase = createClient()
     const [profilesRes, teamsRes] = await Promise.all([
@@ -35,6 +31,10 @@ export default function UsersPage() {
     if (teamsRes.data) setTeams(teamsRes.data)
     setLoading(false)
   }
+
+  useEffect(() => {
+    loadData()
+  }, [])
 
   async function updateUser(userId: string, field: 'role' | 'team_id', value: string | null) {
     const supabase = createClient()
