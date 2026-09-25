@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { formatCurrency } from '@/lib/utils'
 import type { Team } from '@/lib/types/database'
+import { TeamAvatar } from '@/components/team-avatar'
 
 export default function TeamsPublicPage() {
   const [teams, setTeams] = useState<Team[]>([])
@@ -44,12 +45,7 @@ export default function TeamsPublicPage() {
                 <Link key={team.id} href={`/teams/${team.id}`}>
                   <Card glass hover className="h-full">
                     <div className="flex items-center gap-4 mb-4">
-                      <div
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-bold font-display text-xl"
-                        style={{ background: `linear-gradient(135deg, ${team.color}, ${team.color}88)` }}
-                      >
-                        {team.short_name || team.name.substring(0, 2)}
-                      </div>
+                      <TeamAvatar team={team} size="xl" />
                       <div className="flex-1">
                         <h3 className="text-lg font-semibold font-display text-text-primary">{team.name}</h3>
                         {team.owner_name && <p className="text-xs text-text-muted">{team.owner_name}</p>}

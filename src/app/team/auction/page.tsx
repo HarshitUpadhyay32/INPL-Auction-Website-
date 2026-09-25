@@ -10,6 +10,7 @@ import { PlayerAuctionCard } from '@/components/player-auction-card'
 import { formatCurrency, formatTime, getRoleEmoji, getNextBidAmount } from '@/lib/utils'
 import { toast } from 'sonner'
 import type { Player, Team, Auction, Bid, AuctionConfig } from '@/lib/types/database'
+import { TeamAvatar } from '@/components/team-avatar'
 
 export default function TeamAuctionPage() {
   const [team, setTeam] = useState<Team | null>(null)
@@ -209,9 +210,7 @@ export default function TeamAuctionPage() {
                 </p>
                 {highestBidder && (
                   <div className="flex items-center justify-center gap-2 mt-3">
-                    <div className="w-6 h-6 rounded-md flex items-center justify-center text-white text-xs font-bold" style={{ background: highestBidder.color }}>
-                      {highestBidder.name[0]}
-                    </div>
+                    <TeamAvatar team={highestBidder} size="sm" />
                     <span className="text-sm font-medium text-text-primary">
                       {isLeading ? 'You' : highestBidder.name}
                     </span>
@@ -287,9 +286,9 @@ export default function TeamAuctionPage() {
                       }`}>
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-text-muted font-mono">{formatTime(bid.created_at)}</span>
-                          <div className="w-5 h-5 rounded flex items-center justify-center text-white text-[10px] font-bold" style={{ background: getTeamColor(bid.team_id) }}>
-                            {getTeamName(bid.team_id)[0]}
-                          </div>
+                          {allTeams.find(t => t.id === bid.team_id) && (
+                            <TeamAvatar team={allTeams.find(t => t.id === bid.team_id)!} size="sm" className="w-5 h-5 text-[10px]" />
+                          )}
                           <span className="text-xs font-medium text-text-primary">
                             {isMyBid ? 'You' : getTeamName(bid.team_id)}
                           </span>

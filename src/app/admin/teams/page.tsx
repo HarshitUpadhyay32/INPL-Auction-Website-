@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import { formatCurrency } from '@/lib/utils'
 import { toast } from 'sonner'
 import type { Team } from '@/lib/types/database'
+import { TeamAvatar } from '@/components/team-avatar'
 
 const TEAM_COLORS = [
   '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6',
@@ -25,9 +26,10 @@ export default function TeamsPage() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [deleteDialog, setDeleteDialog] = useState<string | null>(null)
   const [editingTeam, setEditingTeam] = useState<Team | null>(null)
+  const [uploading, setUploading] = useState(false)
   const [formData, setFormData] = useState({
     name: '', short_name: '', color: '#3b82f6', owner_name: '',
-    initial_purse: '25.00', max_players: '12',
+    initial_purse: '25.00', max_players: '12', logo_url: ''
   })
 
   useEffect(() => { loadTeams() }, [])
@@ -42,7 +44,7 @@ export default function TeamsPage() {
   function openAddDialog() {
     setEditingTeam(null)
     const nextColor = TEAM_COLORS[teams.length % TEAM_COLORS.length]
-    setFormData({ name: '', short_name: '', color: nextColor, owner_name: '', initial_purse: '25.00', max_players: '12' })
+    setFormData({ name: '', short_name: '', color: nextColor, owner_name: '', initial_purse: '25.00', max_players: '12', logo_url: '' })
     setDialogOpen(true)
   }
 
@@ -55,6 +57,7 @@ export default function TeamsPage() {
       owner_name: team.owner_name || '',
       initial_purse: String(team.initial_purse),
       max_players: String(team.max_players),
+      logo_url: team.logo_url || '',
     })
     setDialogOpen(true)
   }
@@ -66,6 +69,7 @@ export default function TeamsPage() {
       short_name: formData.short_name || null,
       color: formData.color,
       owner_name: formData.owner_name || null,
+      logo_url: formData.logo_url || null,
       initial_purse: parseFloat(formData.initial_purse),
       remaining_purse: editingTeam ? undefined : parseFloat(formData.initial_purse),
       max_players: parseInt(formData.max_players),
@@ -82,6 +86,32 @@ export default function TeamsPage() {
     }
     setDialogOpen(false)
     loadTeams()
+  }
+
+  async function handleLogoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setUploading(true)
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('bucket', 'team-logos')
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error)
+      
+      setFormData(f => ({ ...f, logo_url: data.url }))
+      toast.success('Logo uploaded')
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : 'Unknown error')
+    } finally {
+      setUploading(false)
+    }
   }
 
   async function handleDelete(id: string) {
@@ -149,12 +179,7 @@ export default function TeamsPage() {
               <Card key={team.id} glass hover>
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold font-display text-lg"
-                      style={{ background: `linear-gradient(135deg, ${team.color}, ${team.color}88)` }}
-                    >
-                      {team.short_name?.[0] || team.name[0]}
-                    </div>
+                    <TeamAvatar team={team} size="lg" />
                     <div>
                       <h3 className="font-semibold text-text-primary">{team.name}</h3>
                       {team.short_name && <p className="text-xs text-text-muted">{team.short_name}</p>}
@@ -211,6 +236,22 @@ export default function TeamsPage() {
       {/* Add/Edit Dialog */}
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} title={editingTeam ? 'Edit Team' : 'Add Team'}>
         <div className="space-y-4">
+          <div className="flex items-center gap-4 mb-2">
+            <TeamAvatar team={{ ...formData, id: 'temp', created_at: '', updated_at: '', initial_purse: 0, max_players: 0, players_count: 0, remaining_purse: 0, status: 'ACTIVE' } as Team} size="lg" />
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-text-secondary mb-1.5">Team Logo</label>
+              <div className="flex items-center gap-2">
+                <Input 
+                  type="file" 
+                  accept="image/*" 
+                  onChange={handleLogoUpload}
+                  disabled={uploading}
+                  className="flex-1"
+                />
+              </div>
+            </div>
+          </div>
+          
           <Input label="Team Name" value={formData.name} onChange={e => setFormData(f => ({ ...f, name: e.target.value }))} placeholder="e.g. Team Titans" required />
           <Input label="Short Name" value={formData.short_name} onChange={e => setFormData(f => ({ ...f, short_name: e.target.value }))} placeholder="e.g. TIT" />
           <Input label="Owner Name" value={formData.owner_name} onChange={e => setFormData(f => ({ ...f, owner_name: e.target.value }))} placeholder="e.g. Rahul Kumar" />

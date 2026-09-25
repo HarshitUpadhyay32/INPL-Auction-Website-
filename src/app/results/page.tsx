@@ -8,6 +8,7 @@ import { StatCard } from '@/components/ui/stat-card'
 import { Badge } from '@/components/ui/badge'
 import { formatCurrency, getRoleEmoji } from '@/lib/utils'
 import type { Team, Player, Squad } from '@/lib/types/database'
+import { TeamAvatar } from '@/components/team-avatar'
 
 export default function ResultsPage() {
   const [teams, setTeams] = useState<Team[]>([])
@@ -78,9 +79,9 @@ export default function ResultsPage() {
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-text-primary truncate">{player.name}</p>
                       <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 rounded flex items-center justify-center text-white text-[8px] font-bold" style={{ background: getTeamColor(player.sold_to_team_id) }}>
-                          {getTeamName(player.sold_to_team_id)?.[0]}
-                        </div>
+                        {teams.find(t => t.id === player.sold_to_team_id) && (
+                          <TeamAvatar team={teams.find(t => t.id === player.sold_to_team_id)!} size="sm" className="w-4 h-4 text-[8px]" />
+                        )}
                         <span className="text-xs text-text-muted">{getTeamName(player.sold_to_team_id)}</span>
                       </div>
                     </div>
@@ -101,9 +102,7 @@ export default function ResultsPage() {
                 const spent = Number(team.initial_purse) - Number(team.remaining_purse)
                 return (
                   <div key={team.id} className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-surface-hover transition-colors">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold" style={{ background: team.color }}>
-                      {team.name[0]}
-                    </div>
+                    <TeamAvatar team={team} size="sm" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-text-primary truncate">{team.name}</p>
                       <p className="text-[10px] text-text-muted">{team.players_count} players</p>

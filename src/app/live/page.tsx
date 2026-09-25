@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { formatCurrency, formatTime, getRoleEmoji } from '@/lib/utils'
 import { PlayerAuctionCard } from '@/components/player-auction-card'
 import type { Player, Team, Auction, Bid } from '@/lib/types/database'
+import { TeamAvatar } from '@/components/team-avatar'
 import { Gavel } from 'lucide-react'
 
 const containerVariants: Variants = {
@@ -168,9 +169,7 @@ export default function LiveAuctionPage() {
                   >
                     <p className="text-sm text-text-muted">Highest Bidder:</p>
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold" style={{ background: highestBidder.color }}>
-                        {highestBidder.name[0]}
-                      </div>
+                      <TeamAvatar team={highestBidder} size="sm" />
                       <span className="font-semibold font-display text-text-primary">{highestBidder.name}</span>
                     </div>
                   </motion.div>
@@ -192,9 +191,9 @@ export default function LiveAuctionPage() {
                       className={`flex items-center justify-between p-2 rounded-xl ${i === 0 ? 'bg-inpl-neon/5 border border-inpl-neon/20' : ''}`}
                     >
                       <div className="flex items-center gap-2">
-                        <div className="w-5 h-5 rounded flex items-center justify-center text-white text-[10px] font-bold" style={{ background: getTeamColor(bid.team_id) }}>
-                          {getTeamName(bid.team_id)?.[0]}
-                        </div>
+                        {teams.find(t => t.id === bid.team_id) && (
+                          <TeamAvatar team={teams.find(t => t.id === bid.team_id)!} size="sm" className="w-5 h-5 text-[9px]" />
+                        )}
                         <span className="text-xs text-text-primary">{getTeamName(bid.team_id)}</span>
                       </div>
                       <span className="text-xs font-display font-semibold text-inpl-neon">{formatCurrency(Number(bid.amount))}</span>
@@ -224,9 +223,7 @@ export default function LiveAuctionPage() {
                 <div className="space-y-1.5 max-h-52 overflow-y-auto">
                   {teams.map(t => (
                     <div key={t.id} className="flex items-center gap-2 py-1">
-                      <div className="w-5 h-5 rounded flex items-center justify-center text-white text-[9px] font-bold flex-shrink-0" style={{ background: t.color }}>
-                        {t.name[0]}
-                      </div>
+                      <TeamAvatar team={t} size="sm" className="w-5 h-5 text-[9px]" />
                       <span className="text-xs text-text-primary flex-1 truncate">{t.name}</span>
                       <span className="text-[10px] text-text-muted">{t.players_count}/{t.max_players}</span>
                       <span className="text-xs font-display font-semibold text-inpl-emerald">{formatCurrency(Number(t.remaining_purse))}</span>

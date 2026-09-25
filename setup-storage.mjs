@@ -19,9 +19,24 @@ async function setup() {
   })
   
   if (error && error.message !== 'The resource already exists') {
-    console.error('Error creating bucket:', error)
+    console.error('Error creating player-photos bucket:', error)
   } else {
-    console.log('Bucket created successfully (or already exists).')
+    console.log('player-photos bucket created successfully (or already exists).')
+  }
+
+  console.log('Creating team-logos bucket...')
+  
+  // Create the bucket
+  const { data: teamData, error: teamError } = await supabase.storage.createBucket('team-logos', {
+    public: true,
+    allowedMimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/svg+xml'],
+    fileSizeLimit: 5242880 // 5MB
+  })
+  
+  if (teamError && teamError.message !== 'The resource already exists') {
+    console.error('Error creating team-logos bucket:', teamError)
+  } else {
+    console.log('team-logos bucket created successfully (or already exists).')
   }
 
   // To allow public upload we need RLS policies, or we can just let users upload it via the API with their session if RLS allows.

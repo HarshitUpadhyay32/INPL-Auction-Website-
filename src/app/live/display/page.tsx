@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
 import { formatCurrency, getRoleEmoji } from '@/lib/utils'
 import type { Player, Team, Auction, Bid } from '@/lib/types/database'
+import { TeamAvatar } from '@/components/team-avatar'
 
 export default function DisplayModePage() {
   const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null)
@@ -124,12 +125,7 @@ export default function DisplayModePage() {
                   animate={{ opacity: 1, y: 0 }}
                   className="flex items-center justify-center gap-4"
                 >
-                  <div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-bold font-display text-2xl"
-                    style={{ background: `linear-gradient(135deg, ${highestBidder.color}, ${highestBidder.color}88)` }}
-                  >
-                    {highestBidder.name[0]}
-                  </div>
+                  <TeamAvatar team={highestBidder} size="2xl" />
                   <span className="text-3xl font-bold font-display text-text-primary">{highestBidder.name}</span>
                 </motion.div>
               )}

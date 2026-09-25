@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { formatCurrency, getRoleEmoji } from '@/lib/utils'
 import type { Team, Squad, Player } from '@/lib/types/database'
+import { TeamAvatar } from '@/components/team-avatar'
 
 export default function TeamDetailPage() {
   const params = useParams()
@@ -52,12 +53,7 @@ export default function TeamDetailPage() {
 
         {/* Team Header */}
         <div className="flex items-center gap-5 mb-8">
-          <div
-            className="w-20 h-20 rounded-2xl flex items-center justify-center text-white font-bold font-display text-3xl"
-            style={{ background: `linear-gradient(135deg, ${team.color}, ${team.color}88)` }}
-          >
-            {team.short_name || team.name.substring(0, 2)}
-          </div>
+          <TeamAvatar team={team} size="2xl" />
           <div>
             <h1 className="text-3xl font-bold font-display text-text-primary">{team.name}</h1>
             {team.owner_name && <p className="text-sm text-text-secondary mt-1">{team.owner_name}</p>}
