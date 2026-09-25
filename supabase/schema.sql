@@ -121,7 +121,7 @@ CREATE TABLE auctions (
   player_id UUID NOT NULL REFERENCES players(id) ON DELETE CASCADE,
   status TEXT NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'SOLD', 'UNSOLD', 'CANCELLED')),
   current_bid NUMERIC(12,4) NOT NULL DEFAULT 0.50, -- in Cr
-  highest_bid_team_id UUID REFERENCES teams(id),
+  highest_bid_team_id UUID REFERENCES teams(id) ON DELETE SET NULL,
   bid_count INT NOT NULL DEFAULT 0,
   started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   ended_at TIMESTAMPTZ,
