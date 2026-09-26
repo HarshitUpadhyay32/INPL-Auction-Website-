@@ -422,12 +422,14 @@ export default function AuctionControlPage() {
                   )}
                   <div>
                     <p className="text-xs sm:text-sm text-text-muted uppercase tracking-wider font-bold mb-1">Highest Sold Player</p>
-                    <p className="font-display font-black text-text-primary text-xl sm:text-3xl leading-tight truncate max-w-[200px] sm:max-w-[300px]" title={highestSoldPlayer.name}>
-                      {highestSoldPlayer.name}
-                    </p>
-                    <p className="text-emerald-700 dark:text-inpl-neon font-display font-bold text-lg sm:text-2xl mt-1">
-                      {formatCurrency(Number(highestSoldPlayer.sold_price))}
-                    </p>
+                    <div className="flex items-baseline gap-4 mt-1">
+                      <p className="font-display font-black text-text-primary text-2xl sm:text-4xl leading-tight truncate max-w-[200px] sm:max-w-[300px]" title={highestSoldPlayer.name}>
+                        {highestSoldPlayer.name}
+                      </p>
+                      <p className="text-emerald-700 dark:text-inpl-neon font-display font-black text-2xl sm:text-4xl">
+                        {formatCurrency(Number(highestSoldPlayer.sold_price))}
+                      </p>
+                    </div>
                   </div>
                 </div>
                 
