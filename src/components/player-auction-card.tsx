@@ -76,8 +76,8 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
         <div className="relative flex items-center justify-between w-full">
           
           {/* Main Blue Banner */}
-          <div className="relative flex-1 bg-[#0b1b3d] border-[3px] border-[#d4af37] rounded-xl pt-4 pb-4 px-4 sm:px-6 shadow-md mr-14 sm:mr-24 flex flex-col justify-center">
-            <h1 className="text-2xl sm:text-4xl font-black text-[#d4af37] uppercase tracking-widest font-display leading-tight line-clamp-2">
+          <div className="relative flex-1 bg-[#0b1b3d] border-[3px] border-[#d4af37] rounded-xl pt-4 pb-4 pl-4 sm:pl-6 pr-14 sm:pr-24 shadow-md mr-14 sm:mr-20 flex flex-col justify-center">
+            <h1 className="text-2xl sm:text-4xl font-black text-[#d4af37] uppercase tracking-widest font-display leading-tight line-clamp-2 break-words pr-2">
               {player.name}
             </h1>
             <div className="w-[85%] h-1 bg-[#d4af37] my-3 rounded-full" />
