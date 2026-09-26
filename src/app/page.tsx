@@ -70,16 +70,13 @@ export default function HomePage() {
             </motion.div>
 
             {/* Title */}
-            <motion.div variants={fadeIn} className="space-y-3">
-              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-extrabold font-display tracking-tight">
-                <span className="gradient-text">INPL</span>
+            <motion.div variants={fadeIn} className="space-y-5">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-display tracking-tight leading-tight">
+                <span className="gradient-text">PW IOI</span>
+                <span className="text-text-primary ml-2 sm:ml-3 block sm:inline mt-2 sm:mt-0">Innovators Premier League</span>
               </h1>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-display text-text-primary">
-                PLAYER AUCTION
-              </h2>
-              <p className="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto">
-                PW IOI INNOVATORS premier LEAGUE, college cricket tournament.
-                Live bidding. 10 teams. 200 players. One stage.
+              <p className="text-base sm:text-lg text-text-secondary max-w-3xl mx-auto font-medium tracking-wide">
+                College Cricket Tournament &bull; Live Bidding &bull; 10 Teams &bull; 200 Players &bull; One-Stage Format
               </p>
             </motion.div>
 
