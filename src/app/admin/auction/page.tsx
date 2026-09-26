@@ -201,6 +201,43 @@ export default function AuctionControlPage() {
     loadData()
   }
 
+  // Reverse Last Bid
+  async function handleReverseLastBid() {
+    if (!currentAuction || currentBids.length === 0) return
+    setActionLoading(true)
+    const supabase = createClient()
+    
+    const lastBid = currentBids[0]
+    const previousBid = currentBids.length > 1 ? currentBids[1] : null
+
+    // 1. Delete the most recent bid
+    const { error: delError } = await supabase.from('bids').delete().eq('id', lastBid.id)
+    if (delError) {
+      toast.error('Failed to remove bid')
+      setActionLoading(false)
+      return
+    }
+
+    // 2. Update auction to previous state
+    const { error: updError } = await supabase.from('auctions').update({
+      current_bid: previousBid ? previousBid.amount : Number(currentPlayer?.base_price || 0.50),
+      highest_bid_team_id: previousBid ? previousBid.team_id : null,
+      bid_count: Math.max(0, currentAuction.bid_count - 1)
+    }).eq('id', currentAuction.id)
+
+    if (updError) {
+      toast.error('Failed to restore auction state')
+      setActionLoading(false)
+      return
+    }
+
+    // 3. Update local state explicitly, just in case realtime is slow
+    setCurrentBids(prev => prev.slice(1))
+    
+    toast.success('Last bid reversed successfully')
+    setActionLoading(false)
+  }
+
   // Undo SOLD
   async function handleUndo() {
     if (!currentAuction) return
@@ -337,16 +374,29 @@ export default function AuctionControlPage() {
                     UNSOLD
                   </Button>
                 </div>
-                <Button
-                  variant={currentAuction.status === 'PAUSED' ? 'success' : 'secondary'}
-                  size="lg"
-                  className="w-full"
-                  onClick={() => handleTogglePause()}
-                  loading={actionLoading}
-                  icon={currentAuction.status === 'PAUSED' ? <Play size={20} /> : <Pause size={20} />}
-                >
-                  {currentAuction.status === 'PAUSED' ? 'RESUME AUCTION' : 'PAUSE AUCTION'}
-                </Button>
+                <div className="grid grid-cols-2 gap-3">
+                  <Button
+                    variant={currentAuction.status === 'PAUSED' ? 'success' : 'secondary'}
+                    size="lg"
+                    className="w-full"
+                    onClick={() => handleTogglePause()}
+                    loading={actionLoading}
+                    icon={currentAuction.status === 'PAUSED' ? <Play size={20} /> : <Pause size={20} />}
+                  >
+                    {currentAuction.status === 'PAUSED' ? 'RESUME AUCTION' : 'PAUSE AUCTION'}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full text-inpl-red hover:text-inpl-red-light border-inpl-red/50 hover:bg-inpl-red/10"
+                    onClick={() => handleReverseLastBid()}
+                    disabled={currentBids.length === 0}
+                    loading={actionLoading}
+                    icon={<RotateCcw size={20} />}
+                  >
+                    UNDO LAST BID
+                  </Button>
+                </div>
               </div>
             </Card>
           ) : (
