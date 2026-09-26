@@ -2,8 +2,8 @@ import React from 'react'
 import { Sidebar } from '@/components/layout/sidebar'
 
 export const metadata = {
-  title: 'Admin Dashboard | INPL Season 3',
-  description: 'Auction management dashboard for INPL Season 3',
+  title: 'Admin Dashboard | PW IOI Premier League',
+  description: 'Auction management dashboard for PW IOI Premier League',
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

@@ -75,7 +75,7 @@ export default function AdminDashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold font-display text-text-primary">Dashboard</h1>
-          <p className="text-sm text-text-secondary mt-1">INPL Season 3 Auction Overview</p>
+          <p className="text-sm text-text-secondary mt-1">PW IOI Premier League Auction Overview</p>
         </div>
         <div className="flex items-center gap-3">
           <Badge variant={

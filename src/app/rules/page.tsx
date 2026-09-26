@@ -10,7 +10,7 @@ export default function RulesPage() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold font-display text-text-primary mb-2">Auction Rules</h1>
-          <p className="text-text-secondary">INPL Season 3 Player Auction Guidelines</p>
+          <p className="text-text-secondary">PW IOI Premier League Player Auction Guidelines</p>
         </div>
 
         <div className="space-y-6">

@@ -113,7 +113,7 @@ export default function LiveAuctionPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <h1 className="text-3xl font-bold font-display gradient-text mb-1">INPL SEASON 3</h1>
+          <h1 className="text-3xl font-bold font-display gradient-text mb-1">PW IOI PREMIER LEAGUE</h1>
           <p className="text-text-secondary">LIVE AUCTION</p>
         </motion.div>
 

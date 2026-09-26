@@ -29,7 +29,7 @@ export default function TeamsPublicPage() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold font-display text-text-primary mb-2">Teams</h1>
-          <p className="text-text-secondary">10 teams competing in INPL Season 3</p>
+          <p className="text-text-secondary">10 teams competing in PW IOI Premier League</p>
         </div>
 
         {loading ? (

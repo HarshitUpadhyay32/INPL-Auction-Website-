@@ -51,7 +51,7 @@ export default function ResultsPage() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold font-display gradient-text mb-2">Auction Results</h1>
-          <p className="text-text-secondary">INPL Season 3 Final Summary</p>
+          <p className="text-text-secondary">PW IOI Premier League Final Summary</p>
         </div>
 
         {/* Stats */}

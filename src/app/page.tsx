@@ -263,7 +263,7 @@ export default function HomePage() {
                 </h2>
                 <p className="text-text-secondary max-w-lg mx-auto">
                   Watch 200 players compete for a spot in 10 teams.
-                  The live auction is the most exciting event of INPL Season 3.
+                  The live auction is the most exciting event of PW IOI Premier League.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                   <Link href="/live">
@@ -291,7 +291,7 @@ export default function HomePage() {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-inpl-neon to-inpl-neon-dark flex items-center justify-center">
                 <span className="text-black font-bold text-xs font-display">IN</span>
               </div>
-              <span className="text-sm font-semibold text-text-primary font-display">INPL Season 3</span>
+              <span className="text-sm font-semibold text-text-primary font-display">PW IOI Premier League</span>
             </div>
             <div className="flex items-center gap-6 text-sm text-text-muted">
               <Link href="/rules" className="hover:text-text-primary transition-colors">Rules</Link>

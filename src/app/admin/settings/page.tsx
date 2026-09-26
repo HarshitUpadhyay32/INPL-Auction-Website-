@@ -14,12 +14,12 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [form, setForm] = useState({
-    tournament_name: 'INPL Season 3',
+    tournament_name: 'PW IOI INNOVATORS PREMIER LEAGUE',
     base_price: '50',
     base_price_cr: '0.50',
     purse_per_team: '25.00',
     max_squad_size: '12',
-    total_teams: '15',
+    total_teams: '10',
     bid_timer_seconds: '10',
     enforce_min_squad_affordability: false,
   })

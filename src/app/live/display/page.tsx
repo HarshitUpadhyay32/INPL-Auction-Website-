@@ -87,7 +87,7 @@ export default function DisplayModePage() {
         {/* Tournament Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-extrabold font-display gradient-text tracking-tight">
-            INPL SEASON 3
+            PW IOI PREMIER LEAGUE
           </h1>
           <p className="text-xl text-text-secondary font-display mt-1">LIVE AUCTION</p>
         </div>
@@ -226,7 +226,7 @@ export default function DisplayModePage() {
       {/* Bottom bar */}
       <div className="absolute bottom-0 left-0 right-0 glass p-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="text-sm text-text-muted">INPL Season 3 • Player Auction</span>
+          <span className="text-sm text-text-muted">PW IOI Premier League • Player Auction</span>
           <div className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-inpl-red opacity-75" />
