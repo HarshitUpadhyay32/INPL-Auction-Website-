@@ -68,7 +68,7 @@ export function Navbar() {
   }
 
   // Don't show navbar on admin/team dashboards or display mode
-  if (pathname.startsWith('/admin') || pathname.startsWith('/team') || pathname === '/live/display') {
+  if (pathname.startsWith('/admin') || pathname === '/team' || pathname.startsWith('/team/') || pathname === '/live/display') {
     return null
   }
 
