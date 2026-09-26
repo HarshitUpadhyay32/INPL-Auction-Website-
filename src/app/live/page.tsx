@@ -96,8 +96,8 @@ export default function LiveAuctionPage() {
   const highestBidder = currentAuction?.highest_bid_team_id ? teams.find(t => t.id === currentAuction.highest_bid_team_id) : null
 
   return (
-    <main className="min-h-screen pt-28 pb-10 px-4">
-      <div className="max-w-6xl mx-auto">
+    <main className="min-h-screen pt-28 pb-10 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[1600px] mx-auto">
         {/* Header */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
