@@ -34,8 +34,13 @@ export default function DisplayModePage() {
     const { count: sold } = await supabase.from('players').select('*', { count: 'exact', head: true }).eq('status', 'SOLD')
     setSoldCount(sold || 0)
 
-    const { data: topBuyData } = await supabase.from('players').select('*').eq('status', 'SOLD').order('sold_price', { ascending: false }).limit(1).maybeSingle()
-    if (topBuyData) setTopBuy(topBuyData)
+    const { data: topBuyData, error: topBuyError } = await supabase.from('players').select('*').eq('status', 'SOLD').order('sold_price', { ascending: false, nullsFirst: false }).limit(1)
+    if (topBuyError) console.error("Error fetching top buy:", topBuyError)
+    if (topBuyData && topBuyData.length > 0) {
+      setTopBuy(topBuyData[0])
+    } else {
+      setTopBuy(null)
+    }
   }, [])
 
   useEffect(() => {
