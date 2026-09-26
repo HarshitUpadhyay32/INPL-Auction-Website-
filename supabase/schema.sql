@@ -507,6 +507,64 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- =============================================
+-- MANUAL ASSIGN PLAYER FUNCTION (Admin Override)
+-- =============================================
+CREATE OR REPLACE FUNCTION manual_assign_player(
+  p_player_id UUID,
+  p_team_id UUID,
+  p_amount NUMERIC
+)
+RETURNS JSONB AS $$
+DECLARE
+  v_player RECORD;
+  v_team RECORD;
+BEGIN
+  -- Lock player
+  SELECT * INTO v_player FROM players WHERE id = p_player_id FOR UPDATE;
+  
+  IF NOT FOUND THEN
+    RETURN jsonb_build_object('success', false, 'error', 'Player not found');
+  END IF;
+  
+  IF v_player.status = 'SOLD' THEN
+    RETURN jsonb_build_object('success', false, 'error', 'Player is already sold. Undo the sale first.');
+  END IF;
+
+  -- Lock team
+  SELECT * INTO v_team FROM teams WHERE id = p_team_id FOR UPDATE;
+  
+  IF NOT FOUND THEN
+    RETURN jsonb_build_object('success', false, 'error', 'Team not found');
+  END IF;
+
+  -- Update player
+  UPDATE players 
+  SET status = 'SOLD', 
+      sold_to_team_id = p_team_id,
+      sold_price = p_amount,
+      updated_at = NOW()
+  WHERE id = p_player_id;
+
+  -- Deduct purse
+  UPDATE teams 
+  SET remaining_purse = remaining_purse - p_amount,
+      players_count = players_count + 1,
+      updated_at = NOW()
+  WHERE id = p_team_id;
+
+  -- Insert squad record
+  INSERT INTO squads (team_id, player_id, purchase_price)
+  VALUES (p_team_id, p_player_id, p_amount);
+
+  -- Insert transaction
+  INSERT INTO transactions (player_id, team_id, amount, transaction_type, notes)
+  VALUES (p_player_id, p_team_id, p_amount, 'PURCHASE', 'Admin manual assignment');
+
+  RETURN jsonb_build_object('success', true);
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- =============================================
 -- TRIGGER: Auto-create profile on signup
 -- =============================================
 CREATE OR REPLACE FUNCTION handle_new_user()

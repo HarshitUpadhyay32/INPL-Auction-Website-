@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState, useCallback, useRef } from 'react'
-import { Plus, Upload, Search, Trash2, Pencil, Filter, UserCircle, Camera, X as XIcon, BarChart3, RotateCcw } from 'lucide-react'
+import { Plus, Upload, Search, Trash2, Pencil, Filter, UserCircle, Camera, X as XIcon, BarChart3, RotateCcw, Handshake } from 'lucide-react'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
@@ -37,6 +37,12 @@ export default function PlayersPage() {
     name: '', player_code: '', role: 'Batter', department: '', year: '',
     base_price: '0.50', auction_set_id: '', batting_style: '', bowling_style: '',
     matches: '0', runs: '0', wickets: '0',
+  })
+  
+  const [assignDialog, setAssignDialog] = useState<Player | null>(null)
+  const [assignFormData, setAssignFormData] = useState({
+    team_id: '',
+    price: '0'
   })
 
   const loadPlayers = useCallback(async () => {
@@ -263,6 +269,30 @@ export default function PlayersPage() {
     loadPlayers()
   }
 
+  async function handleManualAssign(e: React.FormEvent) {
+    e.preventDefault()
+    if (!assignDialog || !assignFormData.team_id || !assignFormData.price) return
+    
+    setUploading(true)
+    const supabase = createClient()
+    const { data, error } = await supabase.rpc('manual_assign_player', {
+      p_player_id: assignDialog.id,
+      p_team_id: assignFormData.team_id,
+      p_amount: parseFloat(assignFormData.price)
+    })
+    
+    setUploading(false)
+    if (error || !data?.success) {
+      console.error(error || data?.error)
+      toast.error(error?.message || data?.error || 'Failed to manually assign player')
+      return
+    }
+    
+    toast.success(`Assigned ${assignDialog.name} to the team successfully!`)
+    setAssignDialog(null)
+    loadPlayers()
+  }
+
   const filtered = players.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase()) ||
     p.player_code.toLowerCase().includes(search.toLowerCase()) ||
@@ -419,6 +449,13 @@ export default function PlayersPage() {
                           <RotateCcw size={14} />
                         </button>
                       )}
+                      <button 
+                        onClick={() => player.status === 'SOLD' ? toast.error('Undo the sale first to assign manually') : setAssignDialog(player)} 
+                        title={player.status === 'SOLD' ? "Undo sale first to assign manually" : "Manual Assign"}
+                        className={`p-1.5 rounded-lg transition-colors ${player.status === 'SOLD' ? 'text-text-muted/30 cursor-not-allowed' : 'hover:bg-inpl-emerald/10 text-text-muted hover:text-inpl-emerald'}`}
+                      >
+                        <Handshake size={14} />
+                      </button>
                       <button onClick={() => openEditDialog(player)} className="p-1.5 rounded-lg hover:bg-surface-hover text-text-muted hover:text-text-primary transition-colors">
                         <Pencil size={14} />
                       </button>
@@ -584,6 +621,44 @@ export default function PlayersPage() {
         confirmText="Delete All"
         variant="danger"
       />
+
+      {/* Manual Assign Dialog */}
+      <Dialog 
+        open={!!assignDialog} 
+        onClose={() => setAssignDialog(null)} 
+        title="Manual Player Assignment" 
+        description={`Directly assign ${assignDialog?.name} to a team at a specific price.`}
+      >
+        <form onSubmit={handleManualAssign} className="space-y-4">
+          <Select 
+            label="Select Team" 
+            value={assignFormData.team_id} 
+            onChange={e => setAssignFormData(f => ({ ...f, team_id: e.target.value }))}
+            options={[
+              { value: '', label: 'Select a team...' },
+              ...teams.map(t => ({ value: t.id, label: t.name }))
+            ]} 
+            required
+          />
+          <Input 
+            label="Sold Price (in Cr)" 
+            type="number" 
+            step="0.01" 
+            min="0"
+            value={assignFormData.price} 
+            onChange={e => setAssignFormData(f => ({ ...f, price: e.target.value }))} 
+            required
+          />
+          <div className="bg-inpl-emerald/10 p-3 rounded-lg border border-inpl-emerald/20 text-inpl-emerald text-sm flex gap-2">
+            <Handshake size={18} className="shrink-0 mt-0.5" />
+            <p>This action will bypass the auction screen, mark the player as SOLD, and automatically deduct the specified price from the chosen team's purse.</p>
+          </div>
+          <div className="flex gap-3 pt-2">
+            <Button type="button" variant="secondary" className="flex-1" onClick={() => setAssignDialog(null)}>Cancel</Button>
+            <Button type="submit" variant="gold" className="flex-1" loading={uploading}>Assign Player</Button>
+          </div>
+        </form>
+      </Dialog>
     </div>
   )
 }
