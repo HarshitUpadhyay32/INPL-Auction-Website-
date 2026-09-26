@@ -19,10 +19,11 @@ export default function DisplayModePage() {
     const { data: teamsData } = await supabase.from('teams').select('*').order('name')
     if (teamsData) setTeams(teamsData)
 
-    const { data: activeAuction } = await supabase.from('auctions').select('*').in('status', ['ACTIVE', 'PAUSED']).limit(1).single()
-    if (activeAuction) {
-      setCurrentAuction(activeAuction)
-      const { data: player } = await supabase.from('players').select('*').eq('id', activeAuction.player_id).single()
+    const { data: latestAuction } = await supabase.from('auctions').select('*').order('created_at', { ascending: false }).limit(1).maybeSingle()
+    
+    if (latestAuction && ['ACTIVE', 'PAUSED', 'SOLD'].includes(latestAuction.status)) {
+      setCurrentAuction(latestAuction)
+      const { data: player } = await supabase.from('players').select('*').eq('id', latestAuction.player_id).single()
       if (player) setCurrentPlayer(player)
     } else {
       setCurrentPlayer(null)
@@ -92,8 +93,22 @@ export default function DisplayModePage() {
               className="text-center space-y-8"
             >
               {/* Player */}
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-3xl bg-surface-elevated flex items-center justify-center text-7xl sm:text-8xl glow-gold">
+              <div className="flex flex-col items-center gap-4 relative">
+                {currentAuction.status === 'SOLD' && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 3, rotate: -20 }}
+                    animate={{ opacity: 1, scale: 1, rotate: -10 }}
+                    transition={{ type: "spring", stiffness: 200, damping: 12 }}
+                    className="absolute z-50 pointer-events-none"
+                    style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
+                  >
+                    <div className="border-[8px] border-inpl-red text-inpl-red font-display font-black text-6xl py-2 px-8 uppercase tracking-widest bg-surface-primary/80 backdrop-blur-sm shadow-[0_0_40px_rgba(239,68,68,0.5)] whitespace-nowrap overflow-visible stamp-mask" style={{ textShadow: '0 0 10px rgba(239,68,68,0.8)' }}>
+                      SOLD
+                    </div>
+                  </motion.div>
+                )}
+                
+                <div className={`w-32 h-32 sm:w-40 sm:h-40 rounded-3xl bg-surface-elevated flex items-center justify-center text-7xl sm:text-8xl transition-all duration-500 ${currentAuction.status === 'SOLD' ? 'opacity-50 grayscale' : 'glow-gold'}`}>
                   {getRoleEmoji(currentPlayer.role)}
                 </div>
                 <div>

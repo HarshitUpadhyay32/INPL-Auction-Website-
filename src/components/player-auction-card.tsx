@@ -4,6 +4,7 @@ import React from 'react'
 import { getRoleEmoji, formatCurrency } from '@/lib/utils'
 import type { Player } from '@/lib/types/database'
 import { Activity, Target, User, Calendar, IndianRupee } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 interface PlayerAuctionCardProps {
   player: Player
@@ -28,6 +29,21 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
           <rect width="100%" height="100%" fill="url(#diagonal-lines)" />
         </svg>
       </div>
+      
+      {/* SOLD Stamp Overlay */}
+      {player.status === 'SOLD' && (
+        <motion.div
+          initial={{ opacity: 0, scale: 3, rotate: -20 }}
+          animate={{ opacity: 1, scale: 1, rotate: -10 }}
+          transition={{ type: "spring", stiffness: 200, damping: 12 }}
+          className="absolute z-50 pointer-events-none"
+          style={{ top: '35%', left: '45%', transform: 'translate(-50%, -50%)' }}
+        >
+          <div className="border-[6px] sm:border-[8px] border-inpl-red text-inpl-red font-display font-black text-4xl sm:text-6xl py-2 px-6 sm:px-8 uppercase tracking-widest bg-white/80 backdrop-blur-sm shadow-[0_0_30px_rgba(239,68,68,0.4)] whitespace-nowrap stamp-mask" style={{ textShadow: '0 0 10px rgba(239,68,68,0.6)' }}>
+            SOLD
+          </div>
+        </motion.div>
+      )}
 
       {/* Left: Player Photo Section */}
       <div className="relative w-full sm:w-[240px] h-[320px] rounded-xl bg-gradient-to-br from-[#0b1b3d] to-[#1e293b] shadow-lg flex-shrink-0 z-20 overflow-hidden flex flex-col justify-end mx-auto sm:mx-0">
@@ -46,9 +62,9 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
 
         {/* Player Image */}
         {player.photo_url ? (
-          <img src={player.photo_url} alt={player.name} className="relative z-10 w-full h-full object-cover object-center drop-shadow-2xl" />
+          <img src={player.photo_url} alt={player.name} className={`relative z-10 w-full h-full object-cover object-center drop-shadow-2xl transition-all duration-500 ${player.status === 'SOLD' ? 'grayscale opacity-70' : ''}`} />
         ) : (
-          <div className="relative z-10 w-full h-full flex items-center justify-center opacity-50">
+          <div className={`relative z-10 w-full h-full flex items-center justify-center opacity-50 transition-all duration-500 ${player.status === 'SOLD' ? 'grayscale opacity-30' : ''}`}>
             <span className="text-8xl">{getRoleEmoji(player.role)}</span>
           </div>
         )}
