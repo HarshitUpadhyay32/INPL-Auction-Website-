@@ -72,7 +72,7 @@ export default function HomePage() {
             {/* Title */}
             <motion.div variants={fadeIn} className="space-y-4">
               <h1 className="text-5xl sm:text-7xl lg:text-8xl font-extrabold font-display tracking-tight">
-                <span className="gradient-text">PW IOI</span>
+                <span className="gradient-text">INPL</span>
               </h1>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-display text-text-primary uppercase">
                 Player Auction
