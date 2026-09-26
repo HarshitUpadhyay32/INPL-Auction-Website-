@@ -12,6 +12,7 @@ export default function DisplayModePage() {
   const [currentAuction, setCurrentAuction] = useState<Auction | null>(null)
   const [teams, setTeams] = useState<Team[]>([])
   const [soldCount, setSoldCount] = useState(0)
+  const [topBuy, setTopBuy] = useState<Player | null>(null)
 
   const loadData = useCallback(async () => {
     const supabase = createClient()
@@ -32,6 +33,9 @@ export default function DisplayModePage() {
 
     const { count: sold } = await supabase.from('players').select('*', { count: 'exact', head: true }).eq('status', 'SOLD')
     setSoldCount(sold || 0)
+
+    const { data: topBuyData } = await supabase.from('players').select('*').eq('status', 'SOLD').order('sold_price', { ascending: false }).limit(1).maybeSingle()
+    if (topBuyData) setTopBuy(topBuyData)
   }, [])
 
   useEffect(() => {
@@ -115,6 +119,51 @@ export default function DisplayModePage() {
                   <p className="text-2xl sm:text-3xl text-text-secondary font-display">{currentPlayer.role}</p>
                 </div>
               </div>
+
+              {/* Highest Sold Player Banner */}
+              {topBuy && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center justify-between bg-[#0a1128] border border-white/5 rounded-2xl p-4 sm:p-6 mb-8 relative overflow-hidden text-left"
+                >
+                  <div className="flex items-center gap-4 sm:gap-6 relative z-10">
+                    {topBuy.photo_url ? (
+                      <img src={topBuy.photo_url} alt={topBuy.name} className="w-16 h-16 sm:w-24 sm:h-24 rounded-xl object-cover shadow-md" />
+                    ) : (
+                      <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-3xl">
+                        {getRoleEmoji(topBuy.role)}
+                      </div>
+                    )}
+                    <div>
+                      <p className="text-xs sm:text-sm font-bold text-white/80 tracking-widest uppercase mb-1">Highest Sold Player</p>
+                      <div className="flex items-baseline gap-3 sm:gap-5 flex-wrap">
+                        <p className="text-3xl sm:text-5xl font-black text-white font-display uppercase tracking-wide">{topBuy.name}</p>
+                        <p className="text-3xl sm:text-5xl font-black font-display text-inpl-neon">{formatCurrency(topBuy.sold_price || 0)}</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {topBuy.sold_to_team_id && (
+                    <div className="flex items-center gap-4 relative z-10">
+                      <p className="text-lg sm:text-2xl font-bold text-white font-display uppercase tracking-wider hidden md:block text-right">
+                        {teams.find(t => t.id === topBuy.sold_to_team_id)?.name || ''}
+                      </p>
+                      {teams.find(t => t.id === topBuy.sold_to_team_id)?.logo_url ? (
+                        <img 
+                          src={teams.find(t => t.id === topBuy.sold_to_team_id)!.logo_url!} 
+                          alt="Team Logo" 
+                          className="w-16 h-16 sm:w-24 sm:h-24 object-contain drop-shadow-xl" 
+                        />
+                      ) : (
+                        <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-xl bg-white/5 flex items-center justify-center">
+                           <span className="text-xs text-white/50">No Logo</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </motion.div>
+              )}
 
               {/* Bid Amount */}
               <div className="space-y-2">
