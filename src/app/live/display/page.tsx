@@ -96,11 +96,10 @@ export default function DisplayModePage() {
               <div className="flex flex-col items-center gap-4 relative">
                 {currentAuction.status === 'SOLD' && (
                   <motion.div
-                    initial={{ opacity: 0, scale: 3, rotate: -20 }}
-                    animate={{ opacity: 1, scale: 1, rotate: -10 }}
+                    initial={{ opacity: 0, scale: 3, rotate: -20, x: "-50%", y: "-50%" }}
+                    animate={{ opacity: 1, scale: 1, rotate: -10, x: "-50%", y: "-50%" }}
                     transition={{ type: "spring", stiffness: 200, damping: 12 }}
-                    className="absolute z-50 pointer-events-none"
-                    style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
+                    className="absolute z-50 pointer-events-none top-1/2 left-1/2"
                   >
                     <div className="border-[8px] border-inpl-red text-inpl-red font-display font-black text-6xl py-2 px-8 uppercase tracking-widest bg-surface-primary/80 backdrop-blur-sm shadow-[0_0_40px_rgba(239,68,68,0.5)] whitespace-nowrap overflow-visible stamp-mask" style={{ textShadow: '0 0 10px rgba(239,68,68,0.8)' }}>
                       SOLD

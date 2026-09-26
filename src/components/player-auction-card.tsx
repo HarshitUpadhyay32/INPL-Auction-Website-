@@ -33,11 +33,10 @@ export function PlayerAuctionCard({ player, size = 'md', showStats = true, class
       {/* SOLD Stamp Overlay */}
       {player.status === 'SOLD' && (
         <motion.div
-          initial={{ opacity: 0, scale: 3, rotate: -20 }}
-          animate={{ opacity: 1, scale: 1, rotate: -10 }}
+          initial={{ opacity: 0, scale: 3, rotate: -20, x: "-50%", y: "-50%" }}
+          animate={{ opacity: 1, scale: 1, rotate: -10, x: "-50%", y: "-50%" }}
           transition={{ type: "spring", stiffness: 200, damping: 12 }}
-          className="absolute z-50 pointer-events-none"
-          style={{ top: '35%', left: '45%', transform: 'translate(-50%, -50%)' }}
+          className="absolute z-50 pointer-events-none top-[35%] left-[45%]"
         >
           <div className="border-[6px] sm:border-[8px] border-inpl-red text-inpl-red font-display font-black text-4xl sm:text-6xl py-2 px-6 sm:px-8 uppercase tracking-widest bg-white/80 backdrop-blur-sm shadow-[0_0_30px_rgba(239,68,68,0.4)] whitespace-nowrap stamp-mask" style={{ textShadow: '0 0 10px rgba(239,68,68,0.6)' }}>
             SOLD
