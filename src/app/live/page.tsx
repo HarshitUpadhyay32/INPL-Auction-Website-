@@ -201,7 +201,7 @@ export default function LiveAuctionPage() {
                     )}
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-bold text-text-primary truncate">{topBuy.name}</p>
-                      <p className="text-[10px] text-text-muted mt-0.5 truncate uppercase">{getTeamName(topBuy.team_id)}</p>
+                      <p className="text-[10px] text-text-muted mt-0.5 truncate uppercase">{getTeamName(topBuy.sold_to_team_id)}</p>
                     </div>
                     <div className="text-right whitespace-nowrap pl-2">
                       <p className="text-sm font-display font-black text-inpl-emerald">{formatCurrency(topBuy.sold_price || 0)}</p>
