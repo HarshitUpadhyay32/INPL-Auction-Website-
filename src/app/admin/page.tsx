@@ -43,9 +43,8 @@ export default function AdminDashboardPage() {
       live: live || 0,
     })
 
-    // Calculate total spent
-    const { data: transactions } = await supabase.from('transactions').select('amount').eq('transaction_type', 'PURCHASE')
-    const spent = transactions?.reduce((sum, t) => sum + Number(t.amount), 0) || 0
+    // Calculate total spent by checking actual team purses
+    const spent = teamsData?.reduce((sum, team) => sum + (Number(team.initial_purse) - Number(team.remaining_purse)), 0) || 0
     setTotalSpent(spent)
 
     setLoading(false)
@@ -113,7 +112,7 @@ export default function AdminDashboardPage() {
         <StatCard
           label="Total Spent"
           value={formatCurrency(totalSpent)}
-          sublabel={`of ₹${(config?.purse_per_team || 25) * (config?.total_teams || 15)} Cr`}
+          sublabel={`of ${formatCurrency(teams.reduce((sum, t) => sum + Number(t.initial_purse), 0))}`}
           icon={<IndianRupee size={22} />}
           color="gold"
         />
