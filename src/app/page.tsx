@@ -13,8 +13,8 @@ import { TeamAvatar } from '@/components/team-avatar'
 import { formatCurrency } from '@/lib/utils'
 
 const stats = [
-  { label: 'Teams', value: '15', icon: Users, color: 'text-blue-700 dark:text-inpl-electric' },
-  { label: 'Players', value: '400', icon: UserCircle, color: 'text-emerald-700 dark:text-inpl-emerald' },
+  { label: 'Teams', value: '10', icon: Users, color: 'text-blue-700 dark:text-inpl-electric' },
+  { label: 'Players', value: '200', icon: UserCircle, color: 'text-emerald-700 dark:text-inpl-emerald' },
   { label: 'Purse/Team', value: '₹25 Cr', icon: IndianRupee, color: 'text-emerald-700 dark:text-inpl-neon' },
   { label: 'Max Squad', value: '12', icon: Shield, color: 'text-purple-700 dark:text-inpl-purple' },
 ]
@@ -78,8 +78,8 @@ export default function HomePage() {
                 PLAYER AUCTION
               </h2>
               <p className="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto">
-                India&apos;s premier college cricket tournament.
-                Live bidding. 15 teams. 400 players. One stage.
+                PW IOI INNOVATORS premier LEAGUE, college cricket tournament.
+                Live bidding. 10 teams. 200 players. One stage.
               </p>
             </motion.div>
 
@@ -138,7 +138,7 @@ export default function HomePage() {
           >
             <motion.div variants={fadeIn} className="text-center space-y-3">
               <h2 className="text-3xl sm:text-4xl font-bold font-display text-text-primary">
-                15 Teams. One Championship.
+                10 Teams. One Championship.
               </h2>
               <p className="text-text-secondary max-w-lg mx-auto">
                 Each team enters with ₹25 Crore to build a squad of 12 players.
@@ -152,9 +152,9 @@ export default function HomePage() {
             ) : (
               <motion.div
                 variants={fadeIn}
-                className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-3 sm:gap-4"
+                className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4"
               >
-                {teams.slice(0, 8).map((team) => (
+                {teams.slice(0, 10).map((team) => (
                   <Link key={team.id} href={`/teams/${team.id}`}>
                     <Card hover glass className="text-center !p-4 h-full flex flex-col items-center justify-center">
                       <div className="mb-3">
@@ -210,7 +210,7 @@ export default function HomePage() {
                 {
                   step: '02',
                   title: 'Teams Bid Live',
-                  desc: 'All 15 teams can place bids in real-time. Each bid must follow the configured increment.',
+                  desc: 'All 10 teams can place bids in real-time. Each bid must follow the configured increment.',
                   color: 'from-inpl-neon/20',
                 },
                 {
@@ -263,7 +263,7 @@ export default function HomePage() {
                   Ready for the Auction?
                 </h2>
                 <p className="text-text-secondary max-w-lg mx-auto">
-                  Watch 400 players compete for a spot in 15 teams.
+                  Watch 200 players compete for a spot in 10 teams.
                   The live auction is the most exciting event of INPL Season 3.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

@@ -19,8 +19,8 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: 'INPL Season 3 | Player Auction Platform',
-  description: 'Official player auction platform for INPL Season 3 - India\'s premier college cricket tournament. 15 teams, 400 players, live bidding.',
-  keywords: ['INPL', 'cricket', 'auction', 'college cricket', 'player auction', 'bidding'],
+  description: 'Official player auction platform for PW IOI INNOVATORS premier LEAGUE. 10 teams, 200 players, live bidding.',
+  keywords: ['INPL', 'cricket', 'auction', 'PW IOI', 'innovators premier league', 'college cricket', 'player auction', 'bidding'],
 }
 
 export default function RootLayout({
