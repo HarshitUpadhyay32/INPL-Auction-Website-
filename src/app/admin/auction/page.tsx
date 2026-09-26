@@ -411,9 +411,13 @@ export default function AuctionControlPage() {
           {highestSoldPlayer && (
             <Card glass className="p-4 bg-gradient-to-br from-inpl-neon/10 to-transparent border-inpl-neon/20">
               <div className="flex items-center gap-3">
-                <div className="bg-inpl-neon/20 p-2.5 rounded-xl">
-                  <Zap className="text-emerald-700 dark:text-inpl-neon" size={24} />
-                </div>
+                {highestSoldPlayer.photo_url ? (
+                  <img src={highestSoldPlayer.photo_url} alt={highestSoldPlayer.name} className="w-12 h-12 rounded-lg object-cover bg-inpl-neon/10 shadow-sm" />
+                ) : (
+                  <div className="bg-inpl-neon/20 w-12 h-12 rounded-lg flex items-center justify-center text-xl shadow-sm border border-inpl-neon/20">
+                    {getRoleEmoji(highestSoldPlayer.role)}
+                  </div>
+                )}
                 <div>
                   <p className="text-[10px] text-text-muted uppercase tracking-wider font-bold mb-0.5">Highest Sold Player</p>
                   <p className="font-display font-bold text-text-primary text-base leading-tight truncate max-w-[200px]" title={highestSoldPlayer.name}>
