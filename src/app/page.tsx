@@ -203,7 +203,7 @@ export default function HomePage() {
                 {
                   step: '01',
                   title: 'Player Presented',
-                  desc: 'A player is selected and displayed with their profile, role, and base price of ₹50 LPA.',
+                  desc: 'A player is selected and displayed with their profile, role, and starting base price.',
                   color: 'from-inpl-electric/20',
                 },
                 {
