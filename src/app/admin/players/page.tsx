@@ -307,9 +307,6 @@ export default function PlayersPage() {
           <p className="text-sm text-text-secondary mt-1">{players.length} players registered</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="danger" onClick={() => setDeleteAllDialog(true)} icon={<Trash2 size={16} />} disabled={players.length === 0}>
-            Delete All
-          </Button>
           <Button variant="secondary" onClick={() => setBulkDialogOpen(true)} icon={<Upload size={16} />}>
             Generate Sample
           </Button>
