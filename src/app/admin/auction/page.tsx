@@ -12,6 +12,7 @@ import { PlayerAuctionCard } from '@/components/player-auction-card'
 import { formatCurrency, formatTime, getRoleEmoji } from '@/lib/utils'
 import { toast } from 'sonner'
 import type { Player, Team, Auction, Bid, AuctionConfig, AuctionSet } from '@/lib/types/database'
+import { TeamAvatar } from '@/components/team-avatar'
 
 export default function AuctionControlPage() {
   const [config, setConfig] = useState<AuctionConfig | null>(null)
@@ -410,23 +411,36 @@ export default function AuctionControlPage() {
           {/* Highest Sold Player */}
           {highestSoldPlayer && (
             <Card glass className="p-4 bg-gradient-to-br from-inpl-neon/10 to-transparent border-inpl-neon/20">
-              <div className="flex items-center gap-3">
-                {highestSoldPlayer.photo_url ? (
-                  <img src={highestSoldPlayer.photo_url} alt={highestSoldPlayer.name} className="w-12 h-12 rounded-lg object-cover bg-inpl-neon/10 shadow-sm" />
-                ) : (
-                  <div className="bg-inpl-neon/20 w-12 h-12 rounded-lg flex items-center justify-center text-xl shadow-sm border border-inpl-neon/20">
-                    {getRoleEmoji(highestSoldPlayer.role)}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  {highestSoldPlayer.photo_url ? (
+                    <img src={highestSoldPlayer.photo_url} alt={highestSoldPlayer.name} className="w-12 h-12 rounded-lg object-cover bg-inpl-neon/10 shadow-sm" />
+                  ) : (
+                    <div className="bg-inpl-neon/20 w-12 h-12 rounded-lg flex items-center justify-center text-xl shadow-sm border border-inpl-neon/20">
+                      {getRoleEmoji(highestSoldPlayer.role)}
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-[10px] text-text-muted uppercase tracking-wider font-bold mb-0.5">Highest Sold Player</p>
+                    <p className="font-display font-bold text-text-primary text-base leading-tight truncate max-w-[200px]" title={highestSoldPlayer.name}>
+                      {highestSoldPlayer.name}
+                    </p>
+                    <p className="text-emerald-700 dark:text-inpl-neon font-display font-semibold text-sm">
+                      {formatCurrency(Number(highestSoldPlayer.sold_price))}
+                    </p>
                   </div>
-                )}
-                <div>
-                  <p className="text-[10px] text-text-muted uppercase tracking-wider font-bold mb-0.5">Highest Sold Player</p>
-                  <p className="font-display font-bold text-text-primary text-base leading-tight truncate max-w-[200px]" title={highestSoldPlayer.name}>
-                    {highestSoldPlayer.name}
-                  </p>
-                  <p className="text-emerald-700 dark:text-inpl-neon font-display font-semibold text-sm">
-                    {formatCurrency(Number(highestSoldPlayer.sold_price))}
-                  </p>
                 </div>
+                
+                {highestSoldPlayer.sold_to_team_id && (() => {
+                  const team = teams.find(t => t.id === highestSoldPlayer.sold_to_team_id)
+                  if (!team) return null
+                  return (
+                    <div className="flex flex-col items-end text-right">
+                      <TeamAvatar team={team} size="md" />
+                      <p className="text-[10px] text-text-muted uppercase mt-1.5 font-bold tracking-wider">{team.short_name || team.name}</p>
+                    </div>
+                  )
+                })()}
               </div>
             </Card>
           )}
