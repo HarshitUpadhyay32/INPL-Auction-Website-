@@ -10,7 +10,7 @@ export function formatCurrency(amountInCr: number, options?: { short?: boolean }
   }
   const lpa = amountInCr * 100
   const formatted = lpa % 1 === 0 ? lpa.toFixed(0) : lpa.toFixed(0)
-  return options?.short ? `₹${formatted}L` : `₹${formatted} Lakhs`
+  return options?.short ? `₹${formatted}L` : `₹${formatted} LAKHS`
 }
 
 /**

@@ -29,7 +29,7 @@ export default function RulesPage() {
             <ul className="space-y-2 text-sm text-text-secondary">
               <li className="flex gap-2"><span className="text-inpl-neon">•</span>Starting purse per team: <Badge variant="emerald" size="sm">₹25 Cr</Badge></li>
               <li className="flex gap-2"><span className="text-inpl-neon">•</span>Total auction purse: <Badge variant="emerald" size="sm">₹250 Cr</Badge></li>
-              <li className="flex gap-2"><span className="text-inpl-neon">•</span>Base price per player: <Badge variant="gold" size="sm">₹50 Lakhs (₹0.50 Cr)</Badge></li>
+              <li className="flex gap-2"><span className="text-inpl-neon">•</span>Base price per player: <Badge variant="gold" size="sm">₹50 LAKHS (₹0.50 Cr)</Badge></li>
             </ul>
           </Card>
 

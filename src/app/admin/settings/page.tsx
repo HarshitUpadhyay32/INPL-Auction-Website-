@@ -129,7 +129,7 @@ export default function SettingsPage() {
           </div>
         </CardHeader>
         <div className="grid sm:grid-cols-2 gap-4">
-          <Input label="Base Price (Lakhs)" type="number" value={form.base_price} onChange={e => setForm(f => ({ ...f, base_price: e.target.value, base_price_cr: String(parseFloat(e.target.value) / 100) }))} />
+          <Input label="Base Price (LAKHS)" type="number" value={form.base_price} onChange={e => setForm(f => ({ ...f, base_price: e.target.value, base_price_cr: String(parseFloat(e.target.value) / 100) }))} />
           <Input label="Base Price (Cr)" type="number" step="0.01" value={form.base_price_cr} onChange={e => setForm(f => ({ ...f, base_price_cr: e.target.value, base_price: String(parseFloat(e.target.value) * 100) }))} />
           <Input label="Purse per Team (Cr)" type="number" step="0.01" value={form.purse_per_team} onChange={e => setForm(f => ({ ...f, purse_per_team: e.target.value }))} />
           <Input label="Max Squad Size" type="number" value={form.max_squad_size} onChange={e => setForm(f => ({ ...f, max_squad_size: e.target.value }))} />
