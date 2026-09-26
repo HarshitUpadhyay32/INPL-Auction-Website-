@@ -32,18 +32,24 @@ function TeamQuickStats() {
     let teamId: string | null = null
 
     async function loadStats() {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
+      try {
+        const { data: { user }, error: userError } = await supabase.auth.getUser()
+        if (userError || !user) throw new Error('No user')
 
-      const { data: profile } = await supabase.from('profiles').select('team_id').eq('id', user.id).single()
-      if (!profile?.team_id) return
-      teamId = profile.team_id
+        const { data: profile, error: profileError } = await supabase.from('profiles').select('team_id').eq('id', user.id).single()
+        if (profileError || !profile?.team_id) throw new Error('No profile or team_id')
+        
+        teamId = profile.team_id
 
-      const { data: team } = await supabase.from('teams').select('remaining_purse, max_players, players_count').eq('id', teamId).single()
-      if (team) {
+        const { data: team, error: teamError } = await supabase.from('teams').select('remaining_purse, max_players, players_count').eq('id', teamId).single()
+        if (teamError || !team) throw new Error('No team found')
+
         setStats({ purse: Number(team.remaining_purse), max: team.max_players, count: team.players_count })
+      } catch (e) {
+        console.error("Sidebar loadStats error:", e)
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
     }
 
     loadStats()
