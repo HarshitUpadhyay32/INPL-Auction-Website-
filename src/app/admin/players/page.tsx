@@ -307,9 +307,6 @@ export default function PlayersPage() {
           <p className="text-sm text-text-secondary mt-1">{players.length} players registered</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="secondary" onClick={() => setBulkDialogOpen(true)} icon={<Upload size={16} />}>
-            Generate Sample
-          </Button>
           <Button variant="gold" onClick={openAddDialog} icon={<Plus size={16} />}>
             Add Player
           </Button>
