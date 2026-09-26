@@ -13,11 +13,12 @@ import { Badge, PlayerStatusBadge } from '@/components/ui/badge'
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell, TableEmpty } from '@/components/ui/table'
 import { formatCurrency, generatePlayerCode, getRoleEmoji } from '@/lib/utils'
 import { toast } from 'sonner'
-import type { Player, AuctionSet } from '@/lib/types/database'
+import type { Player, AuctionSet, Team } from '@/lib/types/database'
 
 export default function PlayersPage() {
   const [players, setPlayers] = useState<Player[]>([])
   const [sets, setSets] = useState<AuctionSet[]>([])
+  const [teams, setTeams] = useState<Team[]>([])
   const [loading, setLoading] = useState(true)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [deleteDialog, setDeleteDialog] = useState<string | null>(null)
@@ -48,6 +49,10 @@ export default function PlayersPage() {
 
     const { data: setsData } = await supabase.from('auction_sets').select('*').order('sort_order')
     if (setsData) setSets(setsData)
+
+    const { data: teamsData } = await supabase.from('teams').select('*')
+    if (teamsData) setTeams(teamsData)
+
     setLoading(false)
   }, [filterRole, filterStatus])
 
@@ -387,7 +392,24 @@ export default function PlayersPage() {
                   <TableCell><PlayerStatusBadge status={player.status} /></TableCell>
                   <TableCell>
                     {player.sold_price ? (
-                      <span className="font-display font-semibold text-inpl-emerald">{formatCurrency(Number(player.sold_price))}</span>
+                      <div>
+                        <span className="font-display font-semibold text-inpl-emerald block">
+                          {formatCurrency(Number(player.sold_price))}
+                        </span>
+                        {player.sold_to_team_id && (
+                          <div className="flex items-center gap-1.5 mt-1">
+                            <div 
+                              className="w-3.5 h-3.5 rounded-[4px] flex items-center justify-center text-[8px] font-bold text-white shadow-sm" 
+                              style={{ background: teams.find(t => t.id === player.sold_to_team_id)?.color || '#333' }}
+                            >
+                              {teams.find(t => t.id === player.sold_to_team_id)?.name?.[0]}
+                            </div>
+                            <span className="text-[10px] font-medium text-text-secondary truncate max-w-[80px]" title={teams.find(t => t.id === player.sold_to_team_id)?.name}>
+                              {teams.find(t => t.id === player.sold_to_team_id)?.name}
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     ) : '—'}
                   </TableCell>
                   <TableCell className="text-right">
