@@ -19,13 +19,13 @@ export function TeamAvatar({ team, className, size = 'md' }: TeamAvatarProps) {
   if (team.logo_url) {
     return (
       <div 
-        className={`relative rounded-xl overflow-hidden shadow-lg border border-white/10 shrink-0 bg-white flex items-center justify-center p-0.5 ${sizeClasses[size]} ${className || ''}`}
+        className={`relative rounded-xl overflow-hidden shadow-sm shrink-0 flex items-center justify-center bg-transparent ${sizeClasses[size]} ${className || ''}`}
       >
         <Image
           src={team.logo_url}
           alt={`${team.name} logo`}
           fill
-          className="object-contain p-1"
+          className="object-contain"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
