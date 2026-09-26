@@ -155,15 +155,15 @@ export default function HomePage() {
                 className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4"
               >
                 {teams.slice(0, 10).map((team) => (
-                  <Link key={team.id} href={`/teams/${team.id}`}>
-                    <Card hover glass className="text-center !p-4 h-full flex flex-col items-center justify-center">
+                  <div key={team.id}>
+                    <Card glass className="text-center !p-4 h-full flex flex-col items-center justify-center">
                       <div className="mb-3">
                         <TeamAvatar team={team} size="lg" />
                       </div>
                       <p className="text-xs sm:text-sm font-medium text-text-primary truncate w-full">{team.name}</p>
                       <p className="text-[10px] text-text-muted mt-1">{formatCurrency(Number(team.initial_purse))}</p>
                     </Card>
-                  </Link>
+                  </div>
                 ))}
               </motion.div>
             )}
