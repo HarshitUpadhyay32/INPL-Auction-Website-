@@ -19,6 +19,77 @@ import {
   Trophy,
 } from 'lucide-react'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { createClient } from '@/lib/supabase/client'
+import { formatCurrency } from '@/lib/utils'
+import { useEffect, useState } from 'react'
+
+function TeamQuickStats() {
+  const [stats, setStats] = useState({ purse: 250000000, max: 12, count: 0 })
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const supabase = createClient()
+    let teamId: string | null = null
+
+    async function loadStats() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      const { data: profile } = await supabase.from('profiles').select('team_id').eq('id', user.id).single()
+      if (!profile?.team_id) return
+      teamId = profile.team_id
+
+      const { data: team } = await supabase.from('teams').select('remaining_purse, max_players, players_count').eq('id', teamId).single()
+      if (team) {
+        setStats({ purse: Number(team.remaining_purse), max: team.max_players, count: team.players_count })
+      }
+      setLoading(false)
+    }
+
+    loadStats()
+
+    const subscription = supabase
+      .channel('team_stats_changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'teams' }, (payload) => {
+        if (payload.new && (payload.new as any).id === teamId) {
+          const updated = payload.new as any
+          setStats({
+            purse: Number(updated.remaining_purse),
+            max: updated.max_players,
+            count: updated.players_count
+          })
+        }
+      })
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(subscription)
+    }
+  }, [])
+
+  if (loading) return <div className="animate-pulse h-12 bg-surface-hover rounded-xl w-full" />
+
+  return (
+    <div className="glass-light rounded-xl p-3 space-y-2">
+      <div className="flex items-center justify-between text-xs">
+        <span className="text-text-muted flex items-center gap-1.5">
+          <Wallet size={12} />
+          Purse
+        </span>
+        <span className="text-inpl-emerald font-semibold font-display">
+          {formatCurrency(stats.purse)}
+        </span>
+      </div>
+      <div className="flex items-center justify-between text-xs">
+        <span className="text-text-muted flex items-center gap-1.5">
+          <Users size={12} />
+          Squad
+        </span>
+        <span className="text-text-primary font-semibold">{stats.count} / {stats.max}</span>
+      </div>
+    </div>
+  )
+}
 
 interface SidebarLink {
   href: string
@@ -128,22 +199,7 @@ export function Sidebar({ type, teamName, teamColor }: SidebarProps) {
       {/* Quick Stats (Team only) */}
       {type === 'team' && (
         <div className="p-3 border-t border-border-default">
-          <div className="glass-light rounded-xl p-3 space-y-2">
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-text-muted flex items-center gap-1.5">
-                <Wallet size={12} />
-                Purse
-              </span>
-              <span className="text-inpl-emerald font-semibold font-display">₹25.00 Cr</span>
-            </div>
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-text-muted flex items-center gap-1.5">
-                <Users size={12} />
-                Squad
-              </span>
-              <span className="text-text-primary font-semibold">0 / 12</span>
-            </div>
-          </div>
+          <TeamQuickStats />
         </div>
       )}
 
