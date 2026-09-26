@@ -386,7 +386,7 @@ export default function AuctionControlPage() {
                     {currentAuction.status === 'PAUSED' ? 'RESUME AUCTION' : 'PAUSE AUCTION'}
                   </Button>
                   <Button
-                    variant="outline"
+                    variant="secondary"
                     size="lg"
                     className="w-full text-inpl-red hover:text-inpl-red-light border-inpl-red/50 hover:bg-inpl-red/10"
                     onClick={() => handleReverseLastBid()}
