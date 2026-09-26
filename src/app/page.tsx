@@ -1,36 +1,22 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Zap, Users, UserCircle, Trophy, ArrowRight, ChevronRight, Timer, IndianRupee, Shield } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { createClient } from '@/lib/supabase/client'
+import type { Team } from '@/lib/types/database'
+import { TeamAvatar } from '@/components/team-avatar'
+import { formatCurrency } from '@/lib/utils'
 
 const stats = [
   { label: 'Teams', value: '15', icon: Users, color: 'text-blue-700 dark:text-inpl-electric' },
   { label: 'Players', value: '400', icon: UserCircle, color: 'text-emerald-700 dark:text-inpl-emerald' },
   { label: 'Purse/Team', value: '₹25 Cr', icon: IndianRupee, color: 'text-emerald-700 dark:text-inpl-neon' },
   { label: 'Max Squad', value: '12', icon: Shield, color: 'text-purple-700 dark:text-inpl-purple' },
-]
-
-const teams = [
-  { name: 'Team Alpha', color: '#3b82f6' },
-  { name: 'Team Bravo', color: '#ef4444' },
-  { name: 'Team Charlie', color: '#10b981' },
-  { name: 'Team Delta', color: '#f59e0b' },
-  { name: 'Team Echo', color: '#8b5cf6' },
-  { name: 'Team Foxtrot', color: '#ec4899' },
-  { name: 'Team Golf', color: '#06b6d4' },
-  { name: 'Team Hotel', color: '#f97316' },
-  { name: 'Team India', color: '#14b8a6' },
-  { name: 'Team Juliet', color: '#a855f7' },
-  { name: 'Team Kilo', color: '#6366f1' },
-  { name: 'Team Lima', color: '#84cc16' },
-  { name: 'Team Mike', color: '#e11d48' },
-  { name: 'Team November', color: '#0ea5e9' },
-  { name: 'Team Oscar', color: '#d946ef' },
 ]
 
 const fadeIn = {
@@ -45,6 +31,19 @@ const stagger = {
 }
 
 export default function HomePage() {
+  const [teams, setTeams] = useState<Team[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function load() {
+      const supabase = createClient()
+      const { data } = await supabase.from('teams').select('*').order('name')
+      if (data) setTeams(data)
+      setLoading(false)
+    }
+    load()
+  }, [])
+
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
@@ -146,23 +145,28 @@ export default function HomePage() {
               </p>
             </motion.div>
 
-            <motion.div
-              variants={fadeIn}
-              className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-5 gap-3 sm:gap-4"
-            >
-              {teams.map((team, i) => (
-                <Card key={i} hover glass className="text-center !p-4">
-                  <div
-                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl mx-auto mb-2 flex items-center justify-center text-white font-bold font-display text-lg"
-                    style={{ background: `linear-gradient(135deg, ${team.color}, ${team.color}88)` }}
-                  >
-                    {String(i + 1).padStart(2, '0')}
-                  </div>
-                  <p className="text-xs sm:text-sm font-medium text-text-primary truncate">{team.name}</p>
-                  <p className="text-[10px] text-text-muted mt-0.5">₹25 Cr</p>
-                </Card>
-              ))}
-            </motion.div>
+            {loading ? (
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-3 sm:gap-4">
+                {[...Array(8)].map((_, i) => <div key={i} className="h-32 shimmer rounded-2xl" />)}
+              </div>
+            ) : (
+              <motion.div
+                variants={fadeIn}
+                className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-3 sm:gap-4"
+              >
+                {teams.slice(0, 8).map((team) => (
+                  <Link key={team.id} href={`/teams/${team.id}`}>
+                    <Card hover glass className="text-center !p-4 h-full flex flex-col items-center justify-center">
+                      <div className="mb-3">
+                        <TeamAvatar team={team} size="lg" />
+                      </div>
+                      <p className="text-xs sm:text-sm font-medium text-text-primary truncate w-full">{team.name}</p>
+                      <p className="text-[10px] text-text-muted mt-1">{formatCurrency(Number(team.initial_purse))}</p>
+                    </Card>
+                  </Link>
+                ))}
+              </motion.div>
+            )}
 
             <motion.div variants={fadeIn} className="text-center">
               <Link href="/teams">
