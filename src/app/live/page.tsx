@@ -147,50 +147,7 @@ export default function LiveAuctionPage() {
                   <PlayerAuctionCard player={currentPlayer} size="lg" />
                 </div>
 
-                {/* Highest Sold Player Banner */}
-                {topBuy && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center justify-between bg-[#0a1128] border border-white/5 rounded-2xl p-3 sm:p-4 mb-6 relative overflow-hidden"
-                  >
-                    <div className="flex items-center gap-4 sm:gap-6 relative z-10">
-                      {topBuy.photo_url ? (
-                        <img src={topBuy.photo_url} alt={topBuy.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover shadow-md" />
-                      ) : (
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl">
-                          {getRoleEmoji(topBuy.role)}
-                        </div>
-                      )}
-                      <div>
-                        <p className="text-[10px] sm:text-xs font-bold text-white/80 tracking-widest uppercase mb-1">Highest Sold Player</p>
-                        <div className="flex items-baseline gap-3 sm:gap-4 flex-wrap">
-                          <p className="text-2xl sm:text-4xl font-black text-white font-display uppercase tracking-wide">{topBuy.name}</p>
-                          <p className="text-2xl sm:text-4xl font-black font-display text-inpl-neon">{formatCurrency(topBuy.sold_price || 0)}</p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {topBuy.sold_to_team_id && (
-                      <div className="flex items-center gap-4 relative z-10">
-                        <p className="text-sm sm:text-xl font-bold text-white font-display uppercase tracking-wider hidden md:block text-right">
-                          {getTeamName(topBuy.sold_to_team_id)}
-                        </p>
-                        {teams.find(t => t.id === topBuy.sold_to_team_id)?.logo_url ? (
-                          <img 
-                            src={teams.find(t => t.id === topBuy.sold_to_team_id)!.logo_url!} 
-                            alt="Team Logo" 
-                            className="w-16 h-16 sm:w-20 sm:h-20 object-contain drop-shadow-xl" 
-                          />
-                        ) : (
-                          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-white/5 flex items-center justify-center">
-                             <span className="text-[10px] text-white/50">No Logo</span>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </motion.div>
-                )}
+
 
                 {/* Bid Display */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
@@ -234,6 +191,31 @@ export default function LiveAuctionPage() {
             {/* Sidebar */}
             <div className="space-y-6">
               
+              {/* Top Buy */}
+              {topBuy && (
+                <motion.div variants={itemVariants} className="glass rounded-2xl p-5 border-2 border-[#d4af37]/40 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4af37]/10 rounded-full blur-3xl pointer-events-none -mr-10 -mt-10" />
+                  <h3 className="text-xs font-black text-[#d4af37] uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <span>👑</span> Record Buy
+                  </h3>
+                  <div className="flex items-center gap-3 relative z-10">
+                    {topBuy.photo_url ? (
+                      <img src={topBuy.photo_url} alt={topBuy.name} className="w-12 h-12 rounded-full object-cover border-2 border-[#d4af37]/60" />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-[#0b1b3d] border-2 border-[#d4af37]/60 flex items-center justify-center text-lg">
+                        {getRoleEmoji(topBuy.role)}
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-text-primary truncate">{topBuy.name}</p>
+                      <p className="text-[10px] text-text-muted mt-0.5 truncate uppercase">{getTeamName(topBuy.sold_to_team_id)}</p>
+                    </div>
+                    <div className="text-right whitespace-nowrap pl-2">
+                      <p className="text-sm font-display font-black text-inpl-emerald">{formatCurrency(topBuy.sold_price || 0)}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
 
               {/* Bid Feed */}
               <motion.div variants={itemVariants} className="glass rounded-2xl p-5">
