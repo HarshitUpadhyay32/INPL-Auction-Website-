@@ -80,12 +80,10 @@ CREATE TABLE auction_sets (
 
 -- Insert default sets
 INSERT INTO auction_sets (name, description, sort_order) VALUES
-  ('Marquee Players', 'Top-tier players with highest demand', 1),
-  ('Batters', 'Specialist batting players', 2),
-  ('Bowlers', 'Specialist bowling players', 3),
-  ('All-Rounders', 'Versatile all-round players', 4),
-  ('Wicketkeepers', 'Wicketkeeper-batters', 5),
-  ('Emerging Players', 'Rising talent and newcomers', 6);
+  ('Batters', 'Specialist batting players', 1),
+  ('Bowlers', 'Specialist bowling players', 2),
+  ('All-Rounders', 'Versatile all-round players', 3),
+  ('Wicketkeepers', 'Wicketkeeper-batters', 4);
 
 -- =============================================
 -- 5. PLAYERS
