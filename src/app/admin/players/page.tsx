@@ -651,7 +651,7 @@ export default function PlayersPage() {
           />
           <div className="bg-inpl-emerald/10 p-3 rounded-lg border border-inpl-emerald/20 text-inpl-emerald text-sm flex gap-2">
             <Handshake size={18} className="shrink-0 mt-0.5" />
-            <p>This action will bypass the auction screen, mark the player as SOLD, and automatically deduct the specified price from the chosen team's purse.</p>
+            <p>This action will bypass the auction screen, mark the player as SOLD, and automatically deduct the specified price from the chosen team&apos;s purse.</p>
           </div>
           <div className="flex gap-3 pt-2">
             <Button type="button" variant="secondary" className="flex-1" onClick={() => setAssignDialog(null)}>Cancel</Button>

@@ -141,6 +141,7 @@ export default function AuctionControlPage() {
       toast.error('No available players to auction')
       return
     }
+    // eslint-disable-next-line react-hooks/purity
     const randomIndex = Math.floor(Math.random() * availablePlayers.length)
     const randomPlayer = availablePlayers[randomIndex]
     await startAuction(randomPlayer)
