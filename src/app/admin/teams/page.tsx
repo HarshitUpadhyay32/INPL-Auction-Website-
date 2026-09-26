@@ -11,8 +11,9 @@ import { ConfirmDialog } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { formatCurrency } from '@/lib/utils'
 import { toast } from 'sonner'
-import type { Team } from '@/lib/types/database'
+import type { Team, Player } from '@/lib/types/database'
 import { TeamAvatar } from '@/components/team-avatar'
+import { getRoleEmoji } from '@/lib/utils'
 
 const TEAM_COLORS = [
   '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6',
@@ -31,6 +32,9 @@ export default function TeamsPage() {
     name: '', short_name: '', color: '#3b82f6', owner_name: '',
     initial_purse: '25.00', max_players: '12', logo_url: ''
   })
+  const [viewingSquad, setViewingSquad] = useState<Team | null>(null)
+  const [teamPlayers, setTeamPlayers] = useState<Player[]>([])
+  const [loadingSquad, setLoadingSquad] = useState(false)
 
   useEffect(() => { loadTeams() }, [])
 
@@ -139,6 +143,24 @@ export default function TeamsPage() {
     loadTeams()
   }
 
+  async function handleViewSquad(team: Team) {
+    setViewingSquad(team)
+    setLoadingSquad(true)
+    const supabase = createClient()
+    const { data, error } = await supabase
+      .from('players')
+      .select('*')
+      .eq('sold_to_team_id', team.id)
+      .order('sold_price', { ascending: false })
+      
+    if (error) {
+      toast.error('Failed to load squad')
+    } else {
+      setTeamPlayers(data || [])
+    }
+    setLoadingSquad(false)
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -176,7 +198,7 @@ export default function TeamsPage() {
           {teams.map(team => {
             const spent = Number(team.initial_purse) - Number(team.remaining_purse)
             return (
-              <Card key={team.id} glass hover>
+              <Card key={team.id} glass hover className="cursor-pointer" onClick={() => handleViewSquad(team)}>
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <TeamAvatar team={team} size="lg" />
@@ -228,10 +250,10 @@ export default function TeamsPage() {
                 </div>
 
                 <div className="flex gap-2">
-                  <Button variant="ghost" size="sm" className="flex-1" onClick={() => openEditDialog(team)} icon={<Pencil size={14} />}>
+                  <Button variant="ghost" size="sm" className="flex-1" onClick={(e) => { e.stopPropagation(); openEditDialog(team); }} icon={<Pencil size={14} />}>
                     Edit
                   </Button>
-                  <Button variant="ghost" size="sm" className="text-inpl-red hover:text-inpl-red-light" onClick={() => setDeleteDialog(team.id)} icon={<Trash2 size={14} />}>
+                  <Button variant="ghost" size="sm" className="text-inpl-red hover:text-inpl-red-light" onClick={(e) => { e.stopPropagation(); setDeleteDialog(team.id); }} icon={<Trash2 size={14} />}>
                     Delete
                   </Button>
                 </div>
@@ -297,6 +319,55 @@ export default function TeamsPage() {
         confirmText="Delete"
         variant="danger"
       />
+
+      {/* View Squad Dialog */}
+      <Dialog open={!!viewingSquad} onClose={() => setViewingSquad(null)} title={`${viewingSquad?.name || 'Team'} Squad`} description="Players currently assigned to this team">
+        <div className="space-y-4">
+          <div className="flex items-center gap-4 bg-surface-elevated/50 p-4 rounded-xl">
+             <div className="flex-1">
+               <div className="text-sm text-text-muted mb-1">Squad Size</div>
+               <div className="text-xl font-bold font-display text-text-primary">
+                 {viewingSquad?.players_count || 0} <span className="text-sm font-normal text-text-muted">/ {viewingSquad?.max_players || 12}</span>
+               </div>
+             </div>
+             <div className="w-px h-10 bg-border-default"></div>
+             <div className="flex-1 text-right">
+               <div className="text-sm text-text-muted mb-1">Purse Remaining</div>
+               <div className="text-xl font-bold font-display text-inpl-emerald">
+                 {formatCurrency(Number(viewingSquad?.remaining_purse || 0))}
+               </div>
+             </div>
+          </div>
+
+          <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+            {loadingSquad ? (
+              <div className="py-8 text-center text-sm text-text-muted">Loading players...</div>
+            ) : teamPlayers.length === 0 ? (
+              <div className="py-8 text-center bg-surface-elevated/20 rounded-xl border border-dashed border-border-default">
+                <Users className="w-8 h-8 text-text-muted mx-auto mb-2 opacity-50" />
+                <p className="text-sm text-text-muted">No players in this squad yet.</p>
+              </div>
+            ) : (
+              teamPlayers.map((player) => (
+                <div key={player.id} className="flex items-center justify-between p-3 rounded-xl bg-surface-elevated border border-border-default/50">
+                  <div className="flex flex-col">
+                    <span className="font-medium text-text-primary">{player.name}</span>
+                    <span className="text-xs text-text-muted flex items-center gap-1.5 mt-0.5">
+                      <span className="px-1.5 py-0.5 rounded bg-surface-hover text-text-secondary">{getRoleEmoji(player.role)} {player.role}</span>
+                      {player.player_code}
+                    </span>
+                  </div>
+                  <div className="text-right flex flex-col items-end">
+                    <Badge variant="gold" size="sm" className="font-display">
+                      {formatCurrency(Number(player.sold_price))}
+                    </Badge>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </Dialog>
     </div>
   )
 }
