@@ -34,6 +34,7 @@ export default function LiveAuctionPage() {
   const [unsoldCount, setUnsoldCount] = useState(0)
   const [loading, setLoading] = useState(true)
   const [lastSold, setLastSold] = useState<{ player: Player; team: Team; amount: number } | null>(null)
+  const [topBuy, setTopBuy] = useState<Player | null>(null)
 
   const loadData = useCallback(async () => {
     const supabase = createClient()
@@ -58,6 +59,9 @@ export default function LiveAuctionPage() {
     const { count: unsold } = await supabase.from('players').select('*', { count: 'exact', head: true }).eq('status', 'UNSOLD')
     setSoldCount(sold || 0)
     setUnsoldCount(unsold || 0)
+
+    const { data: topBuyData } = await supabase.from('players').select('*').eq('status', 'SOLD').order('sold_price', { ascending: false }).limit(1).maybeSingle()
+    if (topBuyData) setTopBuy(topBuyData)
 
     setLoading(false)
   }, [])
@@ -179,6 +183,33 @@ export default function LiveAuctionPage() {
 
             {/* Sidebar */}
             <div className="space-y-6">
+              
+              {/* Top Buy */}
+              {topBuy && (
+                <motion.div variants={itemVariants} className="glass rounded-2xl p-5 border-2 border-[#d4af37]/40 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4af37]/10 rounded-full blur-3xl pointer-events-none -mr-10 -mt-10" />
+                  <h3 className="text-xs font-black text-[#d4af37] uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <span>👑</span> Record Buy
+                  </h3>
+                  <div className="flex items-center gap-3 relative z-10">
+                    {topBuy.photo_url ? (
+                      <img src={topBuy.photo_url} alt={topBuy.name} className="w-12 h-12 rounded-full object-cover border-2 border-[#d4af37]/60" />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-[#0b1b3d] border-2 border-[#d4af37]/60 flex items-center justify-center text-lg">
+                        {getRoleEmoji(topBuy.role)}
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-text-primary truncate">{topBuy.name}</p>
+                      <p className="text-[10px] text-text-muted mt-0.5 truncate uppercase">{getTeamName(topBuy.team_id)}</p>
+                    </div>
+                    <div className="text-right whitespace-nowrap pl-2">
+                      <p className="text-sm font-display font-black text-inpl-emerald">{formatCurrency(topBuy.sold_price || 0)}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
               {/* Bid Feed */}
               <motion.div variants={itemVariants} className="glass rounded-2xl p-5">
                 <h3 className="text-sm font-semibold text-text-primary mb-3">Recent Bids</h3>
