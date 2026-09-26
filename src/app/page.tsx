@@ -66,7 +66,7 @@ export default function HomePage() {
             {/* Badge */}
             <motion.div variants={fadeIn}>
               <div className="inline-flex items-center gap-1.5 font-semibold rounded-full border uppercase tracking-wider px-3 py-1.5 text-sm mb-2 bg-inpl-neon text-black border-transparent shadow-[0_0_15px_rgba(212,255,0,0.4)] dark:bg-inpl-neon/15 dark:text-inpl-neon dark:border-inpl-neon/30 dark:shadow-none">
-                🏏 Season 3 • 2024
+                🏏 Season 3 • 2026
               </div>
             </motion.div>
 
@@ -297,7 +297,7 @@ export default function HomePage() {
               <Link href="/results" className="hover:text-text-primary transition-colors">Results</Link>
             </div>
             <p className="text-xs text-text-muted">
-              © 2024 INPL. All rights reserved.
+              © 2026 INPL. All rights reserved.
             </p>
           </div>
         </div>
