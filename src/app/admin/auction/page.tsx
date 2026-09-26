@@ -435,9 +435,9 @@ export default function AuctionControlPage() {
                   const team = teams.find(t => t.id === highestSoldPlayer.sold_to_team_id)
                   if (!team) return null
                   return (
-                    <div className="flex flex-col items-end text-right">
+                    <div className="flex items-center gap-4 text-right">
+                      <p className="text-sm sm:text-lg text-text-primary font-display uppercase font-bold tracking-wider">{team.short_name || team.name}</p>
                       <TeamAvatar team={team} size="xl" />
-                      <p className="text-xs sm:text-sm text-text-muted uppercase mt-2 font-bold tracking-wider">{team.short_name || team.name}</p>
                     </div>
                   )
                 })()}
