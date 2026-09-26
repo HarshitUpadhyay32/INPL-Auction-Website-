@@ -410,22 +410,22 @@ export default function AuctionControlPage() {
 
           {/* Highest Sold Player */}
           {highestSoldPlayer && (
-            <Card glass className="p-4 bg-gradient-to-br from-inpl-neon/10 to-transparent border-inpl-neon/20">
+            <Card glass className="p-5 sm:p-6 bg-gradient-to-br from-inpl-neon/10 to-transparent border-inpl-neon/20">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4 sm:gap-6">
                   {highestSoldPlayer.photo_url ? (
-                    <img src={highestSoldPlayer.photo_url} alt={highestSoldPlayer.name} className="w-12 h-12 rounded-lg object-cover bg-inpl-neon/10 shadow-sm" />
+                    <img src={highestSoldPlayer.photo_url} alt={highestSoldPlayer.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover bg-inpl-neon/10 shadow-md" />
                   ) : (
-                    <div className="bg-inpl-neon/20 w-12 h-12 rounded-lg flex items-center justify-center text-xl shadow-sm border border-inpl-neon/20">
+                    <div className="bg-inpl-neon/20 w-16 h-16 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center text-3xl sm:text-4xl shadow-md border border-inpl-neon/20">
                       {getRoleEmoji(highestSoldPlayer.role)}
                     </div>
                   )}
                   <div>
-                    <p className="text-[10px] text-text-muted uppercase tracking-wider font-bold mb-0.5">Highest Sold Player</p>
-                    <p className="font-display font-bold text-text-primary text-base leading-tight truncate max-w-[200px]" title={highestSoldPlayer.name}>
+                    <p className="text-xs sm:text-sm text-text-muted uppercase tracking-wider font-bold mb-1">Highest Sold Player</p>
+                    <p className="font-display font-black text-text-primary text-xl sm:text-3xl leading-tight truncate max-w-[200px] sm:max-w-[300px]" title={highestSoldPlayer.name}>
                       {highestSoldPlayer.name}
                     </p>
-                    <p className="text-emerald-700 dark:text-inpl-neon font-display font-semibold text-sm">
+                    <p className="text-emerald-700 dark:text-inpl-neon font-display font-bold text-lg sm:text-2xl mt-1">
                       {formatCurrency(Number(highestSoldPlayer.sold_price))}
                     </p>
                   </div>
@@ -436,8 +436,8 @@ export default function AuctionControlPage() {
                   if (!team) return null
                   return (
                     <div className="flex flex-col items-end text-right">
-                      <TeamAvatar team={team} size="md" />
-                      <p className="text-[10px] text-text-muted uppercase mt-1.5 font-bold tracking-wider">{team.short_name || team.name}</p>
+                      <TeamAvatar team={team} size="xl" />
+                      <p className="text-xs sm:text-sm text-text-muted uppercase mt-2 font-bold tracking-wider">{team.short_name || team.name}</p>
                     </div>
                   )
                 })()}
