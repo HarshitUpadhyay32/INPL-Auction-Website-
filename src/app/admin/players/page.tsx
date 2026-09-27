@@ -238,34 +238,53 @@ export default function PlayersPage() {
   }
 
   async function handleReturnToAuction(player: Player) {
+    if (!confirm(`Are you sure you want to return ${player.name} to the auction queue? Any spent purse will be refunded.`)) return
+    
+    setUploading(true)
     const supabase = createClient()
     
-    if (player.status === 'SOLD') {
-      const { data: auction } = await supabase.from('auctions')
-        .select('id').eq('player_id', player.id).eq('status', 'SOLD')
-        .order('created_at', { ascending: false }).limit(1).single()
+    if (player.status === 'SOLD' && player.sold_to_team_id && player.sold_price != null) {
+      // 1. Get current team purse
+      const { data: team, error: teamErr } = await supabase.from('teams').select('remaining_purse').eq('id', player.sold_to_team_id).single()
+      
+      if (!teamErr && team) {
+        // 2. Refund purse
+        await supabase.from('teams').update({
+          remaining_purse: Number(team.remaining_purse) + Number(player.sold_price)
+        }).eq('id', player.sold_to_team_id)
         
-      if (!auction) {
-        toast.error('Could not find sale record for this player')
-        return
+        // 3. Log refund transaction
+        await supabase.from('transactions').insert({
+          player_id: player.id,
+          team_id: player.sold_to_team_id,
+          amount: player.sold_price,
+          transaction_type: 'REFUND',
+          notes: 'Returned to auction queue'
+        })
       }
-
-      const { data, error } = await supabase.rpc('undo_player_sold', { p_auction_id: auction.id })
-      if (error || !data?.success) {
-        console.error(error || data?.error)
-        toast.error(error?.message || data?.error || 'Failed to undo sale')
-        return
-      }
-      toast.success('Player sale reversed! Player is now available.')
-    } else {
-      const { error } = await supabase.from('players').update({ status: 'AVAILABLE' }).eq('id', player.id)
-      if (error) {
-        console.error(error)
-        toast.error('Failed to return player to auction')
-        return
-      }
-      toast.success('Player returned to auction queue!')
     }
+    
+    // Cancel any active/sold auctions for this player to clean up history
+    await supabase.from('auctions')
+      .update({ status: 'CANCELLED' })
+      .eq('player_id', player.id)
+      .in('status', ['SOLD', 'ACTIVE'])
+      
+    // Reset player back to available
+    const { error } = await supabase.from('players').update({ 
+      status: 'AVAILABLE',
+      sold_to_team_id: null,
+      sold_price: null
+    }).eq('id', player.id)
+    
+    setUploading(false)
+    if (error) {
+      console.error(error)
+      toast.error('Failed to return player to auction')
+      return
+    }
+    
+    toast.success('Player returned to auction queue!')
     loadPlayers()
   }
 
