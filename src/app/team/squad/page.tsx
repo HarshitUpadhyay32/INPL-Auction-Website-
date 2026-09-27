@@ -9,7 +9,7 @@ import { formatCurrency, getRoleEmoji } from '@/lib/utils'
 import type { Player, Squad } from '@/lib/types/database'
 
 export default function TeamSquadPage() {
-  const [squad, setSquad] = useState<(Squad & { player?: Player })[]>([])
+  const [squad, setSquad] = useState<Player[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -21,17 +21,16 @@ export default function TeamSquadPage() {
       if (!profile?.team_id) return
 
       const { data } = await supabase
-        .from('squads')
-        .select('*, player:players(*)')
+        .from('players')
+        .select('*')
         .eq('team_id', profile.team_id)
-        .order('purchased_at')
-      if (data) setSquad(data as (Squad & { player?: Player })[])
+      if (data) setSquad(data as Player[])
       setLoading(false)
     }
     load()
   }, [])
 
-  const totalSpent = squad.reduce((sum, s) => sum + Number(s.purchase_price), 0)
+  const totalSpent = squad.reduce((sum, player) => sum + Number(player.sold_price || 0), 0)
 
   return (
     <div className="space-y-6">
@@ -53,24 +52,24 @@ export default function TeamSquadPage() {
       ) : (
         <Card glass>
           <div className="space-y-1">
-            {squad.map((entry, i) => (
-              <div key={entry.id} className="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-hover transition-colors">
+            {squad.map((player, i) => (
+              <div key={player.id} className="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-hover transition-colors">
                 <span className="text-sm text-text-muted font-mono w-6 text-right">{i + 1}.</span>
                 <div className="w-10 h-10 rounded-xl bg-surface-elevated flex items-center justify-center text-xl">
-                  {entry.player ? getRoleEmoji(entry.player.role) : '🏏'}
+                  {player ? getRoleEmoji(player.role) : '🏏'}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-text-primary">{entry.player?.name || 'Unknown'}</p>
+                  <p className="font-medium text-text-primary">{player.name || 'Unknown'}</p>
                   <div className="flex items-center gap-2 mt-0.5">
                     <Badge variant={
-                      entry.player?.role === 'Batter' ? 'blue' :
-                      entry.player?.role === 'Bowler' ? 'red' :
-                      entry.player?.role === 'All-Rounder' ? 'gold' : 'purple'
-                    } size="sm">{entry.player?.role}</Badge>
-                    <span className="text-xs text-text-muted">{entry.player?.department} • {entry.player?.year}</span>
+                      player.role === 'Batter' ? 'blue' :
+                      player.role === 'Bowler' ? 'red' :
+                      player.role === 'All-Rounder' ? 'gold' : 'purple'
+                    } size="sm">{player.role}</Badge>
+                    <span className="text-xs text-text-muted">{player.department} • {player.year}</span>
                   </div>
                 </div>
-                <span className="font-display font-bold text-inpl-neon">{formatCurrency(Number(entry.purchase_price))}</span>
+                <span className="font-display font-bold text-inpl-neon">{formatCurrency(Number(player.sold_price || 0))}</span>
               </div>
             ))}
           </div>

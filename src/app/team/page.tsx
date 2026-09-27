@@ -13,7 +13,7 @@ import type { Team, Player, Squad, AuctionConfig } from '@/lib/types/database'
 
 export default function TeamDashboardPage() {
   const [team, setTeam] = useState<Team | null>(null)
-  const [squad, setSquad] = useState<(Squad & { player?: Player })[]>([])
+  const [squad, setSquad] = useState<Player[]>([])
   const [config, setConfig] = useState<AuctionConfig | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -32,11 +32,10 @@ export default function TeamDashboardPage() {
       if (teamData) setTeam(teamData)
 
       const { data: squadData } = await supabase
-        .from('squads')
-        .select('*, player:players(*)')
+        .from('players')
+        .select('*')
         .eq('team_id', profile.team_id)
-        .order('purchased_at')
-      if (squadData) setSquad(squadData as (Squad & { player?: Player })[])
+      if (squadData) setSquad(squadData as Player[])
 
       const { data: configData } = await supabase.from('auction_config').select('*').limit(1).single()
       if (configData) setConfig(configData)
@@ -135,16 +134,16 @@ export default function TeamDashboardPage() {
             </div>
           ) : (
             <div className="space-y-1.5">
-              {squad.map((entry, i) => (
-                <div key={entry.id} className="flex items-center gap-3 p-2 rounded-xl hover:bg-surface-hover transition-colors">
+              {squad.map((player, i) => (
+                <div key={player.id} className="flex items-center gap-3 p-2 rounded-xl hover:bg-surface-hover transition-colors">
                   <span className="text-xs text-text-muted font-mono w-5">{i + 1}.</span>
-                  <span className="text-lg">{entry.player ? getRoleEmoji(entry.player.role) : '🏏'}</span>
+                  <span className="text-lg">{player ? getRoleEmoji(player.role) : '🏏'}</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-text-primary truncate">{entry.player?.name || 'Unknown'}</p>
-                    <p className="text-[10px] text-text-muted">{entry.player?.role} • {entry.player?.department}</p>
+                    <p className="text-sm font-medium text-text-primary truncate">{player.name || 'Unknown'}</p>
+                    <p className="text-[10px] text-text-muted">{player.role} • {player.department}</p>
                   </div>
                   <span className="text-sm font-display font-semibold text-inpl-neon">
-                    {formatCurrency(Number(entry.purchase_price))}
+                    {formatCurrency(Number(player.sold_price || 0))}
                   </span>
                 </div>
               ))}
