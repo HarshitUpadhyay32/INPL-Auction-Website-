@@ -275,19 +275,45 @@ export default function PlayersPage() {
     
     setUploading(true)
     const supabase = createClient()
-    const { data, error } = await supabase.rpc('manual_assign_player', {
-      p_player_id: assignDialog.id,
-      p_team_id: assignFormData.team_id,
-      p_amount: parseFloat(assignFormData.price)
-    })
+    const amount = parseFloat(assignFormData.price)
+
+    // 1. Get current team purse
+    const { data: team, error: teamErr } = await supabase.from('teams').select('remaining_purse').eq('id', assignFormData.team_id).single()
     
-    setUploading(false)
-    if (error || !data?.success) {
-      console.error(error || data?.error)
-      toast.error(error?.message || data?.error || 'Failed to manually assign player')
+    if (teamErr || !team) {
+      setUploading(false)
+      toast.error('Could not fetch team details')
       return
     }
-    
+
+    // 2. Update Player
+    const { error: playerErr } = await supabase.from('players').update({
+      status: 'SOLD',
+      team_id: assignFormData.team_id,
+      sold_price: amount
+    }).eq('id', assignDialog.id)
+
+    if (playerErr) {
+      setUploading(false)
+      toast.error('Failed to assign player')
+      return
+    }
+
+    // 3. Deduct purse
+    await supabase.from('teams').update({
+      remaining_purse: Number(team.remaining_purse) - amount
+    }).eq('id', assignFormData.team_id)
+
+    // 4. Record transaction
+    await supabase.from('transactions').insert({
+      player_id: assignDialog.id,
+      team_id: assignFormData.team_id,
+      amount: amount,
+      transaction_type: 'PURCHASE',
+      notes: 'Manual Assignment'
+    })
+
+    setUploading(false)
     toast.success(`Assigned ${assignDialog.name} to the team successfully!`)
     setAssignDialog(null)
     loadPlayers()
