@@ -16,7 +16,7 @@ import { TeamAvatar } from '@/components/team-avatar'
 export default function TeamDetailPage() {
   const params = useParams()
   const [team, setTeam] = useState<Team | null>(null)
-  const [squad, setSquad] = useState<(Squad & { player?: Player })[]>([])
+  const [squad, setSquad] = useState<Player[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -26,11 +26,10 @@ export default function TeamDetailPage() {
       if (teamData) setTeam(teamData)
 
       const { data: squadData } = await supabase
-        .from('squads')
-        .select('*, player:players(*)')
+        .from('players')
+        .select('*')
         .eq('team_id', params.id as string)
-        .order('purchased_at')
-      if (squadData) setSquad(squadData as (Squad & { player?: Player })[])
+      if (squadData) setSquad(squadData as Player[])
       setLoading(false)
     }
     load()
@@ -41,7 +40,7 @@ export default function TeamDetailPage() {
 
   const spent = Number(team.initial_purse) - Number(team.remaining_purse)
   const avgPrice = squad.length > 0 ? spent / squad.length : 0
-  const highestPurchase = squad.length > 0 ? Math.max(...squad.map(s => Number(s.purchase_price))) : 0
+  const highestPurchase = squad.length > 0 ? Math.max(...squad.map(p => Number(p.sold_price || 0))) : 0
 
   return (
     <main className="min-h-screen pt-24 pb-16 px-4">
@@ -80,26 +79,26 @@ export default function TeamDetailPage() {
             </div>
           ) : (
             <div className="space-y-2">
-              {squad.map((entry, i) => (
-                <div key={entry.id} className="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-hover transition-colors">
+              {squad.map((player, i) => (
+                <div key={player.id} className="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-hover transition-colors">
                   <span className="text-sm text-text-muted font-mono w-6 text-right">{i + 1}.</span>
                   <div className="w-10 h-10 rounded-xl bg-surface-elevated flex items-center justify-center text-xl">
-                    {entry.player ? getRoleEmoji(entry.player.role) : '🏏'}
+                    {player ? getRoleEmoji(player.role) : '🏏'}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-text-primary">{entry.player?.name || 'Unknown'}</p>
+                    <p className="font-medium text-text-primary">{player.name || 'Unknown'}</p>
                     <div className="flex items-center gap-2 mt-0.5">
                       <Badge variant={
-                        entry.player?.role === 'Batter' ? 'blue' :
-                        entry.player?.role === 'Bowler' ? 'red' :
-                        entry.player?.role === 'All-Rounder' ? 'gold' : 'purple'
-                      } size="sm">{entry.player?.role}</Badge>
-                      {entry.player?.department && <span className="text-xs text-text-muted">{entry.player.department}</span>}
+                        player.role === 'Batter' ? 'blue' :
+                        player.role === 'Bowler' ? 'red' :
+                        player.role === 'All-Rounder' ? 'gold' : 'purple'
+                      } size="sm">{player.role}</Badge>
+                      {player.department && <span className="text-xs text-text-muted">{player.department}</span>}
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-display font-bold text-inpl-neon">{formatCurrency(Number(entry.purchase_price))}</p>
-                    <p className="text-[10px] text-text-muted font-mono">{entry.player?.player_code}</p>
+                    <p className="font-display font-bold text-inpl-neon">{formatCurrency(Number(player.sold_price || 0))}</p>
+                    <p className="text-[10px] text-text-muted font-mono">{player.player_code}</p>
                   </div>
                 </div>
               ))}
