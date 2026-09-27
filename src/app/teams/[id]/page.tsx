@@ -28,7 +28,7 @@ export default function TeamDetailPage() {
       const { data: squadData } = await supabase
         .from('players')
         .select('*')
-        .eq('team_id', params.id as string)
+        .eq('sold_to_team_id', params.id as string)
       if (squadData) setSquad(squadData as Player[])
       setLoading(false)
     }

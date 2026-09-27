@@ -34,7 +34,7 @@ export default function TeamDashboardPage() {
       const { data: squadData } = await supabase
         .from('players')
         .select('*')
-        .eq('team_id', profile.team_id)
+        .eq('sold_to_team_id', profile.team_id)
       if (squadData) setSquad(squadData as Player[])
 
       const { data: configData } = await supabase.from('auction_config').select('*').limit(1).single()

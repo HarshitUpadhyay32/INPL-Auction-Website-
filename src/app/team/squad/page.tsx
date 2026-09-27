@@ -23,7 +23,7 @@ export default function TeamSquadPage() {
       const { data } = await supabase
         .from('players')
         .select('*')
-        .eq('team_id', profile.team_id)
+        .eq('sold_to_team_id', profile.team_id)
       if (data) setSquad(data as Player[])
       setLoading(false)
     }
