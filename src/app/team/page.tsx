@@ -75,7 +75,7 @@ export default function TeamDashboardPage() {
           )}
           <div>
             <h1 className="text-2xl font-bold font-display text-text-primary">{team?.name || 'Team Dashboard'}</h1>
-            <p className="text-sm text-text-secondary mt-0.5">PW IOI Premier League</p>
+            <p className="text-sm text-text-secondary mt-0.5">Innovators Premier League</p>
           </div>
         </div>
         <Link href="/team/auction">

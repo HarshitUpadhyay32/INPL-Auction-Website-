@@ -14,7 +14,7 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [form, setForm] = useState({
-    tournament_name: 'PW IOI INNOVATORS PREMIER LEAGUE',
+    tournament_name: 'INNOVATORS PREMIER LEAGUE',
     base_price: '50',
     base_price_cr: '0.50',
     purse_per_team: '25.00',

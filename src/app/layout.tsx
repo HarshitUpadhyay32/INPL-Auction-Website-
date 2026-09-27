@@ -18,9 +18,9 @@ const outfit = Outfit({
 })
 
 export const metadata: Metadata = {
-  title: 'PW IOI Premier League | Player Auction Platform',
-  description: 'Official player auction platform for PW IOI INNOVATORS premier LEAGUE. 10 teams, 200 players, live bidding.',
-  keywords: ['INPL', 'cricket', 'auction', 'PW IOI', 'innovators premier league', 'college cricket', 'player auction', 'bidding'],
+  title: 'Innovators Premier League | Player Auction Platform',
+  description: 'Official player auction platform for INNOVATORS PREMIER LEAGUE. 10 teams, 200 players, live bidding.',
+  keywords: ['INPL', 'cricket', 'auction', 'INNOVATORS', 'innovators premier league', 'college cricket', 'player auction', 'bidding'],
 }
 
 export default function RootLayout({

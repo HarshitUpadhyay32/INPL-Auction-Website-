@@ -86,7 +86,7 @@ export function Sidebar({ type, teamName, teamColor }: SidebarProps) {
               {type === 'admin' ? 'Admin Panel' : teamName || 'Team'}
             </span>
             <span className="text-[10px] text-text-muted leading-tight tracking-wider uppercase">
-              {type === 'admin' ? 'PW IOI' : 'Team Dashboard'}
+              {type === 'admin' ? 'INNOVATORS' : 'Team Dashboard'}
             </span>
           </div>
         </Link>

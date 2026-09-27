@@ -2,8 +2,8 @@ import React from 'react'
 import { Sidebar } from '@/components/layout/sidebar'
 
 export const metadata = {
-  title: 'Team Dashboard | PW IOI Premier League',
-  description: 'Team bidding dashboard for PW IOI Premier League',
+  title: 'Team Dashboard | Innovators Premier League',
+  description: 'Team bidding dashboard for Innovators Premier League',
 }
 
 export default function TeamLayout({ children }: { children: React.ReactNode }) {
