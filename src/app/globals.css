@@ -39,10 +39,10 @@
   --color-surface-card: rgba(255, 255, 255, 0.5); /* Increased transparency for glass */
   --color-surface-hover: rgba(0, 153, 224, 0.1);
 
-  /* Text Colors (INPL BLUE base) */
-  --color-text-primary: #0099E0;
-  --color-text-secondary: rgba(0, 153, 224, 0.8);
-  --color-text-muted: rgba(0, 153, 224, 0.6);
+  /* Text Colors (High Contrast Dark Navy/Slate for Readability) */
+  --color-text-primary: #0A1128; 
+  --color-text-secondary: #334155; 
+  --color-text-muted: #64748B;
 
   /* Border Colors */
   --color-border-default: rgba(0, 153, 224, 0.2);
