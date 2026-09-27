@@ -289,7 +289,7 @@ export default function PlayersPage() {
     // 2. Update Player
     const { error: playerErr } = await supabase.from('players').update({
       status: 'SOLD',
-      team_id: assignFormData.team_id,
+      sold_to_team_id: assignFormData.team_id,
       sold_price: amount
     }).eq('id', assignDialog.id)
 
