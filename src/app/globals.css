@@ -32,10 +32,11 @@
 
   /* Light Theme Surface Colors (INPL CREAM base) */
   --color-surface-primary: #F4F1E8;
-  --color-surface-secondary: #F4F1E8;
-  --color-surface-tertiary: #E8E4D5;
-  --color-surface-elevated: #FDFCF9;
-  --color-surface-card: rgba(244, 241, 232, 0.7);
+  --theme-bg-gradient: radial-gradient(circle at 15% 50%, rgba(0, 153, 224, 0.12) 0%, transparent 40%), radial-gradient(circle at 85% 30%, rgba(0, 153, 224, 0.08) 0%, transparent 40%), linear-gradient(135deg, #F4F1E8 0%, #F4F1E8 100%);
+  --color-surface-secondary: rgba(244, 241, 232, 0.6);
+  --color-surface-tertiary: rgba(232, 228, 213, 0.5);
+  --color-surface-elevated: rgba(253, 252, 249, 0.8);
+  --color-surface-card: rgba(255, 255, 255, 0.5); /* Increased transparency for glass */
   --color-surface-hover: rgba(0, 153, 224, 0.1);
 
   /* Text Colors (INPL BLUE base) */
@@ -48,8 +49,8 @@
   --color-border-strong: rgba(0, 153, 224, 0.4);
 
   /* Glass Effect */
-  --color-glass: rgba(244, 241, 232, 0.75);
-  --color-glass-light: rgba(244, 241, 232, 0.6);
+  --color-glass: rgba(255, 255, 255, 0.45); /* clearer glass to show gradient */
+  --color-glass-light: rgba(255, 255, 255, 0.25);
 }
 
 .dark {
@@ -64,6 +65,7 @@
 
   /* Dark Theme Surface Colors */
   --color-surface-primary: #050505;
+  --theme-bg-gradient: none;
   --color-surface-secondary: #1A1A1A;
   --color-surface-tertiary: #262626;
   --color-surface-elevated: #333333;
@@ -96,6 +98,8 @@ html {
 
 body {
   background-color: var(--color-surface-primary);
+  background-image: var(--theme-bg-gradient);
+  background-attachment: fixed;
   color: var(--color-text-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
