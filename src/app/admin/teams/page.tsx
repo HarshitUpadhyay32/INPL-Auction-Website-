@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { Plus, Pencil, Trash2, Users, IndianRupee } from 'lucide-react'
+import { Plus, Pencil, Trash2, Users, IndianRupee, Key, Copy } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
@@ -35,6 +35,9 @@ export default function TeamsPage() {
   const [viewingSquad, setViewingSquad] = useState<Team | null>(null)
   const [teamPlayers, setTeamPlayers] = useState<Player[]>([])
   const [loadingSquad, setLoadingSquad] = useState(false)
+  const [generatingLogins, setGeneratingLogins] = useState(false)
+  const [generatedCredentials, setGeneratedCredentials] = useState<any[] | null>(null)
+  const [credentialsDialogOpen, setCredentialsDialogOpen] = useState(false)
 
   useEffect(() => { loadTeams() }, [])
 
@@ -143,6 +146,31 @@ export default function TeamsPage() {
     loadTeams()
   }
 
+  async function handleGenerateLogins() {
+    if (!confirm('This will generate new secure passwords for ALL teams. Existing passwords will be overwritten. Proceed?')) return
+    setGeneratingLogins(true)
+    try {
+      const res = await fetch('/api/admin/generate-team-logins', { method: 'POST' })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to generate logins')
+      
+      setGeneratedCredentials(data.credentials)
+      setCredentialsDialogOpen(true)
+      toast.success('Generated logins for all teams!')
+    } catch (err: any) {
+      toast.error(err.message)
+    } finally {
+      setGeneratingLogins(false)
+    }
+  }
+
+  function handleCopyCredentials() {
+    if (!generatedCredentials) return
+    const text = generatedCredentials.map(c => `Team: ${c.teamName}\nEmail: ${c.email}\nPassword: ${c.password}`).join('\n\n')
+    navigator.clipboard.writeText(text)
+    toast.success('Copied to clipboard!')
+  }
+
   async function handleViewSquad(team: Team) {
     setViewingSquad(team)
     setLoadingSquad(true)
@@ -172,6 +200,11 @@ export default function TeamsPage() {
           {teams.length === 0 && (
             <Button variant="secondary" onClick={generateDefaultTeams} icon={<Users size={16} />}>
               Generate 15 Teams
+            </Button>
+          )}
+          {teams.length > 0 && (
+            <Button variant="outline" onClick={handleGenerateLogins} disabled={generatingLogins} icon={<Key size={16} />}>
+              {generatingLogins ? 'Generating...' : 'Generate Logins'}
             </Button>
           )}
           <Button variant="gold" onClick={openAddDialog} icon={<Plus size={16} />}>
@@ -365,6 +398,33 @@ export default function TeamsPage() {
                 </div>
               ))
             )}
+          </div>
+        </div>
+      </Dialog>
+
+      {/* Generated Credentials Dialog */}
+      <Dialog 
+        open={credentialsDialogOpen} 
+        onClose={() => setCredentialsDialogOpen(false)} 
+        title="Team Logins Generated" 
+        description="Please copy these credentials now. You will not be able to see these passwords again."
+      >
+        <div className="space-y-4">
+          <div className="flex justify-end">
+            <Button variant="secondary" onClick={handleCopyCredentials} icon={<Copy size={16} />}>
+              Copy All to Clipboard
+            </Button>
+          </div>
+          <div className="max-h-[60vh] overflow-y-auto space-y-2 custom-scrollbar pr-2">
+            {generatedCredentials?.map((cred, i) => (
+              <div key={i} className="p-4 bg-surface-elevated border border-border-default rounded-xl space-y-2">
+                <div className="font-bold text-text-primary font-display">{cred.teamName}</div>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-sm">
+                  <div className="text-text-muted">Email: <span className="text-text-primary font-mono select-all bg-surface-hover px-1.5 py-0.5 rounded">{cred.email}</span></div>
+                  <div className="text-text-muted">Password: <span className="text-text-primary font-mono select-all bg-surface-hover px-1.5 py-0.5 rounded">{cred.password}</span></div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </Dialog>
