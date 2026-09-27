@@ -203,7 +203,7 @@ export default function TeamsPage() {
             </Button>
           )}
           {teams.length > 0 && (
-            <Button variant="outline" onClick={handleGenerateLogins} disabled={generatingLogins} icon={<Key size={16} />}>
+            <Button variant="secondary" onClick={handleGenerateLogins} disabled={generatingLogins} icon={<Key size={16} />}>
               {generatingLogins ? 'Generating...' : 'Generate Logins'}
             </Button>
           )}
