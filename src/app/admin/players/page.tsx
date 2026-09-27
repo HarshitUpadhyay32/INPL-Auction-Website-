@@ -244,13 +244,14 @@ export default function PlayersPage() {
     const supabase = createClient()
     
     if (player.status === 'SOLD' && player.sold_to_team_id && player.sold_price != null) {
-      // 1. Get current team purse
-      const { data: team, error: teamErr } = await supabase.from('teams').select('remaining_purse').eq('id', player.sold_to_team_id).single()
+      // 1. Get current team purse and count
+      const { data: team, error: teamErr } = await supabase.from('teams').select('remaining_purse, players_count').eq('id', player.sold_to_team_id).single()
       
       if (!teamErr && team) {
-        // 2. Refund purse
+        // 2. Refund purse and decrement player count
         await supabase.from('teams').update({
-          remaining_purse: Number(team.remaining_purse) + Number(player.sold_price)
+          remaining_purse: Number(team.remaining_purse) + Number(player.sold_price),
+          players_count: Math.max(0, Number(team.players_count || 0) - 1)
         }).eq('id', player.sold_to_team_id)
         
         // 3. Log refund transaction
@@ -296,8 +297,8 @@ export default function PlayersPage() {
     const supabase = createClient()
     const amount = parseFloat(assignFormData.price)
 
-    // 1. Get current team purse
-    const { data: team, error: teamErr } = await supabase.from('teams').select('remaining_purse').eq('id', assignFormData.team_id).single()
+    // 1. Get current team purse and count
+    const { data: team, error: teamErr } = await supabase.from('teams').select('remaining_purse, players_count').eq('id', assignFormData.team_id).single()
     
     if (teamErr || !team) {
       setUploading(false)
@@ -318,9 +319,10 @@ export default function PlayersPage() {
       return
     }
 
-    // 3. Deduct purse
+    // 3. Deduct purse and increment player count
     await supabase.from('teams').update({
-      remaining_purse: Number(team.remaining_purse) - amount
+      remaining_purse: Number(team.remaining_purse) - amount,
+      players_count: Number(team.players_count || 0) + 1
     }).eq('id', assignFormData.team_id)
 
     // 4. Record transaction
