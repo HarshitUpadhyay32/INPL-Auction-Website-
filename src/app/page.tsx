@@ -299,9 +299,10 @@ export default function HomePage() {
               <Link href="/players" className="hover:text-text-primary transition-colors">Players</Link>
               <Link href="/results" className="hover:text-text-primary transition-colors">Results</Link>
             </div>
-            <p className="text-xs text-text-muted">
-              © 2026 INPL. All rights reserved.
-            </p>
+            <div className="text-xs text-text-muted text-center sm:text-right">
+              <p>© 2026 INPL. All rights reserved.</p>
+              <p className="mt-1">Made by Harshit Upadhyay with love ❤️</p>
+            </div>
           </div>
         </div>
       </footer>
