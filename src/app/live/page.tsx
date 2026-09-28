@@ -7,6 +7,7 @@ import { formatCurrency, formatTime, getRoleEmoji } from '@/lib/utils'
 import { PlayerAuctionCard } from '@/components/player-auction-card'
 import type { Player, Team, Auction, Bid } from '@/lib/types/database'
 import { TeamAvatar } from '@/components/team-avatar'
+import { Badge } from '@/components/ui/badge'
 import { Gavel } from 'lucide-react'
 
 const containerVariants: Variants = {
@@ -35,6 +36,7 @@ export default function LiveAuctionPage() {
   const [loading, setLoading] = useState(true)
   const [lastSold, setLastSold] = useState<{ player: Player; team: Team; amount: number } | null>(null)
   const [topBuy, setTopBuy] = useState<Player | null>(null)
+  const [recentHistory, setRecentHistory] = useState<Player[]>([])
 
   const loadData = useCallback(async () => {
     const supabase = createClient()
@@ -67,6 +69,9 @@ export default function LiveAuctionPage() {
     } else {
       setTopBuy(null)
     }
+
+    const { data: recent } = await supabase.from('players').select('*').eq('status', 'SOLD').order('updated_at', { ascending: false }).limit(6)
+    if (recent) setRecentHistory(recent as Player[])
 
     setLoading(false)
   }, [])
@@ -272,16 +277,69 @@ export default function LiveAuctionPage() {
             </div>
           </motion.div>
         ) : (
-          <div className="text-center py-32">
-            <motion.div
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ repeat: Infinity, duration: 2 }}
-            >
-              <Gavel className="w-20 h-20 text-inpl-neon/30 mx-auto mb-6" />
-            </motion.div>
-            <h2 className="text-2xl font-bold font-display text-text-primary mb-2">Auction Not Active</h2>
-            <p className="text-text-secondary">The auctioneer will start the next player auction shortly.</p>
-            <p className="text-xs text-text-muted mt-2">This page updates automatically.</p>
+          <div className="space-y-12 pb-12">
+            <div className="text-center pt-24 pb-8">
+              <motion.div
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+              >
+                <Gavel className="w-20 h-20 text-inpl-neon/30 mx-auto mb-6" />
+              </motion.div>
+              <h2 className="text-2xl font-bold font-display text-text-primary mb-2">Auction Not Active</h2>
+              <p className="text-text-secondary">The auctioneer will start the next player auction shortly.</p>
+              <p className="text-xs text-text-muted mt-2">This page updates automatically.</p>
+            </div>
+
+            {recentHistory.length > 0 && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="max-w-5xl mx-auto"
+              >
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="h-px bg-white/10 flex-1" />
+                  <h3 className="text-lg font-display text-text-secondary">RECENTLY SOLD</h3>
+                  <div className="h-px bg-white/10 flex-1" />
+                </div>
+                
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {recentHistory.map((player) => {
+                    const team = teams.find(t => t.id === player.sold_to_team_id)
+                    return (
+                      <div key={player.id} className="glass rounded-2xl p-5 hover:bg-surface-hover transition-colors border border-white/5 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
+                          <span className="text-5xl">{getRoleEmoji(player.role)}</span>
+                        </div>
+                        <div className="flex items-center gap-3 mb-5 relative z-10">
+                          {team ? (
+                            <TeamAvatar team={team} size="md" />
+                          ) : (
+                            <div className="w-10 h-10 rounded-xl bg-surface-elevated border border-white/10 flex items-center justify-center text-xl">
+                              🏏
+                            </div>
+                          )}
+                          <div>
+                            <p className="font-semibold text-text-primary line-clamp-1">{player.name}</p>
+                            <p className="text-xs text-text-secondary line-clamp-1">{team?.name || 'Unknown Team'}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-end justify-between relative z-10">
+                          <div>
+                            <p className="text-[10px] text-text-muted uppercase tracking-wider mb-1">Sold For</p>
+                            <p className="font-display font-bold text-lg text-inpl-neon">{formatCurrency(player.sold_price || 0)}</p>
+                          </div>
+                          <Badge variant={
+                            player.role === 'Batter' ? 'blue' :
+                            player.role === 'Bowler' ? 'red' :
+                            player.role === 'All-Rounder' ? 'gold' : 'purple'
+                          } size="sm">{player.role}</Badge>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </motion.div>
+            )}
           </div>
         )}
       </div>
