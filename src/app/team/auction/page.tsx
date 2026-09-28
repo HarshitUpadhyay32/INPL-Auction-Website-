@@ -174,7 +174,7 @@ export default function TeamAuctionPage() {
           </div>
           <div className="text-right bg-surface-elevated border border-border-default px-4 py-2 rounded-xl">
             <p className="text-[10px] text-text-muted uppercase font-bold tracking-wider mb-0.5">Squad</p>
-            <p className="text-xl font-display font-bold text-text-primary">{team?.players_count || 0}/{team?.max_players || 12}</p>
+            <p className="text-xl font-display font-bold text-text-primary">{team?.players_count || 0}/{team?.max_players || 14}</p>
           </div>
         </div>
       </div>
@@ -236,7 +236,7 @@ export default function TeamAuctionPage() {
                     <AlertCircle size={14} />
                     {Number(team?.remaining_purse || 0) < nextBid
                       ? 'Insufficient purse'
-                      : (team?.players_count || 0) >= (team?.max_players || 12)
+                      : (team?.players_count || 0) >= (team?.max_players || 14)
                         ? 'Squad is full'
                         : 'Cannot bid'}
                   </div>

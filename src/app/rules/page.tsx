@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function RulesPage() {
   const rules = [
-    { title: "Minimum Squad Size", desc: "Every team must have a minimum of 12 players." },
+    { title: "Squad Size Limits", desc: "Every team must have a minimum of 12 players and a maximum of 14 players." },
     { title: "Auction Purse", desc: "Every team will receive a fixed auction purse that is 25 cr.\n\nTeams cannot bid beyond their available purse." },
     { title: "Base Price", desc: "Every player will have a predetermined base price.\n\nBidding will start from the player's base price." },
     { title: "Bidding Process", desc: "Teams can bid against each other during the auction.\n\nThe highest valid bid will secure the player." },
@@ -18,7 +18,7 @@ export default function RulesPage() {
     { title: "Auctioneer's Decision", desc: "The auctioneer's decision regarding bids, SOLD/UNSOLD status, and auction proceedings will be final." },
     { title: "Auction Discipline", desc: "All captains and participants must maintain proper discipline and follow the instructions of the auctioneer and INPL management." },
     { title: "No Unofficial Transfers", desc: "Players cannot be exchanged or transferred between teams during the auction unless specifically permitted by INPL management." },
-    { title: "Squad Completion", desc: "Teams must use the auction to complete their required squad of at least 12 players." },
+    { title: "Squad Completion", desc: "Teams must use the auction to complete their required squad of at least 12 players (maximum 14 players)." },
     { title: "Final Squad Lock", desc: "Once the auction is officially concluded, all team squads will be finalized and locked." },
     { title: "Disputes", desc: "Any dispute regarding the auction will be reviewed by INPL management, whose decision will be final." },
     { title: "Auction Conduct", desc: "Any intentional disruption, fake bidding, misbehavior, or violation of auction rules may result in disciplinary action." },

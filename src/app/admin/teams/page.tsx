@@ -30,7 +30,7 @@ export default function TeamsPage() {
   const [uploading, setUploading] = useState(false)
   const [formData, setFormData] = useState({
     name: '', short_name: '', color: '#3b82f6', owner_name: '',
-    initial_purse: '25.00', max_players: '12', logo_url: ''
+    initial_purse: '25.00', max_players: '14', logo_url: ''
   })
   const [viewingSquad, setViewingSquad] = useState<Team | null>(null)
   const [teamPlayers, setTeamPlayers] = useState<Player[]>([])
@@ -51,7 +51,7 @@ export default function TeamsPage() {
   function openAddDialog() {
     setEditingTeam(null)
     const nextColor = TEAM_COLORS[teams.length % TEAM_COLORS.length]
-    setFormData({ name: '', short_name: '', color: nextColor, owner_name: '', initial_purse: '25.00', max_players: '12', logo_url: '' })
+    setFormData({ name: '', short_name: '', color: nextColor, owner_name: '', initial_purse: '25.00', max_players: '14', logo_url: '' })
     setDialogOpen(true)
   }
 
@@ -138,7 +138,7 @@ export default function TeamsPage() {
       color: TEAM_COLORS[i],
       initial_purse: 25.00,
       remaining_purse: 25.00,
-      max_players: 12,
+      max_players: 14,
     }))
     const { error } = await supabase.from('teams').insert(defaultTeams)
     if (error) { toast.error(error.message); return }
@@ -360,7 +360,7 @@ export default function TeamsPage() {
              <div className="flex-1">
                <div className="text-sm text-text-muted mb-1">Squad Size</div>
                <div className="text-xl font-bold font-display text-text-primary">
-                 {viewingSquad?.players_count || 0} <span className="text-sm font-normal text-text-muted">/ {viewingSquad?.max_players || 12}</span>
+                 {viewingSquad?.players_count || 0} <span className="text-sm font-normal text-text-muted">/ {viewingSquad?.max_players || 14}</span>
                </div>
              </div>
              <div className="w-px h-10 bg-border-default"></div>

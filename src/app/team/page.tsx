@@ -103,7 +103,7 @@ export default function TeamDashboardPage() {
         />
         <StatCard
           label="Squad Size"
-          value={`${team?.players_count || 0} / ${team?.max_players || 12}`}
+          value={`${team?.players_count || 0} / ${team?.max_players || 14}`}
           sublabel={`${slotsLeft} slots remaining`}
           icon={<Users size={22} />}
           color="blue"
@@ -121,7 +121,7 @@ export default function TeamDashboardPage() {
         {/* My Squad */}
         <Card glass>
           <CardHeader>
-            <CardTitle>My Squad ({squad.length}/{team?.max_players || 12})</CardTitle>
+            <CardTitle>My Squad ({squad.length}/{team?.max_players || 14})</CardTitle>
             <Link href="/team/squad">
               <Button variant="ghost" size="sm">View All</Button>
             </Link>
