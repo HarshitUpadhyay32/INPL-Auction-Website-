@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 import { toast } from 'sonner'
 
 export default function ReportsPage() {
-  async function downloadCSV(type: 'teams' | 'players' | 'bids' | 'transactions') {
+  async function downloadCSV(type: 'teams' | 'players' | 'bids' | 'transactions' | 'team_squads') {
     const supabase = createClient()
     let data: Record<string, unknown>[] = []
     let filename = ''
@@ -48,6 +48,24 @@ export default function ReportsPage() {
           type: t.transaction_type,
         }))
         filename = 'inpl_transactions.csv'
+        break
+      }
+      case 'team_squads': {
+        const { data: d } = await supabase.from('players')
+          .select('name, player_code, role, sold_price, team:teams(name)')
+          .eq('status', 'SOLD')
+          
+        data = (d || []).map((p: Record<string, unknown>) => ({
+          Team: (p.team as Record<string, unknown>)?.name || 'Unknown',
+          Player: p.name,
+          Code: p.player_code,
+          Role: p.role,
+          Price: p.sold_price
+        }))
+        
+        data.sort((a, b) => (a.Team as string).localeCompare(b.Team as string))
+        
+        filename = 'inpl_team_squads.csv'
         break
       }
     }
@@ -134,6 +152,19 @@ export default function ReportsPage() {
               </div>
             </div>
             <Button variant="secondary" onClick={() => downloadCSV('transactions')} icon={<Download size={14} />}>Download</Button>
+          </div>
+        </Card>
+
+        <Card glass>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-inpl-gold/10"><Table className="w-5 h-5 text-inpl-gold" /></div>
+              <div>
+                <h3 className="font-semibold text-text-primary">Team Squads</h3>
+                <p className="text-xs text-text-secondary">All purchased players grouped by their teams with prices</p>
+              </div>
+            </div>
+            <Button variant="secondary" onClick={() => downloadCSV('team_squads')} icon={<Download size={14} />}>Download</Button>
           </div>
         </Card>
       </div>

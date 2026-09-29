@@ -40,7 +40,7 @@ export async function POST() {
 
     // 4. Generate logins for each team
     for (const team of teams) {
-      const cleanName = team.short_name.toLowerCase().replace(/[^a-z0-9]/g, '')
+      const cleanName = (team.short_name || team.name).toLowerCase().replace(/[^a-z0-9]/g, '')
       const email = `${cleanName}@inpl.com`
       const password = crypto.randomBytes(4).toString('hex') // 8 chars random password
 
