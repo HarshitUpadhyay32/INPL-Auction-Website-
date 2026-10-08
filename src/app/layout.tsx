@@ -3,6 +3,7 @@ import { Inter, Outfit } from 'next/font/google'
 import { Toaster } from 'sonner'
 import { Navbar } from '@/components/layout/navbar'
 import { ThemeProvider } from '@/components/theme-provider'
+import { MouseTracker } from '@/components/mouse-tracker'
 import './globals.css'
 
 const inter = Inter({
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${outfit.variable} antialiased bg-grid min-h-screen`}>
+        <MouseTracker />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <Navbar />
           {children}

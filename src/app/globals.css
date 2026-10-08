@@ -49,10 +49,12 @@
   --color-border-strong: rgba(0, 153, 224, 0.4);
 
   /* Glass Effect */
+  /* Glass Effect */
   --color-glass: rgba(255, 255, 255, 0.45); /* clearer glass to show gradient */
   --color-glass-light: rgba(255, 255, 255, 0.25);
 
   --color-grid: rgba(0, 153, 224, 0.15); /* Increased opacity */
+  --color-grid-active: rgba(0, 153, 224, 0.45); /* Interactive hover color */
 }
 
 .dark {
@@ -84,10 +86,12 @@
   --color-border-strong: rgba(115, 115, 115, 0.4);
 
   /* Glass Effect */
+  /* Glass Effect */
   --color-glass: rgba(10, 17, 40, 0.75);
   --color-glass-light: rgba(26, 26, 26, 0.6);
 
   --color-grid: rgba(148, 163, 184, 0.03);
+  --color-grid-active: rgba(148, 163, 184, 0.15); /* Interactive hover color */
 }
 
 /* Base Reset */
@@ -241,6 +245,28 @@ body {
     linear-gradient(90deg, var(--color-grid) 1px, transparent 1px),
     var(--theme-bg-gradient);
   background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%, 100% 100%;
+}
+
+.bg-grid::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(var(--color-grid-active) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid-active) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(
+    circle 350px at var(--mouse-x, -100%) var(--mouse-y, -100%),
+    black 0%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle 350px at var(--mouse-x, -100%) var(--mouse-y, -100%),
+    black 0%,
+    transparent 100%
+  );
 }
 
 /* Large display mode styles */
