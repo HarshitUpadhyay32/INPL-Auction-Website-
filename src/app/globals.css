@@ -51,6 +51,8 @@
   /* Glass Effect */
   --color-glass: rgba(255, 255, 255, 0.45); /* clearer glass to show gradient */
   --color-glass-light: rgba(255, 255, 255, 0.25);
+
+  --color-grid: rgba(0, 153, 224, 0.1);
 }
 
 .dark {
@@ -84,6 +86,8 @@
   /* Glass Effect */
   --color-glass: rgba(10, 17, 40, 0.75);
   --color-glass-light: rgba(26, 26, 26, 0.6);
+
+  --color-grid: rgba(148, 163, 184, 0.03);
 }
 
 /* Base Reset */
@@ -233,9 +237,10 @@ body {
 /* Background pattern */
 .bg-grid {
   background-image: 
-    linear-gradient(rgba(148, 163, 184, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
+    linear-gradient(var(--color-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid) 1px, transparent 1px),
+    var(--theme-bg-gradient);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
 }
 
 /* Large display mode styles */
