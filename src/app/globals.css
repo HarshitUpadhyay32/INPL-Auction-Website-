@@ -52,7 +52,7 @@
   --color-glass: rgba(255, 255, 255, 0.45); /* clearer glass to show gradient */
   --color-glass-light: rgba(255, 255, 255, 0.25);
 
-  --color-grid: rgba(0, 153, 224, 0.1);
+  --color-grid: rgba(0, 153, 224, 0.15); /* Increased opacity */
 }
 
 .dark {
@@ -240,7 +240,7 @@ body {
     linear-gradient(var(--color-grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--color-grid) 1px, transparent 1px),
     var(--theme-bg-gradient);
-  background-size: 40px 40px, 40px 40px, 100% 100%;
+  background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%, 100% 100%;
 }
 
 /* Large display mode styles */
